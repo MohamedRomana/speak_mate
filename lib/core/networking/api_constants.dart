@@ -1,0 +1,67 @@
+class ApiConstants {
+  static const String baseUrl = "https://abdo8.efadh.net/sedo/";
+
+  // ---- مصادقة سطحة (جاهزة للربط لاحقًا) ----
+  static const String authCustomerLogin = "auth/customer/login";
+  static const String authCustomerRegister = "auth/customer/register";
+  static const String authDriverLogin = "auth/driver/login";
+  static const String authDriverRegister = "auth/driver/register";
+  static const String authAdminLogin = "auth/admin/login";
+  static const String authForgotPassword = "auth/forgot-password";
+  static const String authVerifyOtp = "auth/verify-otp";
+  static const String authResetPassword = "auth/reset-password";
+  static const String authLogout = "auth/logout";
+  static const String authMe = "auth/me";
+
+  static const String intro = "api/intro";
+  static const String login = "api/login";
+  static const String register = "api/register";
+  static const String otp = "api/active-account";
+  static const String forgetPass = "api/forget-password";
+  static const String resetPass = "api/reset-password";
+  static const String profile = "api/show-user";
+  static const String updateProfile = "api/update-user";
+  static const String home = "api/client_home";
+  static const String staticPages = "api/page";
+  static const String questions = "api/questions";
+  static const String contactUs = "api/contact-us";
+  static const String logOut = "api/logout";
+  static const String allProviders = "api/providers";
+  static const String providerDetails = "api/show-provider";
+  static const String showService = "api/show-service";
+  static const String addToFavorite = "api/add-to-favourite";
+  static const String addRate = "api/rate-provider";
+  static const String allServices = "api/services";
+  static const String allFav = "api/show-favourites";
+  static const String storeProduct = 'api/store-order';
+  static const String checkPromo = 'api/check-promo';
+  static const String storeService = 'api/store-order';
+  static const String showOffers = "api/show-order";
+  static const String showAllOrders = "api/show-all-orders";
+  static const String getData = 'api/app-data';
+  static const String providerOrders = "api/show-all-provider-orders";
+  static const String showOrders = 'api/show-order';
+  static const String changeStatus = 'api/change-order-status';
+  static const String showNotifications = 'api/show-notification';
+  static const String deleteNotification = 'api/delete-notification';
+  static const String agreeOffer = "api/change-user-order-status";
+  static const String cancelOrder = "api/change-user-order-status";
+  static const String updateLocation = "api/update-location";
+  static const String subscribe = "api/package_subscripe";
+  static const String sections = 'api/sections';
+  static const String allProviderServices = 'api/all-provider-services';
+  static const String allProviderSections = 'api/all-provider-sections';
+  static const String storeProductService = 'api/store-service';
+  static const String updateProductService = 'api/update-service';
+  static const String deleteService = 'api/delete-service';
+  static const String clientOrderStatus = 'api/client-order-status';
+  static const String providerOrderStatus = 'api/provider-order-status';
+  static const String servicesWithSections = 'api/services_with_sections';
+  static const String addToCart = 'api/add-to-cart';
+  static const String storeDirectOrder = 'api/store-direct-order';
+  static const String showCart = 'api/show-cart';
+  static const String updateToCart = 'api/update-to-cart';
+  static const String deleteCart = 'api/delete-cart';
+  static const String storeOrder = 'api/store-order';
+  static const String deleteImage = 'api/delete-user-image';
+}
