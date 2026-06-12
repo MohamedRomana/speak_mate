@@ -46,11 +46,15 @@ class _LanguageScreenState extends State<LanguageScreen> {
     return Scaffold(
       body: AnimatedAuthBackground(
         child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-            child: Column(
-              children: [
-                SizedBox(height: 30.h),
+          child: LayoutBuilder(
+            builder: (context, constraints) => SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight - 32.h),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 30.h),
                 FadeSlideIn(
                   child: Icon(
                     Icons.translate_rounded,
@@ -109,8 +113,11 @@ class _LanguageScreenState extends State<LanguageScreen> {
                     onPressed: _confirm,
                   ),
                 ),
-                SizedBox(height: 10.h),
-              ],
+                      SizedBox(height: 10.h),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),

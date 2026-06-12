@@ -16,7 +16,7 @@ import '../../features/auth/role_selection/ui/role_selection.dart';
 import '../../features/start/language/ui/language_screen.dart';
 import '../../features/start/on_boarding/ui/on_boarding.dart';
 import '../../features/start/splash/ui/splash.dart';
-import '../../features/users/patient/home/ui/patient_home.dart';
+import '../../features/users/patient/main_layout/ui/patient_main_layout.dart';
 import '../../features/users/therapist/home/ui/therapist_home.dart';
 import '../di/dependancy_injection.dart';
 import 'routes.dart';
@@ -97,7 +97,7 @@ class AppRouter {
         );
 
       case Routes.patientHome:
-        return _route(settings, const PatientHomeScreen());
+        return _route(settings, const PatientMainLayout());
 
       case Routes.therapistHome:
         return _route(settings, const TherapistHomeScreen());

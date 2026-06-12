@@ -26,12 +26,17 @@ class RoleSelectionScreen extends StatelessWidget {
     return Scaffold(
       body: AnimatedAuthBackground(
         child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: 30.h),
+          child: LayoutBuilder(
+            builder: (context, constraints) => SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+              child: ConstrainedBox(
+                constraints:
+                    BoxConstraints(minHeight: constraints.maxHeight - 32.h),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: 30.h),
                 FadeSlideIn(
                   child: Text(
                     LocaleKeys.chooseRole.tr(),
@@ -73,8 +78,11 @@ class RoleSelectionScreen extends StatelessWidget {
                   delay: 380,
                   onTap: () => _select(context, UserRole.therapist),
                 ),
-                const Spacer(flex: 2),
-              ],
+                      const Spacer(flex: 2),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),
