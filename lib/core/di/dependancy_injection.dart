@@ -1,10 +1,13 @@
 import 'package:get_it/get_it.dart';
 
 import '../../features/auth/data/repos/auth_repo.dart';
+import '../../features/users/patient/aac/data/repos/aac_repo.dart';
+import '../../features/users/patient/chat/data/repos/chatbot_repo.dart';
 import '../../features/users/patient/dashboard/data/repos/dashboard_repo.dart';
 import '../../features/users/patient/exercises/data/repos/exercises_repo.dart';
 import '../../features/users/patient/notifications/data/repos/notifications_repo.dart';
 import '../../features/users/patient/profile/data/repos/profile_repo.dart';
+import '../../features/users/patient/reports/data/repos/reports_repo.dart';
 
 final getIt = GetIt.instance;
 
@@ -22,4 +25,13 @@ Future<void> setUpGetIt() async {
 
   // ---- المتدرّب: التمارين ----
   getIt.registerLazySingleton<ExercisesRepo>(() => ExercisesRepo());
+
+  // ---- المتدرّب: لوح التواصل (AAC) ----
+  getIt.registerLazySingleton<AacRepo>(() => AacRepo());
+
+  // ---- المتدرّب: المساعد الذكي ----
+  getIt.registerLazySingleton<ChatBotRepo>(() => ChatBotRepo());
+
+  // ---- المتدرّب: التقارير ----
+  getIt.registerLazySingleton<ReportsRepo>(() => ReportsRepo());
 }

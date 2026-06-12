@@ -226,6 +226,48 @@ abstract class LocaleKeys {
   static const wellDone = 'wellDone';
   static const exercisesCount = 'exercisesCount';
 
+  static const aacTitle = 'aacTitle';
+  static const aacHint = 'aacHint';
+  static const aacSpeak = 'aacSpeak';
+  static const aacSpeaking = 'aacSpeaking';
+  static const aacListening = 'aacListening';
+  static const aacEmptyHint = 'aacEmptyHint';
+  static const aacQuickPhrases = 'aacQuickPhrases';
+  static const aacAddSymbol = 'aacAddSymbol';
+  static const aacSymbolLabel = 'aacSymbolLabel';
+  static const aacPickEmoji = 'aacPickEmoji';
+  static const aacSymbolAdded = 'aacSymbolAdded';
+  static const aacCatBasics = 'aacCatBasics';
+  static const aacCatFood = 'aacCatFood';
+  static const aacCatFeelings = 'aacCatFeelings';
+  static const aacCatActions = 'aacCatActions';
+  static const aacCatPlaces = 'aacCatPlaces';
+  static const aacCatMine = 'aacCatMine';
+  static const add = 'add';
+
+  static const chatTitle = 'chatTitle';
+  static const chatStatus = 'chatStatus';
+  static const chatTyping = 'chatTyping';
+  static const typeMessage = 'typeMessage';
+  static const voiceMessage = 'voiceMessage';
+  static const chatGreeting = 'chatGreeting';
+
+  static const reportsTitle = 'reportsTitle';
+  static const periodWeek = 'periodWeek';
+  static const periodMonth = 'periodMonth';
+  static const exportReport = 'exportReport';
+  static const preparingReport = 'preparingReport';
+  static const summary = 'summary';
+  static const avgAccuracy = 'avgAccuracy';
+  static const totalSessions = 'totalSessions';
+  static const totalExercises = 'totalExercises';
+  static const sessionCompletion = 'sessionCompletion';
+  static const skillsImprovement = 'skillsImprovement';
+  static const skillPronunciation = 'skillPronunciation';
+  static const skillVocabulary = 'skillVocabulary';
+  static const skillFluency = 'skillFluency';
+  static const skillComprehension = 'skillComprehension';
+
   static const order_sent_successfully = 'order_sent_successfully';
   static const continue_shopping = 'continue_shopping';
   static const continue_browsing = 'continue_browsing';

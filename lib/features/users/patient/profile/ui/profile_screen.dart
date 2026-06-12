@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/cache/cache_helper.dart';
 import '../../../../../core/constants/colors.dart';
+import '../../../../../core/di/dependancy_injection.dart';
 import '../../../../../core/helper/extentions.dart';
 import '../../../../../core/helper/theme_x.dart';
 import '../../../../../core/logic/action_state.dart';
@@ -16,6 +17,8 @@ import '../../../../../core/widgets/fade_slide_in.dart';
 import '../../../../../core/widgets/flash_message.dart';
 import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
+import '../../reports/logic/reports_cubit.dart';
+import '../../reports/ui/reports_screen.dart';
 import '../data/models/patient_profile.dart';
 import '../logic/profile_cubit.dart';
 import 'edit_profile_screen.dart';
@@ -236,6 +239,23 @@ class _SettingsSection extends StatelessWidget {
       icon: Icons.settings_outlined,
       child: Column(
         children: [
+          _SettingsTile(
+            icon: Icons.bar_chart_rounded,
+            label: LocaleKeys.reportsTitle.tr(),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider(
+                    create: (_) => ReportsCubit(
+                      getIt(),
+                      lang: context.locale.languageCode,
+                    )..load(),
+                    child: const ReportsScreen(),
+                  ),
+                ),
+              );
+            },
+          ),
           _SettingsTile(
             icon: Icons.edit_outlined,
             label: LocaleKeys.editProfile.tr(),

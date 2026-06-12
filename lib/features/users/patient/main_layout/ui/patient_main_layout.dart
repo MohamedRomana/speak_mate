@@ -6,7 +6,8 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/di/dependancy_injection.dart';
 import '../../../../../core/widgets/app_bottom_nav.dart';
 import '../../../../../generated/locale_keys.g.dart';
-import '../../../shared/coming_soon_tab.dart';
+import '../../aac/logic/aac_cubit.dart';
+import '../../aac/ui/aac_screen.dart';
 import '../../dashboard/logic/dashboard_cubit.dart';
 import '../../dashboard/ui/dashboard_screen.dart';
 import '../../exercises/logic/exercises_cubit.dart';
@@ -29,6 +30,7 @@ class PatientMainLayout extends StatelessWidget {
         BlocProvider(create: (_) => DashboardCubit(getIt())..load()),
         BlocProvider(create: (_) => NotificationsCubit(getIt())..load()),
         BlocProvider(create: (_) => ExercisesCubit(getIt())..load()),
+        BlocProvider(create: (_) => AacCubit(getIt())..load()),
         BlocProvider(create: (_) => ProfileCubit(getIt())..load()),
       ],
       child: const _LayoutView(),
@@ -44,11 +46,7 @@ class _LayoutView extends StatelessWidget {
     final tabs = [
       const DashboardScreen(),
       const ExercisesScreen(),
-      ComingSoonTab(
-        icon: Icons.forum_rounded,
-        color: AppColors.accent,
-        title: LocaleKeys.navAac.tr(),
-      ),
+      const AacScreen(),
       const ProfileScreen(),
     ];
 

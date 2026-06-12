@@ -5,12 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/cache/cache_helper.dart';
 import '../../../../../core/constants/colors.dart';
+import '../../../../../core/di/dependancy_injection.dart';
 import '../../../../../core/logic/action_state.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/custom_shimmer.dart';
 import '../../../../../core/widgets/fade_slide_in.dart';
 import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
+import '../../chat/logic/chat_cubit.dart';
+import '../../chat/ui/chat_screen.dart';
 import '../../notifications/logic/notifications_cubit.dart';
 import '../../notifications/ui/notifications_screen.dart';
 import '../logic/dashboard_cubit.dart';
@@ -145,9 +148,48 @@ class _GreetingHeader extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(width: 12.w),
+        SizedBox(width: 10.w),
+        const _ChatButton(),
+        SizedBox(width: 8.w),
         const _NotificationBell(),
       ],
+    );
+  }
+}
+
+class _ChatButton extends StatelessWidget {
+  const _ChatButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (_) =>
+                  ChatCubit(getIt(), lang: context.locale.languageCode)..init(),
+              child: const ChatScreen(),
+            ),
+          ),
+        );
+      },
+      borderRadius: BorderRadius.circular(14.r),
+      child: Container(
+        width: 46.w,
+        height: 46.w,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [AppColors.primary, AppColors.secondary],
+          ),
+          borderRadius: BorderRadius.circular(14.r),
+        ),
+        child: Icon(
+          Icons.smart_toy_rounded,
+          color: Colors.white,
+          size: 24.w,
+        ),
+      ),
     );
   }
 }
