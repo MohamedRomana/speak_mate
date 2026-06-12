@@ -172,15 +172,21 @@ class _RememberForgotRowState extends State<_RememberForgotRow> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        AnimatedCheckbox(
-          value: _remember,
-          onChanged: (v) {
-            setState(() => _remember = v);
-            cubit.rememberMe = v;
-          },
-          label: Text(
-            LocaleKeys.rememberMe.tr(),
-            style: TextStyle(fontSize: 13.sp, color: context.onBrand),
+        // Expanded يمنح الـ Checkbox عرضاً محدوداً (الـ Flexible بداخله يحتاج
+        // constraints محدودة، وإلا يفشل layout عند وضعه داخل Row).
+        Expanded(
+          child: AnimatedCheckbox(
+            value: _remember,
+            onChanged: (v) {
+              setState(() => _remember = v);
+              cubit.rememberMe = v;
+            },
+            label: Text(
+              LocaleKeys.rememberMe.tr(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 13.sp, color: context.onBrand),
+            ),
           ),
         ),
         TextButton(

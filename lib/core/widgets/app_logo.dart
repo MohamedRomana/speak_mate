@@ -18,7 +18,7 @@ class AppLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     final useWhite = forceWhite ?? context.isDark;
     final image = Image.asset(
-      useWhite ? Assets.img.logoWhite.path : Assets.img.logo.path,
+      useWhite ? Assets.img.logo.path : Assets.img.logo.path,
       width: size ?? 110.w,
       height: size ?? 110.w,
       fit: BoxFit.contain,

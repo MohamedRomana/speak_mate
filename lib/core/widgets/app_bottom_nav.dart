@@ -34,11 +34,14 @@ class AppBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 60.h,
       decoration: BoxDecoration(
         color: AppColors.card,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: AppColors.isDark ? 0.3 : 0.06),
+            color: Colors.black.withValues(
+              alpha: AppColors.isDark ? 0.3 : 0.06,
+            ),
             blurRadius: 20,
             offset: const Offset(0, -4),
           ),
