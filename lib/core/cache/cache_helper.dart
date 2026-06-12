@@ -17,6 +17,10 @@ class CacheHelper {
   static const _userName = 'userName';
   static const _rememberMe = 'rememberMe';
   static const _themeMode = 'themeMode';
+  static const _textScale = 'textScale';
+  static const _highContrast = 'highContrast2';
+  static const _offlineMode = 'offlineMode';
+  static const _voiceCommands = 'voiceCommands';
   static const _lat = 'lat';
   static const _lng = 'lng';
 
@@ -139,5 +143,38 @@ class CacheHelper {
 
   static String getThemeMode() {
     return _preferences.getString(_themeMode) ?? 'system';
+  }
+
+  /// عامل تكبير النص (1.0 افتراضي).
+  static setTextScale(double value) async {
+    await _preferences.setDouble(_textScale, value);
+  }
+
+  static double getTextScale() {
+    return _preferences.getDouble(_textScale) ?? 1.0;
+  }
+
+  static setHighContrast(bool value) async {
+    await _preferences.setBool(_highContrast, value);
+  }
+
+  static bool getHighContrast() {
+    return _preferences.getBool(_highContrast) ?? false;
+  }
+
+  static setOfflineMode(bool value) async {
+    await _preferences.setBool(_offlineMode, value);
+  }
+
+  static bool getOfflineMode() {
+    return _preferences.getBool(_offlineMode) ?? false;
+  }
+
+  static setVoiceCommands(bool value) async {
+    await _preferences.setBool(_voiceCommands, value);
+  }
+
+  static bool getVoiceCommands() {
+    return _preferences.getBool(_voiceCommands) ?? false;
   }
 }

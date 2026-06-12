@@ -7,10 +7,8 @@ import '../../../../../core/cache/cache_helper.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/di/dependancy_injection.dart';
 import '../../../../../core/helper/extentions.dart';
-import '../../../../../core/helper/theme_x.dart';
 import '../../../../../core/logic/action_state.dart';
 import '../../../../../core/routing/routes.dart';
-import '../../../../../core/theme/theme_cubit.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/custom_shimmer.dart';
 import '../../../../../core/widgets/fade_slide_in.dart';
@@ -19,6 +17,7 @@ import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../../reports/logic/reports_cubit.dart';
 import '../../reports/ui/reports_screen.dart';
+import '../../settings/ui/settings_screen.dart';
 import '../data/models/patient_profile.dart';
 import '../logic/profile_cubit.dart';
 import 'edit_profile_screen.dart';
@@ -271,14 +270,14 @@ class _SettingsSection extends StatelessWidget {
             },
           ),
           _SettingsTile(
-            icon: Icons.language_rounded,
-            label: LocaleKeys.language.tr(),
-            onTap: () => context.pushNamed(
-              Routes.language,
-              arguments: {'firstLaunch': false},
-            ),
+            icon: Icons.settings_outlined,
+            label: LocaleKeys.settings.tr(),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+            },
           ),
-          _DarkModeTile(),
           _SettingsTile(
             icon: Icons.logout_rounded,
             label: LocaleKeys.logout.tr(),
@@ -305,7 +304,6 @@ class _SettingsTile extends StatelessWidget {
   final VoidCallback onTap;
   final bool danger;
   final bool isLast;
-  final Widget? trailing;
 
   const _SettingsTile({
     required this.icon,
@@ -313,7 +311,6 @@ class _SettingsTile extends StatelessWidget {
     required this.onTap,
     this.danger = false,
     this.isLast = false,
-    this.trailing,
   });
 
   @override
@@ -336,34 +333,16 @@ class _SettingsTile extends StatelessWidget {
                 color: color,
               ),
             ),
-            trailing ??
-                Transform.flip(
-                  flipX: context.locale.languageCode == 'ar',
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 14.w,
-                    color: AppColors.secondaryText,
-                  ),
-                ),
+            Transform.flip(
+              flipX: context.locale.languageCode == 'ar',
+              child: Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 14.w,
+                color: AppColors.secondaryText,
+              ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _DarkModeTile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final dark = context.isDark;
-    return _SettingsTile(
-      icon: dark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
-      label: LocaleKeys.darkMode.tr(),
-      onTap: () => context.read<ThemeCubit>().toggle(dark),
-      trailing: Switch.adaptive(
-        value: dark,
-        activeThumbColor: AppColors.primary,
-        onChanged: (_) => context.read<ThemeCubit>().toggle(dark),
       ),
     );
   }

@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/cache/cache_helper.dart';
 import 'core/constants/colors.dart';
 import 'core/di/dependancy_injection.dart';
+import 'core/logic/settings_cubit.dart';
 import 'core/networking/bloc_observer.dart';
 import 'core/routing/app_router.dart';
 import 'core/routing/routes.dart';
@@ -50,34 +51,47 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return BlocProvider(
-          create: (_) => ThemeCubit(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => ThemeCubit()),
+            BlocProvider(create: (_) => SettingsCubit()),
+          ],
           child: BlocBuilder<ThemeCubit, ThemeMode>(
             builder: (context, themeMode) {
-              return GestureDetector(
-                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                child: MaterialApp(
-                  // إعادة المفتاح عند تغيير اللغة تُعيد بناء كامل التطبيق (بما فيه
-                  // الشاشات المفتوحة) فوراً باللغة الجديدة بدل بقاء النصوص القديمة.
-                  key: ValueKey(context.locale.languageCode),
-                  title: 'SpeakMate',
-                  debugShowCheckedModeBanner: false,
-                  theme: AppTheme.light,
-                  darkTheme: AppTheme.dark,
-                  themeMode: themeMode,
-                  // يضبط ألوان الأسطح حسب الثيم الفعّال (يشمل وضع النظام) قبل بناء
-                  // أي شاشة، فتظهر ألوان AppColors المتبدّلة بشكل صحيح.
-                  builder: (context, child) {
-                    AppColors.isDark =
-                        Theme.of(context).brightness == Brightness.dark;
-                    return child ?? const SizedBox.shrink();
-                  },
-                  localizationsDelegates: context.localizationDelegates,
-                  supportedLocales: context.supportedLocales,
-                  locale: context.locale,
-                  onGenerateRoute: appRouter.onGenerateRoute,
-                  initialRoute: Routes.splash,
-                ),
+              return BlocBuilder<SettingsCubit, SettingsState>(
+                builder: (context, settings) {
+                  return GestureDetector(
+                    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                    child: MaterialApp(
+                      // إعادة المفتاح عند تغيير اللغة تُعيد بناء كامل التطبيق
+                      // فوراً باللغة الجديدة بدل بقاء النصوص القديمة.
+                      key: ValueKey(context.locale.languageCode),
+                      title: 'SpeakMate',
+                      debugShowCheckedModeBanner: false,
+                      theme: AppTheme.light,
+                      darkTheme: AppTheme.dark,
+                      themeMode: themeMode,
+                      // يضبط ألوان الأسطح حسب الثيم الفعّال + يطبّق حجم النص
+                      // (إمكانية الوصول) على كامل التطبيق قبل بناء أي شاشة.
+                      builder: (context, child) {
+                        AppColors.isDark =
+                            Theme.of(context).brightness == Brightness.dark;
+                        AppColors.highContrast = settings.highContrast;
+                        return MediaQuery(
+                          data: MediaQuery.of(context).copyWith(
+                            textScaler: TextScaler.linear(settings.textScale),
+                          ),
+                          child: child ?? const SizedBox.shrink(),
+                        );
+                      },
+                      localizationsDelegates: context.localizationDelegates,
+                      supportedLocales: context.supportedLocales,
+                      locale: context.locale,
+                      onGenerateRoute: appRouter.onGenerateRoute,
+                      initialRoute: Routes.splash,
+                    ),
+                  );
+                },
               );
             },
           ),

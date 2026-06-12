@@ -10,6 +10,9 @@ abstract class AppColors {
   /// يُضبط من `MaterialApp.builder` حسب الثيم الفعّال (يدعم وضع النظام أيضًا).
   static bool isDark = false;
 
+  /// وضع التباين العالي (إمكانية الوصول) — يُضبط من SettingsCubit.
+  static bool highContrast = false;
+
   // ---- Brand (ثابتة) ----
   /// الأساسي — أزرق سماوي هادئ.
   static const Color primary = Color(0xff4F8DFB);
@@ -37,12 +40,15 @@ abstract class AppColors {
       isDark ? const Color(0xff16223C) : const Color(0xffFFFFFF);
   static Color get cardAlt =>
       isDark ? const Color(0xff1B2A47) : const Color(0xffF1F5FF);
-  static Color get mainText =>
-      isDark ? const Color(0xffEAF1FB) : const Color(0xff142033);
-  static Color get secondaryText =>
-      isDark ? const Color(0xff93A4BC) : const Color(0xff64708A);
-  static Color get border =>
-      isDark ? const Color(0xff243352) : const Color(0xffE6EBF4);
+  static Color get mainText => highContrast
+      ? (isDark ? const Color(0xffFFFFFF) : const Color(0xff000000))
+      : (isDark ? const Color(0xffEAF1FB) : const Color(0xff142033));
+  static Color get secondaryText => highContrast
+      ? (isDark ? const Color(0xffC7D2E0) : const Color(0xff39414D))
+      : (isDark ? const Color(0xff93A4BC) : const Color(0xff64708A));
+  static Color get border => highContrast
+      ? (isDark ? const Color(0xff4A5E80) : const Color(0xff9AA7B8))
+      : (isDark ? const Color(0xff243352) : const Color(0xffE6EBF4));
 
   /// خلفيات ناعمة ملوّنة (للأيقونات/الشارات/البطاقات المميّزة).
   static Color get softPrimary =>

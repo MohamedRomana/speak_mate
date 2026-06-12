@@ -268,6 +268,22 @@ abstract class LocaleKeys {
   static const skillFluency = 'skillFluency';
   static const skillComprehension = 'skillComprehension';
 
+  static const appearance = 'appearance';
+  static const themeLight = 'themeLight';
+  static const themeDark = 'themeDark';
+  static const themeSystem = 'themeSystem';
+  static const highContrast = 'highContrast';
+  static const highContrastDesc = 'highContrastDesc';
+  static const textSize = 'textSize';
+  static const accessibility = 'accessibility';
+  static const voiceCommands = 'voiceCommands';
+  static const voiceCommandsDesc = 'voiceCommandsDesc';
+  static const offlineMode = 'offlineMode';
+  static const offlineModeDesc = 'offlineModeDesc';
+  static const downloadContent = 'downloadContent';
+  static const downloadStarted = 'downloadStarted';
+  static const settingsPreview = 'settingsPreview';
+
   static const order_sent_successfully = 'order_sent_successfully';
   static const continue_shopping = 'continue_shopping';
   static const continue_browsing = 'continue_browsing';
