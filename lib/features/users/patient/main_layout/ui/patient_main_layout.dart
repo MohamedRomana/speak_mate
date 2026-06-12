@@ -9,6 +9,8 @@ import '../../../../../generated/locale_keys.g.dart';
 import '../../../shared/coming_soon_tab.dart';
 import '../../dashboard/logic/dashboard_cubit.dart';
 import '../../dashboard/ui/dashboard_screen.dart';
+import '../../exercises/logic/exercises_cubit.dart';
+import '../../exercises/ui/exercises_screen.dart';
 import '../../notifications/logic/notifications_cubit.dart';
 import '../../profile/logic/profile_cubit.dart';
 import '../../profile/ui/profile_screen.dart';
@@ -26,6 +28,7 @@ class PatientMainLayout extends StatelessWidget {
         BlocProvider(create: (_) => PatientNavCubit()),
         BlocProvider(create: (_) => DashboardCubit(getIt())..load()),
         BlocProvider(create: (_) => NotificationsCubit(getIt())..load()),
+        BlocProvider(create: (_) => ExercisesCubit(getIt())..load()),
         BlocProvider(create: (_) => ProfileCubit(getIt())..load()),
       ],
       child: const _LayoutView(),
@@ -40,11 +43,7 @@ class _LayoutView extends StatelessWidget {
   Widget build(BuildContext context) {
     final tabs = [
       const DashboardScreen(),
-      ComingSoonTab(
-        icon: Icons.sports_esports_rounded,
-        color: AppColors.secondary,
-        title: LocaleKeys.navExercises.tr(),
-      ),
+      const ExercisesScreen(),
       ComingSoonTab(
         icon: Icons.forum_rounded,
         color: AppColors.accent,
