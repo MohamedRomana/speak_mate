@@ -19,6 +19,7 @@ import '../../features/start/splash/ui/splash.dart';
 import '../../features/users/patient/main_layout/ui/patient_main_layout.dart';
 import '../../features/users/therapist/home/ui/therapist_home.dart';
 import '../di/dependancy_injection.dart';
+import 'route_builder.dart';
 import 'routes.dart';
 
 /// راوتر مركزي واحد — يحقن الـ Cubit المناسب من [getIt] لكل شاشة.
@@ -107,30 +108,8 @@ class AppRouter {
     }
   }
 
-  /// انتقال موحّد بـ fade + slide خفيف لكل الشاشات (مع الحفاظ على الـ name).
+  /// انتقال موحّد + لفّ كل شاشة بـ ValueListenableBuilder لتبديل الثيم الفوري.
   PageRouteBuilder _route(RouteSettings settings, Widget child) {
-    return PageRouteBuilder(
-      settings: settings,
-      transitionDuration: const Duration(milliseconds: 420),
-      reverseTransitionDuration: const Duration(milliseconds: 320),
-      pageBuilder: (context, animation, secondaryAnimation) => child,
-      transitionsBuilder: (context, animation, secondaryAnimation, c) {
-        final curved = CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeOutCubic,
-          reverseCurve: Curves.easeInCubic,
-        );
-        return FadeTransition(
-          opacity: curved,
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0.05),
-              end: Offset.zero,
-            ).animate(curved),
-            child: c,
-          ),
-        );
-      },
-    );
+    return buildAppRoute(child, settings: settings);
   }
 }

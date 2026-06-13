@@ -66,6 +66,9 @@ class RegisterCubit extends Cubit<ActionState> {
     await CacheHelper.setUserId(u.id);
     await CacheHelper.setUserType(u.role.key);
     await CacheHelper.setUserName(u.name);
+    if (difficultyType != null) {
+      await CacheHelper.setDifficultyType(difficultyType);
+    }
     if (isClosed) return;
     emit(const ActionState.success(LocaleKeys.registerSuccess));
   }

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/cache/cache_helper.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/di/dependancy_injection.dart';
+import '../../../../../core/helper/extentions.dart';
 import '../../../../../core/logic/action_state.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/custom_shimmer.dart';
@@ -109,12 +110,10 @@ class DashboardScreen extends StatelessWidget {
                         (s) => SessionCard(
                           session: s,
                           onStart: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => BlocProvider(
-                                  create: (_) => SessionCubit()..start(),
-                                  child: SessionScreen(session: s),
-                                ),
+                            context.pushScreen(
+                              BlocProvider(
+                                create: (_) => SessionCubit()..start(),
+                                child: SessionScreen(session: s),
                               ),
                             );
                           },
@@ -182,15 +181,13 @@ class _TherapistChatButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => BlocProvider(
-              create: (_) => TherapistChatCubit(
-                getIt(),
-                lang: context.locale.languageCode,
-              )..init(),
-              child: const TherapistChatScreen(),
-            ),
+        context.pushScreen(
+          BlocProvider(
+            create: (_) => TherapistChatCubit(
+              getIt(),
+              lang: context.locale.languageCode,
+            )..init(),
+            child: const TherapistChatScreen(),
           ),
         );
       },
@@ -220,13 +217,11 @@ class _ChatButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => BlocProvider(
-              create: (_) =>
-                  ChatCubit(getIt(), lang: context.locale.languageCode)..init(),
-              child: const ChatScreen(),
-            ),
+        context.pushScreen(
+          BlocProvider(
+            create: (_) =>
+                ChatCubit(getIt(), lang: context.locale.languageCode)..init(),
+            child: const ChatScreen(),
           ),
         );
       },
@@ -260,12 +255,10 @@ class _NotificationBell extends StatelessWidget {
         final unread = context.read<NotificationsCubit>().unreadCount;
         return InkWell(
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => BlocProvider.value(
-                  value: context.read<NotificationsCubit>(),
-                  child: const NotificationsScreen(),
-                ),
+            context.pushScreen(
+              BlocProvider.value(
+                value: context.read<NotificationsCubit>(),
+                child: const NotificationsScreen(),
               ),
             );
           },

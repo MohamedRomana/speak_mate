@@ -1,17 +1,37 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
+
 /// هوية ألوان SpeakMate — "Serene" palette: أزرق سماوي هادئ + لافندر بنفسجي +
 /// نعناعي. ألوان هادئة ومطمئِنة مناسبة لتطبيق تخاطب للأطفال والكبار.
 ///
-/// ألوان الـ brand الثابتة تبقى `const`. أما ألوان الأسطح (الخلفية/الكارت/النص/
-/// الحدود) فهي getters تتبدّل حسب الثيم عبر [isDark] الذي يُضبط من سطوع الثيم
-/// الفعّال في `MaterialApp.builder`.
+/// ألوان الأسطح getters تتبدّل حسب [isDark]/[highContrast]. أي تغيير فيهما يُخطر
+/// [uiNotifier] فتُعيد كل الشاشات (الملفوفة بـ ValueListenableBuilder في الراوتر)
+/// بناء نفسها فورًا — فيتبدّل الثيم في التطبيق كله مرة واحدة بدون hot reload.
 abstract class AppColors {
+  /// مُخطِر يتغيّر مع أي تبديل في الثيم/التباين — تستمع إليه كل الشاشات.
+  static final ValueNotifier<int> uiNotifier = ValueNotifier<int>(0);
+
+  static bool _isDark = false;
+  static bool _highContrast = false;
+
   /// يُضبط من `MaterialApp.builder` حسب الثيم الفعّال (يدعم وضع النظام أيضًا).
-  static bool isDark = false;
+  static bool get isDark => _isDark;
+  static set isDark(bool value) {
+    if (_isDark != value) {
+      _isDark = value;
+      uiNotifier.value++;
+    }
+  }
 
   /// وضع التباين العالي (إمكانية الوصول) — يُضبط من SettingsCubit.
-  static bool highContrast = false;
+  static bool get highContrast => _highContrast;
+  static set highContrast(bool value) {
+    if (_highContrast != value) {
+      _highContrast = value;
+      uiNotifier.value++;
+    }
+  }
 
   // ---- Brand (ثابتة) ----
   /// الأساسي — أزرق سماوي هادئ.

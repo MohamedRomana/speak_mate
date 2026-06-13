@@ -178,7 +178,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   SathaField(
                     controller: _notes,
                     hint: LocaleKeys.notesHint.tr(),
-                    maxLines: 4,
+                    maxLines: 5,
+                    keyboardType: TextInputType.multiline,
                     textInputAction: TextInputAction.newline,
                   ),
                   SizedBox(height: 28.h),

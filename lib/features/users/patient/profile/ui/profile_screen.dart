@@ -243,15 +243,13 @@ class _SettingsSection extends StatelessWidget {
             icon: Icons.bar_chart_rounded,
             label: LocaleKeys.reportsTitle.tr(),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => BlocProvider(
-                    create: (_) => ReportsCubit(
-                      getIt(),
-                      lang: context.locale.languageCode,
-                    )..load(),
-                    child: const ReportsScreen(),
-                  ),
+              context.pushScreen(
+                BlocProvider(
+                  create: (_) => ReportsCubit(
+                    getIt(),
+                    lang: context.locale.languageCode,
+                  )..load(),
+                  child: const ReportsScreen(),
                 ),
               );
             },
@@ -260,12 +258,10 @@ class _SettingsSection extends StatelessWidget {
             icon: Icons.edit_outlined,
             label: LocaleKeys.editProfile.tr(),
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => BlocProvider.value(
-                    value: cubit,
-                    child: const EditProfileScreen(),
-                  ),
+              context.pushScreen(
+                BlocProvider.value(
+                  value: cubit,
+                  child: const EditProfileScreen(),
                 ),
               );
             },
@@ -273,11 +269,7 @@ class _SettingsSection extends StatelessWidget {
           _SettingsTile(
             icon: Icons.settings_outlined,
             label: LocaleKeys.settings.tr(),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
-            },
+            onTap: () => context.pushScreen(const SettingsScreen()),
           ),
           _SettingsTile(
             icon: Icons.logout_rounded,

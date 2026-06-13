@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/cache/cache_helper.dart';
 import '../../../../../core/networking/api_result.dart';
+import '../../../../../core/services/speech_service.dart';
 import '../data/models/exercise_models.dart';
 import '../data/repos/exercises_repo.dart';
 
@@ -27,9 +29,12 @@ enum PlayerPhase {
 class ExercisePlayerCubit extends Cubit<int> {
   final ExercisesRepo _repo;
   final ExerciseCategory category;
+  final SpeechService _speech;
   final Random _rnd = Random();
 
-  ExercisePlayerCubit(this._repo, {required this.category}) : super(0);
+  ExercisePlayerCubit(this._repo, {required this.category, SpeechService? speech})
+      : _speech = speech ?? SpeechService(),
+        super(0);
 
   PlayerPhase phase = PlayerPhase.loading;
   List<ExerciseItem> items = [];
@@ -38,6 +43,11 @@ class ExercisePlayerCubit extends Cubit<int> {
   int totalStars = 0;
   int? selectedOption;
   bool matchCorrect = false;
+
+  // نتيجة تحليل النطق الحقيقي لتمرين التكرار.
+  bool lastCorrect = true;
+  String lastRecognized = '';
+  bool _sttOn = false;
 
   int _rev = 0;
   void _set(PlayerPhase p) {
@@ -52,7 +62,8 @@ class ExercisePlayerCubit extends Cubit<int> {
 
   Future<void> load() async {
     _set(PlayerPhase.loading);
-    final res = await _repo.getExercises(category);
+    final res =
+        await _repo.getExercises(category, CacheHelper.getDifficultyType());
     if (isClosed) return;
     if (res is Failure<List<ExerciseItem>>) {
       _set(PlayerPhase.error);
@@ -72,19 +83,51 @@ class ExercisePlayerCubit extends Cubit<int> {
     _set(resume == PlayerPhase.listening ? PlayerPhase.prompt : resume);
   }
 
-  void startRecording() => _set(PlayerPhase.recording);
+  /// يبدأ التسجيل + الاستماع الحقيقي (STT). لو غير متاح يرجع للمحاكاة.
+  Future<void> startRecording() async {
+    _set(PlayerPhase.recording);
+    _sttOn = await _speech.start(localeId: 'ar_SA');
+  }
 
-  /// إيقاف التسجيل ثم محاكاة التحليل وإعطاء نتيجة (2..3 نجوم تشجيعية).
+  /// يوقف التسجيل ويحلّل النطق فعليًا: يقارن المنطوق بالكلمة المستهدفة.
   Future<void> stopRecording() async {
     _set(PlayerPhase.checking);
-    await Future.delayed(const Duration(milliseconds: 1300));
-    if (isClosed) return;
-    lastStars = 2 + _rnd.nextInt(2);
-    totalStars += lastStars;
+    if (_sttOn) {
+      lastRecognized = await _speech.stop();
+      if (isClosed) return;
+      final r = SpeechMatch.ratio(lastRecognized, current.prompt);
+      if (r >= 0.85) {
+        lastStars = 3;
+        lastCorrect = true;
+      } else if (r >= 0.55) {
+        lastStars = 2;
+        lastCorrect = true;
+      } else {
+        lastStars = 0;
+        lastCorrect = false;
+      }
+    } else {
+      // محاكاة عند عدم توفّر الميكروفون/الخدمة.
+      await Future.delayed(const Duration(milliseconds: 1100));
+      if (isClosed) return;
+      lastRecognized = '';
+      lastStars = 2 + _rnd.nextInt(2);
+      lastCorrect = true;
+    }
+    if (lastCorrect) totalStars += lastStars;
     _set(PlayerPhase.result);
   }
 
-  /// اختيار صورة في تمرين المطابقة. يعمل دائماً (حتى بعد اختيار خاطئ سابق).
+  /// إعادة محاولة تمرين التكرار الحالي (بعد نتيجة خاطئة).
+  void retryCurrent() {
+    lastCorrect = true;
+    lastRecognized = '';
+    lastStars = 0;
+    _set(PlayerPhase.prompt);
+  }
+
+  /// اختيار صورة في تمرين المطابقة. يعمل دائماً (حتى بعد اختيار خاطئ سابق):
+  /// الإجابة الخاطئة تُعرض ثوانٍ قصيرة ثم تُمسح تلقائياً ليُعيد المتدرّب المحاولة.
   void selectOption(int i) {
     if (matchCorrect) return; // مُقفل بعد الإجابة الصحيحة
     selectedOption = i;
@@ -93,8 +136,16 @@ class ExercisePlayerCubit extends Cubit<int> {
       matchCorrect = true;
       lastStars = 3;
       totalStars += 3;
+      _set(PlayerPhase.matchResult);
+    } else {
+      _set(PlayerPhase.matchResult);
+      // مسح الاختيار الخاطئ تلقائياً للسماح بإعادة المحاولة بوضوح.
+      Future.delayed(const Duration(milliseconds: 900), () {
+        if (isClosed || matchCorrect) return;
+        selectedOption = null;
+        _set(PlayerPhase.prompt);
+      });
     }
-    _set(PlayerPhase.matchResult);
   }
 
   void next() {
@@ -116,6 +167,14 @@ class ExercisePlayerCubit extends Cubit<int> {
     lastStars = 0;
     selectedOption = null;
     matchCorrect = false;
+    lastCorrect = true;
+    lastRecognized = '';
     _set(PlayerPhase.prompt);
+  }
+
+  @override
+  Future<void> close() {
+    _speech.cancel();
+    return super.close();
   }
 }

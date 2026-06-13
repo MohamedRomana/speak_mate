@@ -273,11 +273,7 @@ class _RepeatControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (phase == PlayerPhase.result) {
-      return _ResultView(
-        stars: cubit.lastStars,
-        onNext: cubit.next,
-        isLast: cubit.isLast,
-      );
+      return _ResultView(cubit: cubit);
     }
     final recording = phase == PlayerPhase.recording;
     final checking = phase == PlayerPhase.checking;
@@ -374,32 +370,58 @@ class _RecordButtonState extends State<_RecordButton>
 }
 
 class _ResultView extends StatelessWidget {
-  final int stars;
-  final VoidCallback onNext;
-  final bool isLast;
-  const _ResultView({
-    required this.stars,
-    required this.onNext,
-    required this.isLast,
-  });
+  final ExercisePlayerCubit cubit;
+  const _ResultView({required this.cubit});
 
   @override
   Widget build(BuildContext context) {
+    // إجابة خاطئة (لم يُتعرّف على النطق الصحيح) → حاول مرة أخرى.
+    if (!cubit.lastCorrect) {
+      return Column(
+        children: [
+          Icon(Icons.refresh_rounded, size: 48.w, color: AppColors.warning),
+          SizedBox(height: 10.h),
+          AppText(
+            text: LocaleKeys.tryAgain.tr(),
+            size: 20.sp,
+            family: FontFamily.tajawalBold,
+            color: AppColors.warning,
+          ),
+          if (cubit.lastRecognized.trim().isNotEmpty) ...[
+            SizedBox(height: 8.h),
+            AppText(
+              text: '🎙️ "${cubit.lastRecognized}"',
+              size: 13.sp,
+              color: AppColors.secondaryText,
+              textAlign: TextAlign.center,
+              lines: 2,
+            ),
+          ],
+          SizedBox(height: 22.h),
+          PrimaryButton(
+            text: LocaleKeys.tryAgain.tr(),
+            icon: Icons.replay_rounded,
+            onPressed: cubit.retryCurrent,
+          ),
+        ],
+      );
+    }
     return Column(
       children: [
-        StarRating(stars: stars),
+        StarRating(stars: cubit.lastStars),
         SizedBox(height: 12.h),
         AppText(
-          text: (stars >= 3 ? LocaleKeys.excellent : LocaleKeys.goodJob).tr(),
+          text: (cubit.lastStars >= 3 ? LocaleKeys.excellent : LocaleKeys.goodJob)
+              .tr(),
           size: 20.sp,
           family: FontFamily.tajawalBold,
           color: AppColors.success,
         ),
         SizedBox(height: 24.h),
         PrimaryButton(
-          text: (isLast ? LocaleKeys.finish : LocaleKeys.next).tr(),
+          text: (cubit.isLast ? LocaleKeys.finish : LocaleKeys.next).tr(),
           icon: Icons.arrow_forward_rounded,
-          onPressed: onNext,
+          onPressed: cubit.next,
         ),
       ],
     );

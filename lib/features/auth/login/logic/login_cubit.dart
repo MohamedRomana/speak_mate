@@ -57,6 +57,9 @@ class LoginCubit extends Cubit<ActionState> {
     await CacheHelper.setUserId(u.id);
     await CacheHelper.setUserType(u.role.key);
     await CacheHelper.setUserName(u.name);
+    if (u.difficultyType != null) {
+      await CacheHelper.setDifficultyType(u.difficultyType);
+    }
     await CacheHelper.setRememberMe(rememberMe);
   }
 

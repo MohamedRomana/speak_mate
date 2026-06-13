@@ -9,6 +9,7 @@ class ChatMessage {
   final ChatMessageType type;
   final String text;
   final int audioSeconds; // لرسائل الصوت
+  final String? voicePath;
   final String timeLabel;
 
   const ChatMessage({
@@ -17,6 +18,7 @@ class ChatMessage {
     required this.text,
     this.type = ChatMessageType.text,
     this.audioSeconds = 0,
+    this.voicePath,
     this.timeLabel = '',
   });
 

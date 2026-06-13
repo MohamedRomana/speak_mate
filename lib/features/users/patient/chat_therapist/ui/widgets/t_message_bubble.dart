@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/constants/colors.dart';
 import '../../../../../../core/widgets/app_text.dart';
+import '../../../../../../core/widgets/voice_player.dart';
 import '../../../../../../gen/fonts.gen.dart';
 import '../../../../../../generated/locale_keys.g.dart';
 import '../../data/models/therapist_message.dart';
@@ -87,7 +88,13 @@ class TMessageBubble extends StatelessWidget {
           ),
         );
       case MsgType.voice:
-        return _VoiceContent(message: message, fg: fg);
+        return VoicePlayer(
+          path: message.voicePath,
+          durationMs: message.audioSeconds * 1000,
+          foreground: fg,
+          trackColor: fg.withValues(alpha: 0.35),
+          width: 130,
+        );
       case MsgType.image:
         return ClipRRect(
           borderRadius: BorderRadius.circular(12.r),
@@ -139,44 +146,6 @@ class _ReplyQuote extends StatelessWidget {
             size: 11.sp,
             color: onMe ? Colors.white.withValues(alpha: 0.85) : AppColors.secondaryText,
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _VoiceContent extends StatelessWidget {
-  final TMessage message;
-  final Color fg;
-  const _VoiceContent({required this.message, required this.fg});
-
-  @override
-  Widget build(BuildContext context) {
-    final m = (message.audioSeconds ~/ 60).toString().padLeft(2, '0');
-    final s = (message.audioSeconds % 60).toString().padLeft(2, '0');
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.play_arrow_rounded, color: fg, size: 26.w),
-          SizedBox(width: 4.w),
-          Row(
-            children: List.generate(16, (i) {
-              final h = (i % 3 == 0 ? 16 : (i % 2 == 0 ? 10 : 6)).toDouble();
-              return Container(
-                width: 2.5.w,
-                height: h.h,
-                margin: EdgeInsets.symmetric(horizontal: 1.w),
-                decoration: BoxDecoration(
-                  color: fg.withValues(alpha: 0.7),
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
-              );
-            }),
-          ),
-          SizedBox(width: 6.w),
-          AppText(text: '$m:$s', size: 11.sp, color: fg, family: FontFamily.tajawalMedium),
         ],
       ),
     );

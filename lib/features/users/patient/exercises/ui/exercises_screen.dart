@@ -7,6 +7,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/di/dependancy_injection.dart';
+import '../../../../../core/helper/extentions.dart';
 import '../../../../../core/logic/action_state.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/custom_shimmer.dart';
@@ -84,13 +85,11 @@ class _CategoryCard extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => BlocProvider(
-                create: (_) =>
-                    ExercisePlayerCubit(getIt(), category: cat)..load(),
-                child: const ExercisePlayerScreen(),
-              ),
+          context.pushScreen(
+            BlocProvider(
+              create: (_) =>
+                  ExercisePlayerCubit(getIt(), category: cat)..load(),
+              child: const ExercisePlayerScreen(),
             ),
           );
         },

@@ -17,6 +17,7 @@ class CacheHelper {
   static const _userName = 'userName';
   static const _rememberMe = 'rememberMe';
   static const _themeMode = 'themeMode';
+  static const _difficultyType = 'difficultyType';
   static const _textScale = 'textScale';
   static const _highContrast = 'highContrast2';
   static const _offlineMode = 'offlineMode';
@@ -143,6 +144,16 @@ class CacheHelper {
 
   static String getThemeMode() {
     return _preferences.getString(_themeMode) ?? 'system';
+  }
+
+  /// نوع صعوبة المتدرّب — يُستخدم لتخصيص التمارين المناسبة.
+  static setDifficultyType(String? value) async {
+    await _preferences.setString(_difficultyType, value ?? '');
+  }
+
+  static String getDifficultyType() {
+    final v = _preferences.getString(_difficultyType) ?? '';
+    return v.isEmpty ? 'difficultySpeech' : v;
   }
 
   /// عامل تكبير النص (1.0 افتراضي).

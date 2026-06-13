@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../data/models/therapist_message.dart';
@@ -9,7 +7,6 @@ import '../data/repos/therapist_chat_repo.dart';
 class TherapistChatCubit extends Cubit<int> {
   final TherapistChatRepo _repo;
   final String lang;
-  final Random _rnd = Random();
 
   TherapistChatCubit(this._repo, {required this.lang}) : super(0);
 
@@ -80,12 +77,13 @@ class TherapistChatCubit extends Cubit<int> {
     ));
   }
 
-  void sendVoice() {
+  void sendVoice(String path, int durationMs) {
     _sendMessage(TMessage(
       id: _id(),
       sender: MsgSender.me,
       type: MsgType.voice,
-      audioSeconds: 3 + _rnd.nextInt(20),
+      voicePath: path,
+      audioSeconds: (durationMs / 1000).round(),
       time: DateTime.now(),
       status: MsgStatus.sending,
       replyTo: replyDraft,

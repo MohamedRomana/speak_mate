@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../../core/cache/cache_helper.dart';
 import '../../../../../core/logic/action_state.dart';
 import '../../../../../core/logic/refresh_emitter.dart';
 import '../../../../../core/networking/api_result.dart';
@@ -42,6 +43,9 @@ class ProfileCubit extends Cubit<ActionState> with RefreshEmitter {
       return;
     }
     profile = (res as Success<PatientProfile>).data;
+    if (profile?.difficultyType != null) {
+      await CacheHelper.setDifficultyType(profile!.difficultyType);
+    }
     emit(const ActionState.success(LocaleKeys.profileUpdated));
   }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../routing/route_builder.dart';
+
 enum RouteAnimation {
   rightToLeft,
   leftToRight,
@@ -80,6 +82,12 @@ extension NavigationExtension on BuildContext {
   }
 
   void pop([Object? result]) => Navigator.of(this).pop(result);
+
+  /// دفع شاشة (Widget مباشر) ملفوفة بانتقال الثيم الفوري — للشاشات التي تُفتح
+  /// بـ Navigator.push بدل الراوتر المركزي (الشات/الإعدادات/الجلسة...).
+  Future<T?> pushScreen<T>(Widget screen) {
+    return Navigator.of(this).push<T>(buildAppRoute<T>(screen));
+  }
 }
 
 PageRouteBuilder _buildPageRoute({

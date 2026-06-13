@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +11,6 @@ import '../data/repos/chatbot_repo.dart';
 class ChatCubit extends Cubit<ActionState> with RefreshEmitter {
   final ChatBotRepo _repo;
   final String lang;
-  final Random _rnd = Random();
 
   ChatCubit(this._repo, {required this.lang})
       : super(const ActionState.idle());
@@ -60,7 +57,7 @@ class ChatCubit extends Cubit<ActionState> with RefreshEmitter {
     await _botRespond(trimmed);
   }
 
-  Future<void> sendVoice() async {
+  Future<void> sendVoice(String path, int durationMs) async {
     if (isTyping) return;
     messages.add(
       ChatMessage(
@@ -68,7 +65,8 @@ class ChatCubit extends Cubit<ActionState> with RefreshEmitter {
         sender: ChatSender.user,
         type: ChatMessageType.audio,
         text: '',
-        audioSeconds: 3 + _rnd.nextInt(12),
+        voicePath: path,
+        audioSeconds: (durationMs / 1000).round(),
         timeLabel: _now(),
       ),
     );

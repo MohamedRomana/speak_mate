@@ -4,7 +4,9 @@
 // - AAC: كل ضغطة رمز تُحدّث الجملة وتُصدر حالة جديدة (#3).
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:speak_mate/core/cache/cache_helper.dart';
 import 'package:speak_mate/features/users/patient/aac/data/repos/aac_repo.dart';
 import 'package:speak_mate/features/users/patient/aac/logic/aac_cubit.dart';
 import 'package:speak_mate/features/users/patient/chat/data/models/chat_message.dart';
@@ -15,6 +17,12 @@ import 'package:speak_mate/features/users/patient/exercises/data/repos/exercises
 import 'package:speak_mate/features/users/patient/exercises/logic/exercise_player_cubit.dart';
 
 void main() {
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences.setMockInitialValues({});
+    await CacheHelper.init();
+  });
+
   test('#5 Sound matching: wrong then correct selection works', () async {
     final cubit = ExercisePlayerCubit(ExercisesRepo(),
         category: ExerciseCategory.soundMatch);

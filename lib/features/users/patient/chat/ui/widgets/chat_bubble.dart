@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/constants/colors.dart';
 import '../../../../../../core/widgets/app_text.dart';
-import '../../../../../../gen/fonts.gen.dart';
+import '../../../../../../core/widgets/voice_player.dart';
 import '../../data/models/chat_message.dart';
 
 /// فقاعة رسالة محادثة (نص أو صوت)، تتكيّف لون/محاذاة حسب المرسل.
@@ -94,35 +94,12 @@ class _AudioContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fg = isUser ? Colors.white : AppColors.primary;
-    final m = (message.audioSeconds ~/ 60).toString().padLeft(2, '0');
-    final s = (message.audioSeconds % 60).toString().padLeft(2, '0');
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(Icons.play_arrow_rounded, color: fg, size: 26.w),
-        SizedBox(width: 6.w),
-        Row(
-          children: List.generate(14, (i) {
-            final h = (i % 3 == 0 ? 16 : (i % 2 == 0 ? 10 : 6)).toDouble();
-            return Container(
-              width: 2.5.w,
-              height: h.h,
-              margin: EdgeInsets.symmetric(horizontal: 1.w),
-              decoration: BoxDecoration(
-                color: fg.withValues(alpha: 0.7),
-                borderRadius: BorderRadius.circular(2.r),
-              ),
-            );
-          }),
-        ),
-        SizedBox(width: 8.w),
-        AppText(
-          text: '$m:$s',
-          size: 11.sp,
-          family: FontFamily.tajawalMedium,
-          color: fg,
-        ),
-      ],
+    return VoicePlayer(
+      path: message.voicePath,
+      durationMs: message.audioSeconds * 1000,
+      foreground: fg,
+      trackColor: fg.withValues(alpha: 0.35),
+      width: 130,
     );
   }
 }

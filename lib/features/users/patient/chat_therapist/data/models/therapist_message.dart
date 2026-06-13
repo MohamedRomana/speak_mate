@@ -12,6 +12,7 @@ class TMessage {
   final MsgType type;
   final String text;
   final int audioSeconds;
+  final String? voicePath;
   final String? imagePath;
   final DateTime time;
   MsgStatus status;
@@ -24,6 +25,7 @@ class TMessage {
     this.type = MsgType.text,
     this.text = '',
     this.audioSeconds = 0,
+    this.voicePath,
     this.imagePath,
     this.status = MsgStatus.read,
     this.replyTo,
