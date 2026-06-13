@@ -4,12 +4,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/logic/action_state.dart';
+import '../../../../../core/logic/refresh_emitter.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../data/models/chat_message.dart';
 import '../data/repos/chatbot_repo.dart';
 
 /// كيوبت المحادثة مع المساعد الذكي.
-class ChatCubit extends Cubit<ActionState> {
+class ChatCubit extends Cubit<ActionState> with RefreshEmitter {
   final ChatBotRepo _repo;
   final String lang;
   final Random _rnd = Random();
@@ -39,7 +40,7 @@ class ChatCubit extends Cubit<ActionState> {
       ),
     );
     suggestions = _repo.suggestedReplies(lang);
-    emit(const ActionState.success());
+    refresh();
   }
 
   Future<void> send(String text) async {
@@ -55,7 +56,7 @@ class ChatCubit extends Cubit<ActionState> {
     );
     suggestions = [];
     isTyping = true;
-    emit(const ActionState.success());
+    refresh();
     await _botRespond(trimmed);
   }
 
@@ -73,7 +74,7 @@ class ChatCubit extends Cubit<ActionState> {
     );
     suggestions = [];
     isTyping = true;
-    emit(const ActionState.success());
+    refresh();
     await _botRespond('voice');
   }
 
@@ -89,6 +90,6 @@ class ChatCubit extends Cubit<ActionState> {
         timeLabel: _now(),
       ),
     );
-    emit(const ActionState.success());
+    refresh();
   }
 }

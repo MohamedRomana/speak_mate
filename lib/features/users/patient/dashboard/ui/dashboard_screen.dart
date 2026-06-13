@@ -14,8 +14,12 @@ import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../../chat/logic/chat_cubit.dart';
 import '../../chat/ui/chat_screen.dart';
+import '../../chat_therapist/logic/therapist_chat_cubit.dart';
+import '../../chat_therapist/ui/therapist_chat_screen.dart';
 import '../../notifications/logic/notifications_cubit.dart';
 import '../../notifications/ui/notifications_screen.dart';
+import '../../session/logic/session_cubit.dart';
+import '../../session/ui/session_screen.dart';
 import '../logic/dashboard_cubit.dart';
 import 'widgets/progress_chart.dart';
 import 'widgets/session_card.dart';
@@ -102,7 +106,19 @@ class DashboardScreen extends StatelessWidget {
                       _EmptyHint(text: LocaleKeys.noUpcomingSessions.tr())
                     else
                       ...data.upcoming.map(
-                        (s) => SessionCard(session: s, onStart: () {}),
+                        (s) => SessionCard(
+                          session: s,
+                          onStart: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => BlocProvider(
+                                  create: (_) => SessionCubit()..start(),
+                                  child: SessionScreen(session: s),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     SizedBox(height: 14.h),
                     _SectionHeader(title: LocaleKeys.pastSessions.tr()),
@@ -148,11 +164,51 @@ class _GreetingHeader extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(width: 10.w),
+        SizedBox(width: 8.w),
+        const _TherapistChatButton(),
+        SizedBox(width: 8.w),
         const _ChatButton(),
         SizedBox(width: 8.w),
         const _NotificationBell(),
       ],
+    );
+  }
+}
+
+class _TherapistChatButton extends StatelessWidget {
+  const _TherapistChatButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (_) => TherapistChatCubit(
+                getIt(),
+                lang: context.locale.languageCode,
+              )..init(),
+              child: const TherapistChatScreen(),
+            ),
+          ),
+        );
+      },
+      borderRadius: BorderRadius.circular(14.r),
+      child: Container(
+        width: 46.w,
+        height: 46.w,
+        decoration: BoxDecoration(
+          color: AppColors.card,
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Icon(
+          Icons.chat_bubble_outline_rounded,
+          color: AppColors.secondary,
+          size: 22.w,
+        ),
+      ),
     );
   }
 }

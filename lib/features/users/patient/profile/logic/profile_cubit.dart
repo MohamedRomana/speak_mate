@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../core/logic/action_state.dart';
+import '../../../../../core/logic/refresh_emitter.dart';
 import '../../../../../core/networking/api_result.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../data/models/patient_profile.dart';
@@ -11,7 +12,7 @@ import '../data/repos/profile_repo.dart';
 
 /// كيوبت ملف المتدرّب — تحميل البيانات والتسجيلات، تعديل الملف، رفع الأفاتار
 /// والتسجيلات. يحتفظ بالبيانات في fields وتقرؤها الـ UI.
-class ProfileCubit extends Cubit<ActionState> {
+class ProfileCubit extends Cubit<ActionState> with RefreshEmitter {
   final ProfileRepo _repo;
   ProfileCubit(this._repo) : super(const ActionState.idle());
 
@@ -29,7 +30,7 @@ class ProfileCubit extends Cubit<ActionState> {
     }
     profile = (profileRes as Success<PatientProfile>).data;
     recordings = recRes.dataOrNull ?? [];
-    emit(const ActionState.success());
+    refresh();
   }
 
   Future<void> updateProfile(PatientProfile updated) async {
@@ -52,7 +53,7 @@ class ProfileCubit extends Cubit<ActionState> {
     );
     if (file == null || profile == null || isClosed) return;
     profile = profile!.copyWith(avatarPath: file.path);
-    emit(const ActionState.success());
+    refresh();
   }
 
   /// رفع تسجيل صوتي/فيديو عبر منتقي الملفات (mock — يُضاف للقائمة).
@@ -73,11 +74,11 @@ class ProfileCubit extends Cubit<ActionState> {
       ),
       ...recordings,
     ];
-    emit(const ActionState.success());
+    refresh();
   }
 
   void deleteRecording(String id) {
     recordings = recordings.where((r) => r.id != id).toList();
-    emit(const ActionState.success());
+    refresh();
   }
 }

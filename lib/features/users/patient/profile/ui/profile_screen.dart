@@ -8,6 +8,7 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/di/dependancy_injection.dart';
 import '../../../../../core/helper/extentions.dart';
 import '../../../../../core/logic/action_state.dart';
+import '../../../../../core/logic/refresh_emitter.dart';
 import '../../../../../core/routing/routes.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/custom_shimmer.dart';
@@ -37,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
         listener: (context, state) {
           state.whenOrNull(
             success: (msg) {
-              if (msg != null) {
+              if (msg != null && !isRefreshMessage(msg)) {
                 showFlashMessage(
                   message: msg.tr(),
                   type: FlashMessageType.success,

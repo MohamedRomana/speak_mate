@@ -284,6 +284,31 @@ abstract class LocaleKeys {
   static const downloadStarted = 'downloadStarted';
   static const settingsPreview = 'settingsPreview';
 
+  static const sessionConnecting = 'sessionConnecting';
+  static const sessionLive = 'sessionLive';
+  static const sessionStep = 'sessionStep';
+  static const sessionTip = 'sessionTip';
+  static const sessionIntroMsg = 'sessionIntroMsg';
+  static const sessionDoneTitle = 'sessionDoneTitle';
+  static const sessionDuration = 'sessionDuration';
+  static const stepsCompleted = 'stepsCompleted';
+  static const sessionRecordHint = 'sessionRecordHint';
+  static const endSession = 'endSession';
+  static const backToHome = 'backToHome';
+  static const greatKeepGoing = 'greatKeepGoing';
+  static const tipBreathe = 'tipBreathe';
+
+  static const chatWithTherapist = 'chatWithTherapist';
+  static const lastSeenRecently = 'lastSeenRecently';
+  static const yesterday = 'yesterday';
+  static const attachImage = 'attachImage';
+  static const attachFile = 'attachFile';
+  static const holdToRecord = 'holdToRecord';
+  static const replyingTo = 'replyingTo';
+  static const you = 'you';
+  static const photo = 'photo';
+  static const messageHint = 'messageHint';
+
   static const order_sent_successfully = 'order_sent_successfully';
   static const continue_shopping = 'continue_shopping';
   static const continue_browsing = 'continue_browsing';

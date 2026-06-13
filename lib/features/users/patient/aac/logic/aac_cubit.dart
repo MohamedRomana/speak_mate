@@ -1,12 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/logic/action_state.dart';
+import '../../../../../core/logic/refresh_emitter.dart';
 import '../../../../../core/networking/api_result.dart';
 import '../data/models/aac_symbol.dart';
 import '../data/repos/aac_repo.dart';
 
 /// كيوبت لوح التواصل — يدير الرموز، الفئة المختارة، الجملة المكوّنة، والنطق (mock).
-class AacCubit extends Cubit<ActionState> {
+class AacCubit extends Cubit<ActionState> with RefreshEmitter {
   final AacRepo _repo;
   AacCubit(this._repo) : super(const ActionState.idle());
 
@@ -27,7 +28,7 @@ class AacCubit extends Cubit<ActionState> {
       return;
     }
     _all = (res as Success<List<AacSymbol>>).data;
-    emit(const ActionState.success());
+    refresh();
   }
 
   /// رموز الفئة الحالية (فئة "رموزي" تعرض المخصّصة).
@@ -37,42 +38,42 @@ class AacCubit extends Cubit<ActionState> {
 
   void selectCategory(AacCategory cat) {
     selected = cat;
-    emit(const ActionState.success());
+    refresh();
   }
 
   void addToSentence(AacSymbol symbol) {
     sentence.add(symbol);
-    emit(const ActionState.success());
+    refresh();
   }
 
   void backspace() {
     if (sentence.isNotEmpty) {
       sentence.removeLast();
-      emit(const ActionState.success());
+      refresh();
     }
   }
 
   void clearSentence() {
     sentence.clear();
-    emit(const ActionState.success());
+    refresh();
   }
 
   Future<void> speak() async {
     if (sentence.isEmpty || speaking) return;
     speaking = true;
-    emit(const ActionState.success());
+    refresh();
     // محاكاة مدة النطق حسب عدد الكلمات.
     await Future.delayed(Duration(milliseconds: 500 + sentence.length * 550));
     if (isClosed) return;
     speaking = false;
-    emit(const ActionState.success());
+    refresh();
   }
 
   Future<void> speakPhrase(List<AacSymbol> phrase) async {
     sentence
       ..clear()
       ..addAll(phrase);
-    emit(const ActionState.success());
+    refresh();
     await speak();
   }
 
@@ -87,6 +88,6 @@ class AacCubit extends Cubit<ActionState> {
       ),
     );
     selected = AacCategory.mine;
-    emit(const ActionState.success());
+    refresh();
   }
 }

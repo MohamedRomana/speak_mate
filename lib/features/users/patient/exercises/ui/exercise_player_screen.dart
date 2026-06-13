@@ -27,9 +27,10 @@ class ExercisePlayerScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBg,
       body: SafeArea(
-        child: BlocBuilder<ExercisePlayerCubit, PlayerPhase>(
-          builder: (context, phase) {
+        child: BlocBuilder<ExercisePlayerCubit, int>(
+          builder: (context, _) {
             final cubit = context.read<ExercisePlayerCubit>();
+            final phase = cubit.phase;
             if (phase == PlayerPhase.loading) {
               return const Center(
                 child: CircularProgressIndicator(color: AppColors.primary),

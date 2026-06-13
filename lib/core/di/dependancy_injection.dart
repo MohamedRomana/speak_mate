@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import '../../features/auth/data/repos/auth_repo.dart';
 import '../../features/users/patient/aac/data/repos/aac_repo.dart';
 import '../../features/users/patient/chat/data/repos/chatbot_repo.dart';
+import '../../features/users/patient/chat_therapist/data/repos/therapist_chat_repo.dart';
 import '../../features/users/patient/dashboard/data/repos/dashboard_repo.dart';
 import '../../features/users/patient/exercises/data/repos/exercises_repo.dart';
 import '../../features/users/patient/notifications/data/repos/notifications_repo.dart';
@@ -31,6 +32,9 @@ Future<void> setUpGetIt() async {
 
   // ---- المتدرّب: المساعد الذكي ----
   getIt.registerLazySingleton<ChatBotRepo>(() => ChatBotRepo());
+
+  // ---- المتدرّب: محادثة الأخصائي ----
+  getIt.registerLazySingleton<TherapistChatRepo>(() => TherapistChatRepo());
 
   // ---- المتدرّب: التقارير ----
   getIt.registerLazySingleton<ReportsRepo>(() => ReportsRepo());

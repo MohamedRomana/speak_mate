@@ -19,15 +19,19 @@ enum PlayerPhase {
   error,
 }
 
-/// كيوبت مشغّل جلسة تمارين فئة واحدة. البيانات في fields والـ state مجرّد مرحلة.
-class ExercisePlayerCubit extends Cubit<PlayerPhase> {
+/// كيوبت مشغّل جلسة تمارين فئة واحدة.
+///
+/// الحالة المُصدَرة مجرّد عدّاد إصدار (int) يتزايد عند كل تغيير، والمرحلة الفعلية
+/// في الحقل [phase]. هذا يضمن إعادة بناء الواجهة حتى عند تكرار نفس المرحلة
+/// (مثلاً اختيار خاطئ ثم اختيار صحيح في المطابقة).
+class ExercisePlayerCubit extends Cubit<int> {
   final ExercisesRepo _repo;
   final ExerciseCategory category;
   final Random _rnd = Random();
 
-  ExercisePlayerCubit(this._repo, {required this.category})
-      : super(PlayerPhase.loading);
+  ExercisePlayerCubit(this._repo, {required this.category}) : super(0);
 
+  PlayerPhase phase = PlayerPhase.loading;
   List<ExerciseItem> items = [];
   int index = 0;
   int lastStars = 0;
@@ -35,72 +39,74 @@ class ExercisePlayerCubit extends Cubit<PlayerPhase> {
   int? selectedOption;
   bool matchCorrect = false;
 
+  int _rev = 0;
+  void _set(PlayerPhase p) {
+    phase = p;
+    if (!isClosed) emit(++_rev);
+  }
+
   ExerciseItem get current => items[index];
   bool get isLast => index >= items.length - 1;
   int get maxStars => items.length * 3;
   double get progress => items.isEmpty ? 0 : (index + 1) / items.length;
 
   Future<void> load() async {
-    emit(PlayerPhase.loading);
+    _set(PlayerPhase.loading);
     final res = await _repo.getExercises(category);
     if (isClosed) return;
     if (res is Failure<List<ExerciseItem>>) {
-      emit(PlayerPhase.error);
+      _set(PlayerPhase.error);
       return;
     }
     items = (res as Success<List<ExerciseItem>>).data;
-    emit(PlayerPhase.prompt);
+    _set(PlayerPhase.prompt);
   }
 
   /// محاكاة تشغيل النطق الصحيح.
   Future<void> listen() async {
-    if (state == PlayerPhase.recording || state == PlayerPhase.checking) return;
-    emit(PlayerPhase.listening);
+    if (phase == PlayerPhase.recording || phase == PlayerPhase.checking) return;
+    final resume = phase; // نرجع للمرحلة الحالية بعد الاستماع (prompt/matchResult)
+    _set(PlayerPhase.listening);
     await Future.delayed(const Duration(milliseconds: 1400));
     if (isClosed) return;
-    emit(PlayerPhase.prompt);
+    _set(resume == PlayerPhase.listening ? PlayerPhase.prompt : resume);
   }
 
-  void startRecording() => emit(PlayerPhase.recording);
+  void startRecording() => _set(PlayerPhase.recording);
 
-  /// إيقاف التسجيل ثم محاكاة التحليل وإعطاء نتيجة (1..3 نجوم).
+  /// إيقاف التسجيل ثم محاكاة التحليل وإعطاء نتيجة (2..3 نجوم تشجيعية).
   Future<void> stopRecording() async {
-    emit(PlayerPhase.checking);
+    _set(PlayerPhase.checking);
     await Future.delayed(const Duration(milliseconds: 1300));
     if (isClosed) return;
-    lastStars = 2 + _rnd.nextInt(2); // 2 أو 3 نجوم (تشجيعي)
+    lastStars = 2 + _rnd.nextInt(2);
     totalStars += lastStars;
-    emit(PlayerPhase.result);
+    _set(PlayerPhase.result);
   }
 
-  /// اختيار صورة في تمرين المطابقة.
+  /// اختيار صورة في تمرين المطابقة. يعمل دائماً (حتى بعد اختيار خاطئ سابق).
   void selectOption(int i) {
+    if (matchCorrect) return; // مُقفل بعد الإجابة الصحيحة
     selectedOption = i;
-    matchCorrect = i == current.correctIndex;
-    if (matchCorrect) {
+    final correct = i == current.correctIndex;
+    if (correct) {
+      matchCorrect = true;
       lastStars = 3;
       totalStars += 3;
     }
-    emit(PlayerPhase.matchResult);
-  }
-
-  /// إعادة محاولة التمرين الحالي (للمطابقة الخاطئة).
-  void retry() {
-    selectedOption = null;
-    matchCorrect = false;
-    emit(PlayerPhase.prompt);
+    _set(PlayerPhase.matchResult);
   }
 
   void next() {
     if (isLast) {
-      emit(PlayerPhase.finished);
+      _set(PlayerPhase.finished);
       return;
     }
     index++;
     selectedOption = null;
     matchCorrect = false;
     lastStars = 0;
-    emit(PlayerPhase.prompt);
+    _set(PlayerPhase.prompt);
   }
 
   /// إعادة الجلسة من البداية.
@@ -110,6 +116,6 @@ class ExercisePlayerCubit extends Cubit<PlayerPhase> {
     lastStars = 0;
     selectedOption = null;
     matchCorrect = false;
-    emit(PlayerPhase.prompt);
+    _set(PlayerPhase.prompt);
   }
 }

@@ -11,6 +11,7 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/helper/extentions.dart';
 import '../../../../../core/helper/validators.dart';
 import '../../../../../core/logic/action_state.dart';
+import '../../../../../core/logic/refresh_emitter.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../../core/widgets/satha_field.dart';
@@ -92,8 +93,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         listenWhen: (prev, curr) => curr is ActionSuccess || curr is ActionError,
         listener: (context, state) {
           state.whenOrNull(
+            // نتجاهل rebuilds الناتجة عن اختيار الأفاتار (#refresh) ونرجع فقط
+            // عند حفظ حقيقي ناجح.
             success: (msg) {
-              if (msg != null) context.pop(); // حفظ ناجح → رجوع
+              if (msg != null && !isRefreshMessage(msg)) context.pop();
             },
           );
         },

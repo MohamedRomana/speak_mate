@@ -1,12 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/logic/action_state.dart';
+import '../../../../../core/logic/refresh_emitter.dart';
 import '../../../../../core/networking/api_result.dart';
 import '../data/models/notification_item.dart';
 import '../data/repos/notifications_repo.dart';
 
 /// كيوبت الإشعارات — تحميل + تعليم الكل كمقروء.
-class NotificationsCubit extends Cubit<ActionState> {
+class NotificationsCubit extends Cubit<ActionState> with RefreshEmitter {
   final NotificationsRepo _repo;
   NotificationsCubit(this._repo) : super(const ActionState.idle());
 
@@ -23,11 +24,11 @@ class NotificationsCubit extends Cubit<ActionState> {
       return;
     }
     items = (res as Success<List<NotificationItem>>).data;
-    emit(const ActionState.success());
+    refresh();
   }
 
   void markAllRead() {
     items = items.map((n) => n.copyWith(read: true)).toList();
-    emit(const ActionState.success());
+    refresh();
   }
 }
