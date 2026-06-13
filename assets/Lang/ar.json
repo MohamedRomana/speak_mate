@@ -305,6 +305,18 @@
   "photo": "صورة",
   "messageHint": "رسالة",
 
+  "voiceCall": "مكالمة صوتية",
+  "videoCall": "مكالمة فيديو",
+  "calling": "جارٍ الاتصال...",
+  "ringing": "يرنّ...",
+  "callEnded": "انتهت المكالمة",
+  "mute": "كتم",
+  "unmute": "إلغاء الكتم",
+  "speaker": "السماعة",
+  "endCall": "إنهاء",
+  "cameraLabel": "الكاميرا",
+  "flipCamera": "تبديل",
+
   "order_sent_successfully": "تم الإرسال بنجاح",
   "continue_shopping": "متابعة",
   "continue_browsing": "تصفّح",

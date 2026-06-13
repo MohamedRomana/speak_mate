@@ -309,6 +309,18 @@ abstract class LocaleKeys {
   static const photo = 'photo';
   static const messageHint = 'messageHint';
 
+  static const voiceCall = 'voiceCall';
+  static const videoCall = 'videoCall';
+  static const calling = 'calling';
+  static const ringing = 'ringing';
+  static const callEnded = 'callEnded';
+  static const mute = 'mute';
+  static const unmute = 'unmute';
+  static const speaker = 'speaker';
+  static const endCall = 'endCall';
+  static const cameraLabel = 'cameraLabel';
+  static const flipCamera = 'flipCamera';
+
   static const order_sent_successfully = 'order_sent_successfully';
   static const continue_shopping = 'continue_shopping';
   static const continue_browsing = 'continue_browsing';

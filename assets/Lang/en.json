@@ -305,6 +305,18 @@
   "photo": "Photo",
   "messageHint": "Message",
 
+  "voiceCall": "Voice call",
+  "videoCall": "Video call",
+  "calling": "Calling...",
+  "ringing": "Ringing...",
+  "callEnded": "Call ended",
+  "mute": "Mute",
+  "unmute": "Unmute",
+  "speaker": "Speaker",
+  "endCall": "End",
+  "cameraLabel": "Camera",
+  "flipCamera": "Flip",
+
   "order_sent_successfully": "Sent successfully",
   "continue_shopping": "Continue",
   "continue_browsing": "Browse",

@@ -8,7 +8,9 @@ import '../../../../../core/helper/extentions.dart';
 import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../data/models/therapist_message.dart';
+import '../logic/call_cubit.dart';
 import '../logic/therapist_chat_cubit.dart';
+import 'call_screen.dart';
 import 'widgets/t_chat_input_bar.dart';
 import 'widgets/t_message_bubble.dart';
 
@@ -159,14 +161,24 @@ class _Header extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () => _startCall(context, isVideo: false),
           icon: Icon(Icons.call_rounded, color: AppColors.primary, size: 22.w),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () => _startCall(context, isVideo: true),
           icon: Icon(Icons.videocam_rounded, color: AppColors.primary, size: 24.w),
         ),
       ],
+    );
+  }
+
+  void _startCall(BuildContext context, {required bool isVideo}) {
+    final name = context.read<TherapistChatCubit>().therapistName;
+    context.pushScreen(
+      BlocProvider(
+        create: (_) => CallCubit(isVideo: isVideo)..start(),
+        child: CallScreen(name: name),
+      ),
     );
   }
 }
