@@ -68,7 +68,7 @@ void main() {
 
     expect(find.byType(AnimatedAuthBackground), findsOneWidget);
 
-    final patientRole = find.text('متدرّب / ولي أمر');
+    final patientRole = find.text('ولي أمر / طفل');
     expect(patientRole, findsOneWidget);
 
     // الضغط على الدور → الانتقال لشاشة الدخول (هنا كان يحدث الكراش).

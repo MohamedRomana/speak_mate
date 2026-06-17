@@ -7,6 +7,7 @@ import '../../features/users/patient/chat_therapist/data/repos/therapist_chat_re
 import '../../features/users/patient/dashboard/data/repos/dashboard_repo.dart';
 import '../../features/users/patient/exercises/data/repos/exercises_repo.dart';
 import '../../features/users/patient/notifications/data/repos/notifications_repo.dart';
+import '../../features/shared/gamification/data/repos/gamification_repo.dart';
 import '../../features/users/patient/profile/data/repos/profile_repo.dart';
 import '../../features/users/patient/reports/data/repos/reports_repo.dart';
 
@@ -38,4 +39,7 @@ Future<void> setUpGetIt() async {
 
   // ---- المتدرّب: التقارير ----
   getIt.registerLazySingleton<ReportsRepo>(() => ReportsRepo());
+
+  // ---- التلعيب (Gamification) ----
+  getIt.registerLazySingleton<GamificationRepo>(() => GamificationRepo());
 }

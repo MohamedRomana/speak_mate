@@ -22,6 +22,7 @@ import '../../notifications/ui/notifications_screen.dart';
 import '../../session/logic/session_cubit.dart';
 import '../../session/ui/session_screen.dart';
 import '../logic/dashboard_cubit.dart';
+import 'home_extras.dart';
 import 'widgets/progress_chart.dart';
 import 'widgets/session_card.dart';
 import 'widgets/stat_card.dart';
@@ -54,6 +55,18 @@ class DashboardScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const _GreetingHeader(),
+                    SizedBox(height: 16.h),
+                    const FadeSlideIn(child: GamificationCard()),
+                    SizedBox(height: 14.h),
+                    const FadeSlideIn(
+                      delay: Duration(milliseconds: 60),
+                      child: AiSpeakCta(),
+                    ),
+                    SizedBox(height: 14.h),
+                    const FadeSlideIn(
+                      delay: Duration(milliseconds: 120),
+                      child: DailyGoalsSection(),
+                    ),
                     SizedBox(height: 20.h),
                     FadeSlideIn(
                       child: Row(

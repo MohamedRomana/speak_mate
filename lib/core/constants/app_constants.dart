@@ -29,6 +29,8 @@ class AppConstants {
 /// قيم نوع المستخدم المخزّنة في `CacheHelper.getUserType()`.
 class UserTypes {
   UserTypes._();
-  static const String patient = 'patient';
-  static const String therapist = 'therapist';
+  static const String patient = 'patient'; // ولي أمر / طفل (وحدة الطفل)
+  static const String adult = 'adult'; // مريض بالغ (إعادة التأهيل)
+  static const String therapist = 'therapist'; // أخصائي تخاطب
+  static const String clinic = 'clinic'; // مدير عيادة
 }

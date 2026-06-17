@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
                       // إعادة المفتاح عند تغيير اللغة تُعيد بناء كامل التطبيق
                       // فوراً باللغة الجديدة بدل بقاء النصوص القديمة.
                       key: ValueKey(context.locale.languageCode),
-                      title: 'SpeakMate',
+                      title: 'VoiceBridge AI',
                       debugShowCheckedModeBanner: false,
                       theme: AppTheme.light,
                       darkTheme: AppTheme.dark,

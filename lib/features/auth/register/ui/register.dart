@@ -10,7 +10,6 @@ import '../../../../core/helper/extentions.dart';
 import '../../../../core/helper/theme_x.dart';
 import '../../../../core/helper/validators.dart';
 import '../../../../core/logic/action_state.dart';
-import '../../../../core/routing/routes.dart';
 import '../../../../core/widgets/animated_checkbox.dart';
 import '../../../../core/widgets/auth_background.dart';
 import '../../../../core/widgets/flash_message.dart';
@@ -52,10 +51,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     type: FlashMessageType.success,
                     context: context,
                   );
-                  final home = role.isTherapist
-                      ? Routes.therapistHome
-                      : Routes.patientHome;
-                  context.pushNamedAndRemoveUntil(home, predicate: (_) => false);
+                  context.pushNamedAndRemoveUntil(
+                    role.homeRoute,
+                    predicate: (_) => false,
+                  );
                 },
                 error: (msg) => showFlashMessage(
                   message: msg,

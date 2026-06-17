@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../../gen/fonts.gen.dart';
 
-/// ثيمات SpeakMate — Light و Dark، كلاهما بهوية Serene (أزرق/لافندر/نعناعي)
-/// وخط Tajawal، مع حفاظ على التباين والقراءة في الوضعين.
+/// ثيمات VoiceBridge AI — Dark (افتراضي) و Light بهوية Indigo/Cyan،
+/// مع حفاظ على التباين والقراءة في الوضعين.
 abstract class AppTheme {
   static const _fontFamily = FontFamily.tajawalRegular;
 
@@ -19,7 +19,7 @@ abstract class AppTheme {
       surface: const Color(0xffFFFFFF),
     );
     return _base(scheme).copyWith(
-      scaffoldBackgroundColor: const Color(0xffF5F8FF),
+      scaffoldBackgroundColor: const Color(0xffF5F7FF),
     );
   }
 
@@ -31,7 +31,7 @@ abstract class AppTheme {
       secondary: AppColors.secondary,
       tertiary: AppColors.accent,
       error: AppColors.error,
-      surface: const Color(0xff16223C),
+      surface: const Color(0xff161E2E),
     );
     return _base(scheme).copyWith(
       scaffoldBackgroundColor: AppColors.deepBg,

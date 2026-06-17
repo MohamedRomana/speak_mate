@@ -6,6 +6,7 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/di/dependancy_injection.dart';
 import '../../../../../core/widgets/app_bottom_nav.dart';
 import '../../../../../generated/locale_keys.g.dart';
+import '../../../../shared/gamification/logic/gamification_cubit.dart';
 import '../../aac/logic/aac_cubit.dart';
 import '../../aac/ui/aac_screen.dart';
 import '../../dashboard/logic/dashboard_cubit.dart';
@@ -30,6 +31,7 @@ class PatientMainLayout extends StatelessWidget {
         BlocProvider(create: (_) => DashboardCubit(getIt())..load()),
         BlocProvider(create: (_) => NotificationsCubit(getIt())..load()),
         BlocProvider(create: (_) => ExercisesCubit(getIt())..load()),
+        BlocProvider(create: (_) => GamificationCubit(getIt())..load()),
         BlocProvider(create: (_) => AacCubit(getIt())..load()),
         BlocProvider(create: (_) => ProfileCubit(getIt())..load()),
       ],

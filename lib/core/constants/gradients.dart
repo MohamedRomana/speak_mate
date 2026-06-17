@@ -42,7 +42,7 @@ abstract class AppGradients {
   static const LinearGradient light = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xffFFFFFF), Color(0xffF5F8FF), Color(0xffF1ECFC)],
+    colors: [Color(0xffFFFFFF), Color(0xffF5F7FF), Color(0xffEAE9FD)],
   );
 }
 

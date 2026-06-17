@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 
-/// هوية ألوان SpeakMate — "Serene" palette: أزرق سماوي هادئ + لافندر بنفسجي +
-/// نعناعي. ألوان هادئة ومطمئِنة مناسبة لتطبيق تخاطب للأطفال والكبار.
+/// هوية ألوان VoiceBridge AI — Indigo + Cyan + Green + Amber (Dark-first).
+/// نظام طبي/ذكاء اصطناعي حديث: ودود للأطفال واحترافي للكبار والأخصائيين.
 ///
 /// ألوان الأسطح getters تتبدّل حسب [isDark]/[highContrast]. أي تغيير فيهما يُخطر
 /// [uiNotifier] فتُعيد كل الشاشات (الملفوفة بـ ValueListenableBuilder في الراوتر)
@@ -34,57 +34,56 @@ abstract class AppColors {
   }
 
   // ---- Brand (ثابتة) ----
-  /// الأساسي — أزرق سماوي هادئ.
-  static const Color primary = Color(0xff4F8DFB);
-  static const Color primaryDark = Color(0xff3A6FE0);
+  /// الأساسي — Indigo.
+  static const Color primary = Color(0xff4F46E5);
+  static const Color primaryDark = Color(0xff4338CA);
 
-  /// الثانوي — لافندر بنفسجي ناعم.
-  static const Color secondary = Color(0xff9B7EDE);
-  static const Color secondaryDark = Color(0xff7C5FD0);
+  /// الثانوي — Cyan.
+  static const Color secondary = Color(0xff06B6D4);
+  static const Color secondaryDark = Color(0xff0891B2);
 
-  /// التمييز — نعناعي.
-  static const Color accent = Color(0xff34C7A6);
+  /// التمييز — Green.
+  static const Color accent = Color(0xff22C55E);
 
-  /// خلفية داكنة عميقة.
-  static const Color deepBg = Color(0xff0E1726);
+  /// خلفية داكنة عميقة (Slate/Indigo).
+  static const Color deepBg = Color(0xff0B1220);
 
   // ---- حالات ----
-  static const Color success = Color(0xff34C7A6);
-  static const Color warning = Color(0xffF6B445);
-  static const Color error = Color(0xffEF6B6B);
+  static const Color success = Color(0xff22C55E);
+  static const Color warning = Color(0xffF59E0B);
+  static const Color error = Color(0xffEF4444);
 
-  // ---- أسطح متبدّلة حسب الثيم ----
+  // ---- أسطح متبدّلة حسب الثيم (Dark-first) ----
   static Color get scaffoldBg =>
-      isDark ? deepBg : const Color(0xffF5F8FF);
+      isDark ? deepBg : const Color(0xffF5F7FF);
   static Color get card =>
-      isDark ? const Color(0xff16223C) : const Color(0xffFFFFFF);
+      isDark ? const Color(0xff161E2E) : const Color(0xffFFFFFF);
   static Color get cardAlt =>
-      isDark ? const Color(0xff1B2A47) : const Color(0xffF1F5FF);
+      isDark ? const Color(0xff1E2740) : const Color(0xffF1F4FF);
   static Color get mainText => highContrast
       ? (isDark ? const Color(0xffFFFFFF) : const Color(0xff000000))
-      : (isDark ? const Color(0xffEAF1FB) : const Color(0xff142033));
+      : (isDark ? const Color(0xffE8ECF5) : const Color(0xff0F172A));
   static Color get secondaryText => highContrast
-      ? (isDark ? const Color(0xffC7D2E0) : const Color(0xff39414D))
-      : (isDark ? const Color(0xff93A4BC) : const Color(0xff64708A));
+      ? (isDark ? const Color(0xffCBD5E1) : const Color(0xff334155))
+      : (isDark ? const Color(0xff94A3B8) : const Color(0xff5A6B86));
   static Color get border => highContrast
-      ? (isDark ? const Color(0xff4A5E80) : const Color(0xff9AA7B8))
-      : (isDark ? const Color(0xff243352) : const Color(0xffE6EBF4));
+      ? (isDark ? const Color(0xff48597A) : const Color(0xff94A3B8))
+      : (isDark ? const Color(0xff243047) : const Color(0xffE5E9F2));
 
   /// خلفيات ناعمة ملوّنة (للأيقونات/الشارات/البطاقات المميّزة).
   static Color get softPrimary =>
-      isDark ? const Color(0x334F8DFB) : const Color(0xffE9F1FF);
+      isDark ? const Color(0x334F46E5) : const Color(0xffEAE9FD);
   static Color get softSecondary =>
-      isDark ? const Color(0x339B7EDE) : const Color(0xffF1ECFC);
+      isDark ? const Color(0x3306B6D4) : const Color(0xffDFF6FB);
   static Color get softAccent =>
-      isDark ? const Color(0x3334C7A6) : const Color(0xffE3F7F1);
+      isDark ? const Color(0x3322C55E) : const Color(0xffDDF6E6);
 
   // ---- Legacy aliases (تُستخدم في core widgets المشتركة — لا تحذفها) ----
-  // ملاحظة: الأسماء القديمة (navy/orange) من قالب آخر؛ أعيد توجيه قيمها لهوية
-  // SpeakMate حتى تستمر الـ widgets العامة بالعمل دون تعديل.
-  static const Color navy = Color(0xff1E2A4A); // brand غامق (نص فوق الخلفيات)
-  static const Color navy2 = Color(0xff2C3E6B);
-  static const Color orange = primary; // كان لون CTA → الآن أزرق
-  static const Color orange2 = Color(0xff6FA3FF);
+  // أسماء قديمة (navy/orange) أُعيد توجيه قيمها لهوية VoiceBridge AI.
+  static const Color navy = Color(0xff312E81); // indigo غامق (نص فوق الخلفيات)
+  static const Color navy2 = Color(0xff3730A3);
+  static const Color orange = primary; // لون CTA → الآن Indigo
+  static const Color orange2 = secondary;
   static const Color secondray = navy;
   static const Color darkRed = error;
   static const Color thirdColor = navy;

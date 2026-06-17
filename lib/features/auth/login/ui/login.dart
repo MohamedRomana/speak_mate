@@ -47,11 +47,8 @@ class LoginScreen extends StatelessWidget {
                     type: FlashMessageType.success,
                     context: context,
                   );
-                  final home = role.isTherapist
-                      ? Routes.therapistHome
-                      : Routes.patientHome;
                   context.pushNamedAndRemoveUntil(
-                    home,
+                    role.homeRoute,
                     predicate: (_) => false,
                   );
                 },

@@ -143,7 +143,8 @@ class CacheHelper {
   }
 
   static String getThemeMode() {
-    return _preferences.getString(_themeMode) ?? 'system';
+    // VoiceBridge AI افتراضيًا Dark Mode.
+    return _preferences.getString(_themeMode) ?? 'dark';
   }
 
   /// نوع صعوبة المتدرّب — يُستخدم لتخصيص التمارين المناسبة.

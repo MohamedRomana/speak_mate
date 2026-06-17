@@ -28,19 +28,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   List<OnboardingData> get _pages => [
         OnboardingData(
-          icon: Icons.sports_esports_rounded,
+          icon: Icons.child_care_rounded,
           color: AppColors.primary,
           title: LocaleKeys.onboardTitle1.tr(),
           desc: LocaleKeys.onboardDesc1.tr(),
         ),
         OnboardingData(
-          icon: Icons.record_voice_over_rounded,
+          icon: Icons.elderly_rounded,
           color: AppColors.secondary,
           title: LocaleKeys.onboardTitle2.tr(),
           desc: LocaleKeys.onboardDesc2.tr(),
         ),
         OnboardingData(
-          icon: Icons.insights_rounded,
+          icon: Icons.psychology_rounded,
           color: AppColors.accent,
           title: LocaleKeys.onboardTitle3.tr(),
           desc: LocaleKeys.onboardDesc3.tr(),

@@ -15,7 +15,9 @@ class Routes {
   static const String otpVerification = '/otpVerification';
   static const String resetPassword = '/resetPassword';
 
-  // ---- الرئيسية (placeholders للمراحل القادمة) ----
-  static const String patientHome = '/patientHome';
-  static const String therapistHome = '/therapistHome';
+  // ---- الرئيسية لكل وحدة ----
+  static const String patientHome = '/patientHome'; // وحدة الطفل
+  static const String adultHome = '/adultHome'; // وحدة الكبار
+  static const String therapistHome = '/therapistHome'; // الأخصائي
+  static const String clinicHome = '/clinicHome'; // العيادة
 }

@@ -37,8 +37,12 @@ abstract class LocaleKeys {
   static const chooseRoleDesc = 'chooseRoleDesc';
   static const patientRole = 'patientRole';
   static const patientRoleDesc = 'patientRoleDesc';
+  static const adultRole = 'adultRole';
+  static const adultRoleDesc = 'adultRoleDesc';
   static const therapistRole = 'therapistRole';
   static const therapistRoleDesc = 'therapistRoleDesc';
+  static const clinicRole = 'clinicRole';
+  static const clinicRoleDesc = 'clinicRoleDesc';
 
   static const login = 'login';
   static const signIn = 'signIn';
@@ -320,6 +324,33 @@ abstract class LocaleKeys {
   static const endCall = 'endCall';
   static const cameraLabel = 'cameraLabel';
   static const flipCamera = 'flipCamera';
+
+  static const levelN = 'levelN';
+  static const xp = 'xp';
+  static const toNextLevel = 'toNextLevel';
+  static const dailyGoals = 'dailyGoals';
+  static const badges = 'badges';
+  static const rewards = 'rewards';
+  static const earned = 'earned';
+  static const locked = 'locked';
+  static const playAndLearn = 'playAndLearn';
+  static const aiSpeak = 'aiSpeak';
+  static const aiSpeakDesc = 'aiSpeakDesc';
+  static const sayThisWord = 'sayThisWord';
+  static const youSaid = 'youSaid';
+  static const correctLabel = 'correctLabel';
+  static const focusOnSound = 'focusOnSound';
+  static const newWord = 'newWord';
+  static const xpEarnedMsg = 'xpEarnedMsg';
+  static const goalExercises = 'goalExercises';
+  static const goalSpeak = 'goalSpeak';
+  static const goalStreak = 'goalStreak';
+  static const badgeFirstWord = 'badgeFirstWord';
+  static const badge7Days = 'badge7Days';
+  static const badgeStar = 'badgeStar';
+  static const badgePerfect = 'badgePerfect';
+  static const badgeExplorer = 'badgeExplorer';
+  static const badgeChampion = 'badgeChampion';
 
   static const order_sent_successfully = 'order_sent_successfully';
   static const continue_shopping = 'continue_shopping';
