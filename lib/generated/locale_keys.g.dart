@@ -352,6 +352,27 @@ abstract class LocaleKeys {
   static const badgeExplorer = 'badgeExplorer';
   static const badgeChampion = 'badgeChampion';
 
+  static const rehabProgram = 'rehabProgram';
+  static const recoveryProgress = 'recoveryProgress';
+  static const continueTraining = 'continueTraining';
+  static const weeklySessions = 'weeklySessions';
+  static const modSlowSpeech = 'modSlowSpeech';
+  static const modSlowSpeechDesc = 'modSlowSpeechDesc';
+  static const modPronunciation = 'modPronunciation';
+  static const modPronunciationDesc = 'modPronunciationDesc';
+  static const modLanguage = 'modLanguage';
+  static const modLanguageDesc = 'modLanguageDesc';
+  static const modMemory = 'modMemory';
+  static const modMemoryDesc = 'modMemoryDesc';
+  static const listenCarefully = 'listenCarefully';
+  static const nowRepeatClearly = 'nowRepeatClearly';
+  static const slowMode = 'slowMode';
+  static const rememberThenSay = 'rememberThenSay';
+  static const accuratePronunciation = 'accuratePronunciation';
+  static const needsImprovement = 'needsImprovement';
+  static const trainingComplete = 'trainingComplete';
+  static const avgAccuracyLabel = 'avgAccuracyLabel';
+
   static const order_sent_successfully = 'order_sent_successfully';
   static const continue_shopping = 'continue_shopping';
   static const continue_browsing = 'continue_browsing';
