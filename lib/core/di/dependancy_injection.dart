@@ -8,7 +8,9 @@ import '../../features/users/patient/dashboard/data/repos/dashboard_repo.dart';
 import '../../features/users/patient/exercises/data/repos/exercises_repo.dart';
 import '../../features/users/patient/notifications/data/repos/notifications_repo.dart';
 import '../../features/adult/data/repos/adult_repo.dart';
+import '../../features/clinic/data/repos/clinic_repo.dart';
 import '../../features/shared/gamification/data/repos/gamification_repo.dart';
+import '../../features/therapist/data/repos/therapist_repo.dart';
 import '../../features/users/patient/profile/data/repos/profile_repo.dart';
 import '../../features/users/patient/reports/data/repos/reports_repo.dart';
 
@@ -46,4 +48,10 @@ Future<void> setUpGetIt() async {
 
   // ---- وحدة الكبار (إعادة التأهيل) ----
   getIt.registerLazySingleton<AdultRepo>(() => AdultRepo());
+
+  // ---- وحدة الأخصائي ----
+  getIt.registerLazySingleton<TherapistRepo>(() => TherapistRepo());
+
+  // ---- وحدة العيادة ----
+  getIt.registerLazySingleton<ClinicRepo>(() => ClinicRepo());
 }

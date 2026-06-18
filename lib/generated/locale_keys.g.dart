@@ -373,6 +373,45 @@ abstract class LocaleKeys {
   static const trainingComplete = 'trainingComplete';
   static const avgAccuracyLabel = 'avgAccuracyLabel';
 
+  static const myPatients = 'myPatients';
+  static const searchPatient = 'searchPatient';
+  static const filterAll = 'filterAll';
+  static const filterChild = 'filterChild';
+  static const filterAdult = 'filterAdult';
+  static const totalPatients = 'totalPatients';
+  static const activeThisWeek = 'activeThisWeek';
+  static const avgProgressLabel = 'avgProgressLabel';
+  static const lastActiveLabel = 'lastActiveLabel';
+  static const patientProfile = 'patientProfile';
+  static const weakSounds = 'weakSounds';
+  static const recordingsReview = 'recordingsReview';
+  static const aiReport = 'aiReport';
+  static const assignPlan = 'assignPlan';
+  static const planAssigned = 'planAssigned';
+  static const noPatients = 'noPatients';
+  static const condChild = 'condChild';
+  static const condAdult = 'condAdult';
+  static const sessionsLabel = 'sessionsLabel';
+  static const aiSummaryText = 'aiSummaryText';
+
+  static const overview = 'overview';
+  static const therapistsCount = 'therapistsCount';
+  static const appointmentsToday = 'appointmentsToday';
+  static const monthlyRevenue = 'monthlyRevenue';
+  static const appointmentsLabel = 'appointmentsLabel';
+  static const billing = 'billing';
+  static const recentInvoices = 'recentInvoices';
+  static const statusScheduled = 'statusScheduled';
+  static const statusCompleted = 'statusCompleted';
+  static const statusCancelled = 'statusCancelled';
+  static const paidLabel = 'paidLabel';
+  static const pendingLabel = 'pendingLabel';
+  static const videoSessionLabel = 'videoSessionLabel';
+  static const inClinic = 'inClinic';
+  static const noAppointmentsToday = 'noAppointmentsToday';
+  static const currencySar = 'currencySar';
+  static const withTherapistLabel = 'withTherapistLabel';
+
   static const order_sent_successfully = 'order_sent_successfully';
   static const continue_shopping = 'continue_shopping';
   static const continue_browsing = 'continue_browsing';
