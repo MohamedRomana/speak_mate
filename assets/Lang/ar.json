@@ -408,6 +408,15 @@
   "currencySar": "ر.س",
   "withTherapistLabel": "مع",
 
+  "gamesHub": "الألعاب",
+  "gamesHubDesc": "العب وتعلّم النطق بمرح",
+  "gameRepeatAi": "كرّر بعد AI",
+  "gameSpeakMatch": "انطق وطابق",
+  "gameSoundGuess": "خمّن الصوت",
+  "gamePictureNaming": "سمِّ الصورة",
+  "nameThisPicture": "ما اسم هذه الصورة؟",
+  "listenAndGuess": "استمع ثم خمّن",
+
   "order_sent_successfully": "تم الإرسال بنجاح",
   "continue_shopping": "متابعة",
   "continue_browsing": "تصفّح",

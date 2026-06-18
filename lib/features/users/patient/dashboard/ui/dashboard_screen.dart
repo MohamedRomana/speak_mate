@@ -22,6 +22,7 @@ import '../../notifications/ui/notifications_screen.dart';
 import '../../session/logic/session_cubit.dart';
 import '../../session/ui/session_screen.dart';
 import '../logic/dashboard_cubit.dart';
+import 'games_cta.dart';
 import 'home_extras.dart';
 import 'widgets/progress_chart.dart';
 import 'widgets/session_card.dart';
@@ -61,6 +62,11 @@ class DashboardScreen extends StatelessWidget {
                     const FadeSlideIn(
                       delay: Duration(milliseconds: 60),
                       child: AiSpeakCta(),
+                    ),
+                    SizedBox(height: 14.h),
+                    const FadeSlideIn(
+                      delay: Duration(milliseconds: 90),
+                      child: GamesCta(),
                     ),
                     SizedBox(height: 14.h),
                     const FadeSlideIn(

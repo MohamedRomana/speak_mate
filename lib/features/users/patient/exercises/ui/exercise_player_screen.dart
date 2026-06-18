@@ -111,7 +111,13 @@ class _ExerciseBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final item = cubit.current;
-    final isMatch = item.kind == ExerciseKind.match;
+    final isMatch = item.isMatchLike;
+    final instruction = switch (item.kind) {
+      ExerciseKind.match => LocaleKeys.whichImage,
+      ExerciseKind.guess => LocaleKeys.listenAndGuess,
+      ExerciseKind.pictureName => LocaleKeys.nameThisPicture,
+      ExerciseKind.repeat => LocaleKeys.repeatAfterMe,
+    };
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
       child: Column(
@@ -120,9 +126,7 @@ class _ExerciseBody extends StatelessWidget {
           _DifficultyBadge(difficulty: item.difficulty),
           SizedBox(height: 20.h),
           AppText(
-            text: isMatch
-                ? LocaleKeys.whichImage.tr()
-                : LocaleKeys.repeatAfterMe.tr(),
+            text: instruction.tr(),
             size: 15.sp,
             color: AppColors.secondaryText,
           ),
@@ -131,7 +135,6 @@ class _ExerciseBody extends StatelessWidget {
             key: ValueKey('prompt_${item.id}'),
             item: item,
             color: cubit.category.color,
-            isMatch: isMatch,
           ),
           SizedBox(height: 24.h),
           _ListenButton(
@@ -175,13 +178,7 @@ class _DifficultyBadge extends StatelessWidget {
 class _PromptCard extends StatelessWidget {
   final ExerciseItem item;
   final Color color;
-  final bool isMatch;
-  const _PromptCard({
-    super.key,
-    required this.item,
-    required this.color,
-    required this.isMatch,
-  });
+  const _PromptCard({super.key, required this.item, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -204,8 +201,9 @@ class _PromptCard extends StatelessWidget {
           children: [
             Text(item.emoji, style: TextStyle(fontSize: 64.sp)),
             SizedBox(height: 12.h),
+            // تُخفى الكلمة في الحزر/تسمية الصورة (يظهر "؟" بدلاً منها).
             AppText(
-              text: item.prompt,
+              text: item.showsWord ? item.prompt : '؟',
               size: 28.sp,
               family: FontFamily.tajawalBold,
               color: AppColors.mainText,

@@ -73,6 +73,37 @@ class ExercisesRepo {
     ];
   }
 
+  /// عناصر لعبة محددة (تُمرَّر مباشرةً للمشغّل).
+  List<ExerciseItem> gameItems(GameType game) {
+    switch (game) {
+      case GameType.repeatAi:
+        return const [
+          ExerciseItem(id: 'g_r1', kind: ExerciseKind.repeat, prompt: 'شَمس', emoji: '🌞', difficulty: ExerciseDifficulty.easy),
+          ExerciseItem(id: 'g_r2', kind: ExerciseKind.repeat, prompt: 'قَمَر', emoji: '🌙', difficulty: ExerciseDifficulty.easy),
+          ExerciseItem(id: 'g_r3', kind: ExerciseKind.repeat, prompt: 'وَردة', emoji: '🌹', difficulty: ExerciseDifficulty.medium),
+        ];
+      case GameType.speakMatch:
+        return const [
+          ExerciseItem(id: 'g_m1', kind: ExerciseKind.match, prompt: 'قِطّة', emoji: '🔊', difficulty: ExerciseDifficulty.easy, options: ['🐱', '🐶', '🐰', '🐻'], correctIndex: 0),
+          ExerciseItem(id: 'g_m2', kind: ExerciseKind.match, prompt: 'تُفّاحة', emoji: '🔊', difficulty: ExerciseDifficulty.easy, options: ['🍌', '🍎', '🍇', '🍊'], correctIndex: 1),
+          ExerciseItem(id: 'g_m3', kind: ExerciseKind.match, prompt: 'سيّارة', emoji: '🔊', difficulty: ExerciseDifficulty.medium, options: ['🚗', '🚲', '✈️', '🚂'], correctIndex: 0),
+        ];
+      case GameType.soundGuess:
+        return const [
+          ExerciseItem(id: 'g_s1', kind: ExerciseKind.guess, prompt: 'كلب', emoji: '🔊', difficulty: ExerciseDifficulty.easy, options: ['🐱', '🐶', '🐮', '🐸'], correctIndex: 1),
+          ExerciseItem(id: 'g_s2', kind: ExerciseKind.guess, prompt: 'قطار', emoji: '🔊', difficulty: ExerciseDifficulty.medium, options: ['🚗', '🚂', '🚁', '⛵'], correctIndex: 1),
+          ExerciseItem(id: 'g_s3', kind: ExerciseKind.guess, prompt: 'مطر', emoji: '🔊', difficulty: ExerciseDifficulty.medium, options: ['☀️', '🌧️', '❄️', '🌈'], correctIndex: 1),
+        ];
+      case GameType.pictureNaming:
+        return const [
+          ExerciseItem(id: 'g_p1', kind: ExerciseKind.pictureName, prompt: 'تُفّاحة', emoji: '🍎', difficulty: ExerciseDifficulty.easy),
+          ExerciseItem(id: 'g_p2', kind: ExerciseKind.pictureName, prompt: 'سَمَكة', emoji: '🐟', difficulty: ExerciseDifficulty.easy),
+          ExerciseItem(id: 'g_p3', kind: ExerciseKind.pictureName, prompt: 'سيّارة', emoji: '🚗', difficulty: ExerciseDifficulty.medium),
+          ExerciseItem(id: 'g_p4', kind: ExerciseKind.pictureName, prompt: 'قَمَر', emoji: '🌙', difficulty: ExerciseDifficulty.medium),
+        ];
+    }
+  }
+
   List<ExerciseItem> _itemsFor(ExerciseCategory category, String difficulty) {
     switch (category) {
       case ExerciseCategory.articulation:

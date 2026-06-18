@@ -32,8 +32,15 @@ class ExercisePlayerCubit extends Cubit<int> {
   final SpeechService _speech;
   final Random _rnd = Random();
 
-  ExercisePlayerCubit(this._repo, {required this.category, SpeechService? speech})
-      : _speech = speech ?? SpeechService(),
+  /// [presetItems] إن مُرِّرت تُستخدم مباشرةً (للألعاب) بدل التحميل بحسب الفئة.
+  final List<ExerciseItem>? presetItems;
+
+  ExercisePlayerCubit(
+    this._repo, {
+    required this.category,
+    this.presetItems,
+    SpeechService? speech,
+  })  : _speech = speech ?? SpeechService(),
         super(0);
 
   PlayerPhase phase = PlayerPhase.loading;
@@ -61,6 +68,11 @@ class ExercisePlayerCubit extends Cubit<int> {
   double get progress => items.isEmpty ? 0 : (index + 1) / items.length;
 
   Future<void> load() async {
+    if (presetItems != null) {
+      items = presetItems!;
+      _set(PlayerPhase.prompt);
+      return;
+    }
     _set(PlayerPhase.loading);
     final res =
         await _repo.getExercises(category, CacheHelper.getDifficultyType());

@@ -4,8 +4,12 @@ enum ExerciseCategory { articulation, vocabulary, soundMatch, tongueTwisters }
 /// مستوى الصعوبة (يتكيّف مع تقدّم المتدرّب).
 enum ExerciseDifficulty { easy, medium, hard }
 
-/// نوع التمرين: تكرار (استماع + تسجيل) أو مطابقة (اختيار صورة).
-enum ExerciseKind { repeat, match }
+/// نوع التمرين:
+/// - repeat: استماع + تسجيل (كرّر بعدي).
+/// - match: مطابقة الكلمة المعروضة بالصورة.
+/// - guess: استماع ثم تخمين الصورة (الكلمة مخفيّة).
+/// - pictureName: تسمية الصورة بالنطق (الكلمة مخفيّة، تحليل STT).
+enum ExerciseKind { repeat, match, guess, pictureName }
 
 /// عنصر تمرين واحد.
 class ExerciseItem {
@@ -34,7 +38,21 @@ class ExerciseItem {
     this.options = const [],
     this.correctIndex = 0,
   });
+
+  /// هل تُعرض الكلمة الهدف نصيًا؟ (تُخفى في الحزر/تسمية الصورة).
+  bool get showsWord => kind == ExerciseKind.repeat || kind == ExerciseKind.match;
+
+  /// تمارين الاختيار من الخيارات (مطابقة/حزر).
+  bool get isMatchLike =>
+      kind == ExerciseKind.match || kind == ExerciseKind.guess;
+
+  /// تمارين التسجيل بالصوت (تكرار/تسمية صورة).
+  bool get isRepeatLike =>
+      kind == ExerciseKind.repeat || kind == ExerciseKind.pictureName;
 }
+
+/// أنواع ألعاب الطفل.
+enum GameType { repeatAi, speakMatch, soundGuess, pictureNaming }
 
 /// ملخّص فئة تمارين (للعرض في تبويب التمارين).
 class ExerciseCategoryInfo {

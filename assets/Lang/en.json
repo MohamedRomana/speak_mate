@@ -408,6 +408,15 @@
   "currencySar": "SAR",
   "withTherapistLabel": "with",
 
+  "gamesHub": "Games",
+  "gamesHubDesc": "Play and learn speech with fun",
+  "gameRepeatAi": "Repeat after AI",
+  "gameSpeakMatch": "Speak & Match",
+  "gameSoundGuess": "Sound guess",
+  "gamePictureNaming": "Picture naming",
+  "nameThisPicture": "What is this picture?",
+  "listenAndGuess": "Listen then guess",
+
   "order_sent_successfully": "Sent successfully",
   "continue_shopping": "Continue",
   "continue_browsing": "Browse",

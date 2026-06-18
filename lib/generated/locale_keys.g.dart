@@ -412,6 +412,15 @@ abstract class LocaleKeys {
   static const currencySar = 'currencySar';
   static const withTherapistLabel = 'withTherapistLabel';
 
+  static const gamesHub = 'gamesHub';
+  static const gamesHubDesc = 'gamesHubDesc';
+  static const gameRepeatAi = 'gameRepeatAi';
+  static const gameSpeakMatch = 'gameSpeakMatch';
+  static const gameSoundGuess = 'gameSoundGuess';
+  static const gamePictureNaming = 'gamePictureNaming';
+  static const nameThisPicture = 'nameThisPicture';
+  static const listenAndGuess = 'listenAndGuess';
+
   static const order_sent_successfully = 'order_sent_successfully';
   static const continue_shopping = 'continue_shopping';
   static const continue_browsing = 'continue_browsing';
