@@ -437,6 +437,17 @@ abstract class LocaleKeys {
   static const pickDate = 'pickDate';
   static const pickTime = 'pickTime';
   static const confirm = 'confirm';
+  static const subscriptionTitle = 'subscriptionTitle';
+  static const choosePlan = 'choosePlan';
+  static const currentPlan = 'currentPlan';
+  static const subscribeAction = 'subscribeAction';
+  static const subscribedMsg = 'subscribedMsg';
+  static const perMonth = 'perMonth';
+  static const popularBadge = 'popularBadge';
+  static const billingHistory = 'billingHistory';
+  static const freePrice = 'freePrice';
+  static const manageSubscription = 'manageSubscription';
+  static const statusFailed = 'statusFailed';
 
   static const gamesHub = 'gamesHub';
   static const gamesHubDesc = 'gamesHubDesc';

@@ -17,6 +17,7 @@ import '../../../../../core/widgets/flash_message.dart';
 import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../../reports/logic/reports_cubit.dart';
+import '../../../../shared/billing/ui/subscription_screen.dart';
 import '../../reports/ui/reports_screen.dart';
 import '../../settings/ui/settings_screen.dart';
 import '../data/models/patient_profile.dart';
@@ -253,6 +254,11 @@ class _SettingsSection extends StatelessWidget {
                 ),
               );
             },
+          ),
+          _SettingsTile(
+            icon: Icons.workspace_premium_outlined,
+            label: LocaleKeys.subscriptionTitle.tr(),
+            onTap: () => context.pushScreen(const SubscriptionScreen()),
           ),
           _SettingsTile(
             icon: Icons.edit_outlined,
