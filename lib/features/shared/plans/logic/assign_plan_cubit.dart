@@ -46,6 +46,13 @@ class AssignPlanCubit extends Cubit<int> {
     _emit();
   }
 
+  /// يضيف خطة أنشأها الأخصائي للقائمة ويحدّدها (بعد العودة من شاشة الإنشاء).
+  void addTemplate(TherapyPlan plan) {
+    templates = [plan, ...templates];
+    selectedId = plan.id;
+    _emit();
+  }
+
   Future<bool> assign() async {
     if (selectedId == null) return false;
     phase = AssignPhase.assigning;

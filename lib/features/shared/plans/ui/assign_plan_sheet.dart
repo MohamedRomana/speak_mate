@@ -5,13 +5,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/di/dependancy_injection.dart';
+import '../../../../core/helper/extentions.dart';
 import '../../../../core/widgets/app_text.dart';
 import '../../../../core/widgets/flash_message.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../../../generated/locale_keys.g.dart';
+import '../data/models/therapy_plan.dart';
 import '../data/repos/plans_repo.dart';
 import '../logic/assign_plan_cubit.dart';
+import 'create_plan_screen.dart';
 import 'widgets/plan_card.dart';
 
 /// يعرض ورقة سفلية لإسناد خطة علاجية لمريض. يرجّع true لو تمّ الإسناد.
@@ -72,6 +75,30 @@ class _AssignPlanSheet extends StatelessWidget {
                 size: 12.sp,
                 color: AppColors.secondaryText,
               ),
+              SizedBox(height: 12.h),
+              if (cubit.phase != AssignPhase.loading &&
+                  cubit.phase != AssignPhase.error)
+                OutlinedButton.icon(
+                  onPressed: () async {
+                    final created =
+                        await context.pushScreen<TherapyPlan?>(const CreatePlanScreen());
+                    if (created != null) cubit.addTemplate(created);
+                  },
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 44.h),
+                    side: const BorderSide(color: AppColors.primary),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14.r),
+                    ),
+                  ),
+                  icon: Icon(Icons.add_rounded, size: 18.w, color: AppColors.primary),
+                  label: AppText(
+                    text: LocaleKeys.newCustomPlan.tr(),
+                    size: 13.sp,
+                    family: FontFamily.tajawalBold,
+                    color: AppColors.primary,
+                  ),
+                ),
               SizedBox(height: 14.h),
               if (cubit.phase == AssignPhase.loading)
                 Padding(

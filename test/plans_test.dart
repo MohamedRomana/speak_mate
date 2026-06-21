@@ -3,8 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:speak_mate/core/cache/cache_helper.dart';
 import 'package:speak_mate/core/networking/api_result.dart';
+import 'package:speak_mate/features/shared/plans/data/models/therapy_plan.dart';
 import 'package:speak_mate/features/shared/plans/data/repos/plans_repo.dart';
 import 'package:speak_mate/features/shared/plans/logic/assign_plan_cubit.dart';
+import 'package:speak_mate/features/shared/plans/logic/create_plan_cubit.dart';
 import 'package:speak_mate/features/shared/plans/logic/my_plan_cubit.dart';
 
 void main() {
@@ -45,6 +47,31 @@ void main() {
     expect(cubit.phase, MyPlanPhase.ready);
     expect(cubit.plan, isNotNull);
     expect(cubit.plan!.targets, isNotEmpty);
+    await cubit.close();
+  });
+
+  test('CreatePlanCubit: تحقّق + حفظ خطة مخصّصة', () async {
+    final cubit = CreatePlanCubit(PlansRepo());
+    expect(cubit.isValid, isFalse); // العنوان فارغ
+    cubit.setTitle('برنامج تجريبي');
+    cubit.toggleSound('ر');
+    expect(cubit.isValid, isTrue);
+
+    final plan = await cubit.save();
+    expect(plan, isNotNull);
+    expect(plan!.title, 'برنامج تجريبي');
+    expect(plan.targetSounds, contains('ر'));
+    expect(plan.targets, isNotEmpty);
+    await cubit.close();
+  });
+
+  test('AssignPlanCubit.addTemplate يضيف الخطة ويحدّدها', () async {
+    final cubit = AssignPlanCubit(PlansRepo(), patientId: 'pt_2');
+    await cubit.load();
+    const created = TherapyPlan(id: 'custom_1', title: 'مخصّصة', goal: 'هدف');
+    cubit.addTemplate(created);
+    expect(cubit.templates.first.id, 'custom_1');
+    expect(cubit.selectedId, 'custom_1');
     await cubit.close();
   });
 }

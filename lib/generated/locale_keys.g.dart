@@ -448,6 +448,17 @@ abstract class LocaleKeys {
   static const freePrice = 'freePrice';
   static const manageSubscription = 'manageSubscription';
   static const statusFailed = 'statusFailed';
+  static const createPlan = 'createPlan';
+  static const newCustomPlan = 'newCustomPlan';
+  static const planTitle = 'planTitle';
+  static const planGoal = 'planGoal';
+  static const durationWeeks = 'durationWeeks';
+  static const sessionsPerWeek = 'sessionsPerWeek';
+  static const weeklyTargetsSelect = 'weeklyTargetsSelect';
+  static const savePlan = 'savePlan';
+  static const planCreated = 'planCreated';
+  static const weeksUnit = 'weeksUnit';
+  static const sessionsUnit = 'sessionsUnit';
 
   static const gamesHub = 'gamesHub';
   static const gamesHubDesc = 'gamesHubDesc';

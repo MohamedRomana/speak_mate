@@ -48,6 +48,45 @@ class PlansRepo {
     }
   }
 
+  /// إنشاء قالب خطة جديد (يصمّمه الأخصائي من الصفر).
+  Future<ApiResult<TherapyPlan>> createPlan(TherapyPlan draft) async {
+    try {
+      if (AppConstants.useMockData) {
+        await Future.delayed(AppConstants.mockDelay);
+        // نرجّع الخطة بمعرّف مولّد.
+        return ApiResult.success(TherapyPlan(
+          id: 'p_${draft.title.hashCode.abs()}',
+          title: draft.title,
+          goal: draft.goal,
+          targetSounds: draft.targetSounds,
+          durationWeeks: draft.durationWeeks,
+          sessionsPerWeek: draft.sessionsPerWeek,
+          targets: draft.targets,
+        ));
+      }
+      return ApiService.executeApi<TherapyPlan>(
+        () => _api.post(ApiConstants.plans, data: {
+          'title': draft.title,
+          'goal': draft.goal,
+          'target_sounds': draft.targetSounds,
+          'duration_weeks': draft.durationWeeks,
+          'sessions_per_week': draft.sessionsPerWeek,
+          'targets': draft.targets
+              .map((t) => {
+                    'title': t.titleKey,
+                    'emoji': t.emoji,
+                    'target_count': t.targetCount,
+                  })
+              .toList(),
+        }),
+        parser: (data) =>
+            TherapyPlan.fromJson((data as Map).cast<String, dynamic>()),
+      );
+    } catch (e) {
+      return ApiResult.error(ApiErrorModel(message: e.toString()));
+    }
+  }
+
   /// الخطة الحالية للمريض المُسجَّل (جانب المتدرّب).
   Future<ApiResult<TherapyPlan?>> getMyPlan() async {
     try {
