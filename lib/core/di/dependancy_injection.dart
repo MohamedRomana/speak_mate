@@ -37,19 +37,21 @@ Future<void> setUpGetIt() async {
   getIt.registerLazySingleton<AuthRepo>(() => AuthRepo(api: getIt<ApiService>()));
 
   // ---- المتدرّب: الملف الشخصي ----
-  getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepo());
+  getIt.registerLazySingleton<ProfileRepo>(
+      () => ProfileRepo(api: getIt<ApiService>()));
 
   // ---- المتدرّب: اللوحة والإشعارات ----
   getIt.registerLazySingleton<DashboardRepo>(
       () => DashboardRepo(api: getIt<ApiService>()));
-  getIt.registerLazySingleton<NotificationsRepo>(() => NotificationsRepo());
+  getIt.registerLazySingleton<NotificationsRepo>(
+      () => NotificationsRepo(api: getIt<ApiService>()));
 
   // ---- المتدرّب: التمارين ----
   getIt.registerLazySingleton<ExercisesRepo>(
       () => ExercisesRepo(api: getIt<ApiService>()));
 
   // ---- المتدرّب: لوح التواصل (AAC) ----
-  getIt.registerLazySingleton<AacRepo>(() => AacRepo());
+  getIt.registerLazySingleton<AacRepo>(() => AacRepo(api: getIt<ApiService>()));
 
   // ---- المتدرّب: المساعد الذكي ----
   getIt.registerLazySingleton<ChatBotRepo>(() => ChatBotRepo());
@@ -76,11 +78,12 @@ Future<void> setUpGetIt() async {
       () => BillingRepo(api: getIt<ApiService>()));
 
   // ---- وحدة الكبار (إعادة التأهيل) ----
-  getIt.registerLazySingleton<AdultRepo>(() => AdultRepo());
+  getIt.registerLazySingleton<AdultRepo>(() => AdultRepo(api: getIt<ApiService>()));
 
   // ---- وحدة الأخصائي ----
-  getIt.registerLazySingleton<TherapistRepo>(() => TherapistRepo());
+  getIt.registerLazySingleton<TherapistRepo>(
+      () => TherapistRepo(api: getIt<ApiService>()));
 
   // ---- وحدة العيادة ----
-  getIt.registerLazySingleton<ClinicRepo>(() => ClinicRepo());
+  getIt.registerLazySingleton<ClinicRepo>(() => ClinicRepo(api: getIt<ApiService>()));
 }

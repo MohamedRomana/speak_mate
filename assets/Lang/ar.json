@@ -463,6 +463,12 @@
   "requestAccepted": "تم قبول الطلب",
   "requestDeclined": "تم رفض الطلب",
   "patientLabel": "المريض",
+  "notifAppointment": "موعد",
+  "notifPlan": "خطة علاجية",
+  "notifApptConfirmedTitle": "تم تأكيد موعدك",
+  "notifApptConfirmedBody": "أكّد {} موعد جلستك القادمة",
+  "notifPlanAssignedTitle": "خطة علاجية جديدة",
+  "notifPlanAssignedBody": "تم إسناد «{}» إليك",
 
   "gamesHub": "الألعاب",
   "gamesHubDesc": "العب وتعلّم النطق بمرح",

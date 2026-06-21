@@ -1,10 +1,15 @@
 import '../../../../../../core/constants/app_constants.dart';
+import '../../../../../../core/networking/api_constants.dart';
 import '../../../../../../core/networking/api_error_model.dart';
 import '../../../../../../core/networking/api_result.dart';
+import '../../../../../../core/networking/api_service.dart';
 import '../models/notification_item.dart';
 
-/// مستودع الإشعارات — mock.
+/// مستودع الإشعارات — mock + ربط API حقيقي خلف الفلاج.
 class NotificationsRepo {
+  final ApiService _api;
+  NotificationsRepo({ApiService? api}) : _api = api ?? ApiService();
+
   Future<ApiResult<List<NotificationItem>>> getNotifications() async {
     try {
       if (AppConstants.useMockData) {
@@ -42,7 +47,12 @@ class NotificationsRepo {
           ),
         ]);
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<List<NotificationItem>>(
+        () => _api.get(ApiConstants.notifications),
+        parser: (data) => (data as List)
+            .map((e) => NotificationItem.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }

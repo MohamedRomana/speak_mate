@@ -4,6 +4,7 @@ enum RealtimeEventType {
   messageSent, // message.sent
   progressUpdated, // progress.updated
   sessionUpdated, // session.updated
+  planAssigned, // plan.assigned
   callSignal, // call.signal
   unknown,
 }
@@ -15,6 +16,7 @@ extension RealtimeEventTypeX on RealtimeEventType {
         RealtimeEventType.messageSent => 'message.sent',
         RealtimeEventType.progressUpdated => 'progress.updated',
         RealtimeEventType.sessionUpdated => 'session.updated',
+        RealtimeEventType.planAssigned => 'plan.assigned',
         RealtimeEventType.callSignal => 'call.signal',
         RealtimeEventType.unknown => 'unknown',
       };
@@ -24,6 +26,7 @@ extension RealtimeEventTypeX on RealtimeEventType {
         'message.sent' => RealtimeEventType.messageSent,
         'progress.updated' => RealtimeEventType.progressUpdated,
         'session.updated' => RealtimeEventType.sessionUpdated,
+        'plan.assigned' => RealtimeEventType.planAssigned,
         'call.signal' => RealtimeEventType.callSignal,
         _ => RealtimeEventType.unknown,
       };

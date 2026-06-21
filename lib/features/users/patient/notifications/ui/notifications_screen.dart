@@ -107,6 +107,16 @@ class _NotificationTile extends StatelessWidget {
             color: AppColors.warning,
             label: LocaleKeys.notifAchievement,
           ),
+        NotificationType.appointment => (
+            icon: Icons.event_available_rounded,
+            color: AppColors.accent,
+            label: LocaleKeys.notifAppointment,
+          ),
+        NotificationType.plan => (
+            icon: Icons.assignment_rounded,
+            color: AppColors.primary,
+            label: LocaleKeys.notifPlan,
+          ),
       };
 
   @override

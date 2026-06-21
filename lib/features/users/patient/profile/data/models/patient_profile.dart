@@ -31,6 +31,28 @@ class PatientProfile {
     return filled / fields.length;
   }
 
+  factory PatientProfile.fromJson(Map<String, dynamic> json) => PatientProfile(
+        id: (json['id'] ?? '').toString(),
+        name: (json['name'] ?? '').toString(),
+        email: json['email']?.toString(),
+        phone: json['phone']?.toString(),
+        age: json['age'] is int ? json['age'] as int : int.tryParse('${json['age']}'),
+        gender: json['gender']?.toString(),
+        difficultyType: json['difficulty_type']?.toString(),
+        notes: json['notes']?.toString(),
+        avatarUrl: json['avatar']?.toString() ?? json['avatar_url']?.toString(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'age': age,
+        'gender': gender,
+        'difficulty_type': difficultyType,
+        'notes': notes,
+      };
+
   PatientProfile copyWith({
     String? name,
     String? email,

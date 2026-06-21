@@ -40,24 +40,53 @@ class NotificationsCubit extends Cubit<ActionState> with RefreshEmitter {
     _listenLive();
   }
 
-  /// الاشتراك في أحداث "progress.updated" الحيّة → إضافة إشعار وتحديث الجرس فورًا.
+  /// الاشتراك في أحداث الزمن الحقيقي الحيّة → إضافة إشعار وتحديث الجرس فورًا:
+  /// progress.updated (تقدّم) / session.updated (تأكيد موعد) / plan.assigned (خطة).
   void _listenLive() {
     if (_ws == null) return;
-    _liveSub ??= _ws.on(RealtimeEventType.progressUpdated).listen((e) {
+    _liveSub ??= _ws.events.listen((e) {
       if (isClosed) return;
-      final value = e.data['value'] ?? 0;
-      items = [
-        NotificationItem(
-          id: 'live_${_liveCounter++}',
+      final item = _itemFor(e);
+      if (item == null) return;
+      items = [item, ...items];
+      refresh();
+    });
+  }
+
+  /// يحوّل حدث زمن حقيقي إلى إشعار (أو null لو غير معنيّ به).
+  NotificationItem? _itemFor(RealtimeEvent e) {
+    final id = 'live_${_liveCounter++}';
+    switch (e.type) {
+      case RealtimeEventType.progressUpdated:
+        final value = e.data['value'] ?? 0;
+        return NotificationItem(
+          id: id,
           type: NotificationType.achievement,
           title: LocaleKeys.liveUpdateTitle.tr(),
           body: LocaleKeys.liveUpdateBody.tr().replaceFirst('{}', '$value'),
           timeLabel: LocaleKeys.liveNow.tr(),
-        ),
-        ...items,
-      ];
-      refresh();
-    });
+        );
+      case RealtimeEventType.sessionUpdated:
+        return NotificationItem(
+          id: id,
+          type: NotificationType.appointment,
+          title: LocaleKeys.notifApptConfirmedTitle.tr(),
+          body: LocaleKeys.notifApptConfirmedBody.tr()
+              .replaceFirst('{}', '${e.data['therapist'] ?? ''}'),
+          timeLabel: LocaleKeys.liveNow.tr(),
+        );
+      case RealtimeEventType.planAssigned:
+        return NotificationItem(
+          id: id,
+          type: NotificationType.plan,
+          title: LocaleKeys.notifPlanAssignedTitle.tr(),
+          body: LocaleKeys.notifPlanAssignedBody.tr()
+              .replaceFirst('{}', '${e.data['plan'] ?? ''}'),
+          timeLabel: LocaleKeys.liveNow.tr(),
+        );
+      default:
+        return null;
+    }
   }
 
   void markAllRead() {

@@ -1,17 +1,27 @@
 import '../../../../../../core/constants/app_constants.dart';
+import '../../../../../../core/networking/api_constants.dart';
 import '../../../../../../core/networking/api_error_model.dart';
 import '../../../../../../core/networking/api_result.dart';
+import '../../../../../../core/networking/api_service.dart';
 import '../models/aac_symbol.dart';
 
-/// مستودع لوح التواصل — mock.
+/// مستودع لوح التواصل — mock + ربط API حقيقي خلف الفلاج.
 class AacRepo {
+  final ApiService _api;
+  AacRepo({ApiService? api}) : _api = api ?? ApiService();
+
   Future<ApiResult<List<AacSymbol>>> getSymbols() async {
     try {
       if (AppConstants.useMockData) {
         await Future.delayed(const Duration(milliseconds: 500));
         return const ApiResult.success(_symbols);
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<List<AacSymbol>>(
+        () => _api.get(ApiConstants.aacSymbols),
+        parser: (data) => (data as List)
+            .map((e) => AacSymbol.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }

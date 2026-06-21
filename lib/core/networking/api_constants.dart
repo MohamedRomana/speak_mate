@@ -19,6 +19,8 @@ class ApiConstants {
   static const String avatar = "me/avatar";
   static const String dashboard = "me/dashboard"; // ملخّص لوحة المتدرّب
   static const String notifications = "me/notifications";
+  static const String recordings = "me/recordings";
+  static const String aacSymbols = "aac/symbols";
 
   // ---- الخطط والتمارين ----
   static const String plans = "plans";

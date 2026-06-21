@@ -1,12 +1,17 @@
 import '../../../../../../core/cache/cache_helper.dart';
 import '../../../../../../core/constants/app_constants.dart';
+import '../../../../../../core/networking/api_constants.dart';
 import '../../../../../../core/networking/api_error_model.dart';
 import '../../../../../../core/networking/api_result.dart';
+import '../../../../../../core/networking/api_service.dart';
 import '../models/patient_profile.dart';
 import '../models/recording_model.dart';
 
-/// مستودع ملف المتدرّب — mock. يرجّع [ApiResult] ليسهل ربطه بـ API لاحقًا.
+/// مستودع ملف المتدرّب — mock + ربط API حقيقي خلف الفلاج.
 class ProfileRepo {
+  final ApiService _api;
+  ProfileRepo({ApiService? api}) : _api = api ?? ApiService();
+
   Future<ApiResult<PatientProfile>> getProfile() async {
     try {
       if (AppConstants.useMockData) {
@@ -25,7 +30,10 @@ class ProfileRepo {
           ),
         );
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<PatientProfile>(
+        () => _api.get(ApiConstants.me),
+        parser: (data) => PatientProfile.fromJson((data as Map).cast<String, dynamic>()),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }
@@ -59,7 +67,12 @@ class ProfileRepo {
           ),
         ]);
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<List<Recording>>(
+        () => _api.get(ApiConstants.recordings),
+        parser: (data) => (data as List)
+            .map((e) => Recording.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }
@@ -74,7 +87,14 @@ class ProfileRepo {
         await CacheHelper.setUserName(profile.name);
         return ApiResult.success(profile);
       }
-      throw UnimplementedError('Real API not wired yet');
+      final res = await ApiService.executeApi<PatientProfile>(
+        () => _api.put(ApiConstants.updateMe, data: profile.toJson()),
+        parser: (data) => PatientProfile.fromJson((data as Map).cast<String, dynamic>()),
+      );
+      if (res is Success<PatientProfile>) {
+        await CacheHelper.setUserName(res.data.name);
+      }
+      return res;
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }

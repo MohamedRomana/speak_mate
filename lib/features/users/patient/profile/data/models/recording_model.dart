@@ -24,4 +24,15 @@ class Recording {
     final s = (durationSeconds % 60).toString().padLeft(2, '0');
     return '$m:$s';
   }
+
+  factory Recording.fromJson(Map<String, dynamic> json) => Recording(
+        id: (json['id'] ?? '').toString(),
+        type: '${json['type']}' == 'video'
+            ? RecordingType.video
+            : RecordingType.audio,
+        title: (json['title'] ?? '').toString(),
+        durationSeconds: int.tryParse('${json['duration_seconds'] ?? json['duration']}') ?? 0,
+        dateLabel: (json['date_label'] ?? json['date'] ?? '').toString(),
+        path: json['path']?.toString() ?? json['url']?.toString(),
+      );
 }

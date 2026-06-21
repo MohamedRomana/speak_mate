@@ -1,10 +1,15 @@
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/networking/api_constants.dart';
 import '../../../../core/networking/api_error_model.dart';
 import '../../../../core/networking/api_result.dart';
+import '../../../../core/networking/api_service.dart';
 import '../models/clinic_models.dart';
 
-/// مستودع وحدة العيادة — mock.
+/// مستودع وحدة العيادة — mock + ربط API حقيقي خلف الفلاج.
 class ClinicRepo {
+  final ApiService _api;
+  ClinicRepo({ApiService? api}) : _api = api ?? ApiService();
+
   ClinicStats get stats => const ClinicStats(
         patients: 48,
         therapists: 6,
@@ -24,7 +29,12 @@ class ClinicRepo {
           ClinicAppointment(id: 'a5', patientName: 'يوسف سامي', therapistName: 'د. خالد العتيبي', timeLabel: '11:15 ص', status: ApptStatus.cancelled, isVideo: false),
         ]);
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<List<ClinicAppointment>>(
+        () => _api.get(ApiConstants.appointments, query: {'scope': 'clinic'}),
+        parser: (data) => (data as List)
+            .map((e) => ClinicAppointment.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }

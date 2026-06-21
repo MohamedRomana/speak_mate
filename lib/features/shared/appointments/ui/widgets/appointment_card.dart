@@ -100,23 +100,37 @@ class AppointmentCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 12.h),
-          Row(
+          Wrap(
+            spacing: 12.w,
+            runSpacing: 6.h,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Icon(Icons.event_rounded, size: 15.w, color: AppColors.secondaryText),
-              SizedBox(width: 6.w),
-              AppText(
-                text: _fmt(appt.dateTime),
-                size: 12.sp,
-                family: FontFamily.tajawalMedium,
-                color: AppColors.mainText,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.event_rounded,
+                      size: 15.w, color: AppColors.secondaryText),
+                  SizedBox(width: 6.w),
+                  AppText(
+                    text: _fmt(appt.dateTime),
+                    size: 12.sp,
+                    family: FontFamily.tajawalMedium,
+                    color: AppColors.mainText,
+                  ),
+                ],
               ),
-              SizedBox(width: 12.w),
-              Icon(Icons.schedule_rounded, size: 15.w, color: AppColors.secondaryText),
-              SizedBox(width: 6.w),
-              AppText(
-                text: '${appt.durationMinutes} ${LocaleKeys.minShort.tr()}',
-                size: 12.sp,
-                color: AppColors.secondaryText,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.schedule_rounded,
+                      size: 15.w, color: AppColors.secondaryText),
+                  SizedBox(width: 6.w),
+                  AppText(
+                    text: '${appt.durationMinutes} ${LocaleKeys.minShort.tr()}',
+                    size: 12.sp,
+                    color: AppColors.secondaryText,
+                  ),
+                ],
               ),
             ],
           ),

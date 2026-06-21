@@ -467,6 +467,12 @@ abstract class LocaleKeys {
   static const requestAccepted = 'requestAccepted';
   static const requestDeclined = 'requestDeclined';
   static const patientLabel = 'patientLabel';
+  static const notifAppointment = 'notifAppointment';
+  static const notifPlan = 'notifPlan';
+  static const notifApptConfirmedTitle = 'notifApptConfirmedTitle';
+  static const notifApptConfirmedBody = 'notifApptConfirmedBody';
+  static const notifPlanAssignedTitle = 'notifPlanAssignedTitle';
+  static const notifPlanAssignedBody = 'notifPlanAssignedBody';
 
   static const gamesHub = 'gamesHub';
   static const gamesHubDesc = 'gamesHubDesc';

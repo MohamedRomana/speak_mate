@@ -1,10 +1,15 @@
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/networking/api_constants.dart';
 import '../../../../core/networking/api_error_model.dart';
 import '../../../../core/networking/api_result.dart';
+import '../../../../core/networking/api_service.dart';
 import '../models/rehab_models.dart';
 
-/// مستودع وحدة الكبار (إعادة التأهيل) — mock.
+/// مستودع وحدة الكبار (إعادة التأهيل) — mock + ربط API حقيقي خلف الفلاج.
 class AdultRepo {
+  final ApiService _api;
+  AdultRepo({ApiService? api}) : _api = api ?? ApiService();
+
   /// نسبة تقدّم التعافي الكلية ومتوسط الدقة وعدد جلسات الأسبوع.
   int get recoveryProgress => 68;
   int get avgAccuracy => 74;
@@ -21,7 +26,12 @@ class AdultRepo {
           RehabModule(type: RehabType.memory, progress: 30),
         ]);
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<List<RehabModule>>(
+        () => _api.get('${ApiConstants.exercises}/rehab'),
+        parser: (data) => (data as List)
+            .map((e) => RehabModule.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }

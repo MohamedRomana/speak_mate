@@ -463,6 +463,12 @@
   "requestAccepted": "Request accepted",
   "requestDeclined": "Request declined",
   "patientLabel": "Patient",
+  "notifAppointment": "Appointment",
+  "notifPlan": "Therapy plan",
+  "notifApptConfirmedTitle": "Your appointment is confirmed",
+  "notifApptConfirmedBody": "{} confirmed your upcoming session",
+  "notifPlanAssignedTitle": "New therapy plan",
+  "notifPlanAssignedBody": "\"{}\" has been assigned to you",
 
   "gamesHub": "Games",
   "gamesHubDesc": "Play and learn speech with fun",

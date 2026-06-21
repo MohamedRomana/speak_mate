@@ -36,4 +36,30 @@ void main() {
     expect(e.type, RealtimeEventType.progressUpdated);
     expect(e.toJson()['event'], 'progress.updated');
   });
+
+  test('plan.assigned + session.updated wire names round-trip', () {
+    expect(RealtimeEventTypeX.fromWire('plan.assigned'),
+        RealtimeEventType.planAssigned);
+    expect(RealtimeEventType.planAssigned.wire, 'plan.assigned');
+    expect(RealtimeEventTypeX.fromWire('session.updated'),
+        RealtimeEventType.sessionUpdated);
+  });
+
+  test('emitMock broadcasts an arbitrary event to subscribers', () async {
+    final client = WebSocketClient();
+    client.connect();
+    final planEvents = <RealtimeEvent>[];
+    final sub =
+        client.on(RealtimeEventType.planAssigned).listen(planEvents.add);
+
+    client.emitMock(const RealtimeEvent(
+        RealtimeEventType.planAssigned, {'plan': 'برنامج حرف الراء'}));
+    await Future.delayed(const Duration(milliseconds: 20));
+
+    expect(planEvents, hasLength(1));
+    expect(planEvents.first.data['plan'], 'برنامج حرف الراء');
+
+    await sub.cancel();
+    client.dispose();
+  });
 }

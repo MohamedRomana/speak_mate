@@ -1,10 +1,15 @@
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/networking/api_constants.dart';
 import '../../../../core/networking/api_error_model.dart';
 import '../../../../core/networking/api_result.dart';
+import '../../../../core/networking/api_service.dart';
 import '../models/therapist_patient.dart';
 
-/// مستودع وحدة الأخصائي — mock.
+/// مستودع وحدة الأخصائي — mock + ربط API حقيقي خلف الفلاج.
 class TherapistRepo {
+  final ApiService _api;
+  TherapistRepo({ApiService? api}) : _api = api ?? ApiService();
+
   int get totalPatients => _patients.length;
   int get activeThisWeek => 5;
   int get avgProgress => 62;
@@ -15,7 +20,12 @@ class TherapistRepo {
         await Future.delayed(AppConstants.mockDelay);
         return const ApiResult.success(_patients);
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<List<TherapistPatient>>(
+        () => _api.get(ApiConstants.patients),
+        parser: (data) => (data as List)
+            .map((e) => TherapistPatient.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }

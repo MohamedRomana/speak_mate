@@ -6,12 +6,25 @@ import '../../../../generated/locale_keys.g.dart';
 /// نوع وحدة إعادة التأهيل.
 enum RehabType { slowSpeech, pronunciation, language, memory }
 
+extension RehabTypeX on RehabType {
+  String get key => name;
+  static RehabType fromKey(String? k) => RehabType.values.firstWhere(
+        (e) => e.name == k,
+        orElse: () => RehabType.pronunciation,
+      );
+}
+
 /// وحدة في برنامج إعادة التأهيل.
 class RehabModule {
   final RehabType type;
   final int progress; // 0..100
 
   const RehabModule({required this.type, required this.progress});
+
+  factory RehabModule.fromJson(Map<String, dynamic> json) => RehabModule(
+        type: RehabTypeX.fromKey(json['type']?.toString()),
+        progress: int.tryParse('${json['progress']}') ?? 0,
+      );
 
   String get titleKey => switch (type) {
         RehabType.slowSpeech => LocaleKeys.modSlowSpeech,

@@ -48,18 +48,30 @@ class WebSocketClient {
   }
 
   // ---- وضع المحاكاة (mock) ----
+  int _mockTick = 0;
   void _startMock() {
     _connected = true;
     _mockTimer?.cancel();
-    // حدث "تقدّم" دوري لمحاكاة بثّ السيرفر.
+    // بثّ دوري يحاكي السيرفر: يتناوب بين تقدّم/تأكيد موعد/إسناد خطة.
     _mockTimer = Timer.periodic(const Duration(seconds: 25), (_) {
       if (_disposed) return;
-      _controller.add(RealtimeEvent(
-        RealtimeEventType.progressUpdated,
-        {'metric': 'accuracy', 'value': 70 + _rnd.nextInt(25)},
-      ));
+      final event = switch (_mockTick++ % 3) {
+        1 => const RealtimeEvent(RealtimeEventType.sessionUpdated, {
+            'status': 'confirmed',
+            'therapist': 'د. سارة المهدي',
+          }),
+        2 => const RealtimeEvent(RealtimeEventType.planAssigned, {
+            'plan': 'برنامج حرف الراء',
+          }),
+        _ => RealtimeEvent(RealtimeEventType.progressUpdated,
+            {'metric': 'accuracy', 'value': 70 + _rnd.nextInt(25)}),
+      };
+      _controller.add(event);
     });
   }
+
+  /// محاكاة استلام حدث (للاختبار/الاستدعاء اليدوي).
+  void emitMock(RealtimeEvent event) => _controller.add(event);
 
   /// محاكاة استلام نتيجة تحليل نطق (تُستدعى من طبقة الـ AI عند الحاجة).
   void emitMockSpeechAnalyzed({required int score}) {
