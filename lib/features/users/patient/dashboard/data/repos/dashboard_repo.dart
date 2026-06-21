@@ -1,11 +1,16 @@
 import '../../../../../../core/constants/app_constants.dart';
+import '../../../../../../core/networking/api_constants.dart';
 import '../../../../../../core/networking/api_error_model.dart';
 import '../../../../../../core/networking/api_result.dart';
+import '../../../../../../core/networking/api_service.dart';
 import '../models/dashboard_data.dart';
 import '../models/session_model.dart';
 
-/// مستودع لوحة المتدرّب — mock.
+/// مستودع لوحة المتدرّب — mock + ربط API حقيقي خلف الفلاج.
 class DashboardRepo {
+  final ApiService _api;
+  DashboardRepo({ApiService? api}) : _api = api ?? ApiService();
+
   Future<ApiResult<DashboardData>> getDashboard() async {
     try {
       if (AppConstants.useMockData) {
@@ -63,7 +68,10 @@ class DashboardRepo {
           ),
         );
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<DashboardData>(
+        () => _api.get(ApiConstants.dashboard),
+        parser: (data) => DashboardData.fromJson((data as Map).cast<String, dynamic>()),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }

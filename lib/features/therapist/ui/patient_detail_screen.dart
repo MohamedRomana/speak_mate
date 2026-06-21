@@ -6,10 +6,10 @@ import '../../../core/constants/colors.dart';
 import '../../../core/helper/extentions.dart';
 import '../../../core/widgets/app_text.dart';
 import '../../../core/widgets/fade_slide_in.dart';
-import '../../../core/widgets/flash_message.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../gen/fonts.gen.dart';
 import '../../../generated/locale_keys.g.dart';
+import '../../shared/plans/ui/assign_plan_sheet.dart';
 import '../../users/patient/dashboard/ui/widgets/progress_chart.dart';
 import '../data/models/therapist_patient.dart';
 
@@ -90,11 +90,7 @@ class PatientDetailScreen extends StatelessWidget {
             PrimaryButton(
               text: LocaleKeys.assignPlan.tr(),
               icon: Icons.assignment_add,
-              onPressed: () => showFlashMessage(
-                message: LocaleKeys.planAssigned.tr(),
-                type: FlashMessageType.success,
-                context: context,
-              ),
+              onPressed: () => showAssignPlanSheet(context, patient.id),
             ),
           ],
         ),

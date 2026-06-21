@@ -390,6 +390,15 @@ abstract class LocaleKeys {
   static const aiReport = 'aiReport';
   static const assignPlan = 'assignPlan';
   static const planAssigned = 'planAssigned';
+  static const choosePlanHint = 'choosePlanHint';
+  static const somethingWentWrong = 'somethingWentWrong';
+  static const myPlan = 'myPlan';
+  static const noPlanYet = 'noPlanYet';
+  static const planProgress = 'planProgress';
+  static const weeklyTargets = 'weeklyTargets';
+  static const targetSounds = 'targetSounds';
+  static const viewMyPlan = 'viewMyPlan';
+  static const activePlan = 'activePlan';
   static const noPatients = 'noPatients';
   static const condChild = 'condChild';
   static const condAdult = 'condAdult';

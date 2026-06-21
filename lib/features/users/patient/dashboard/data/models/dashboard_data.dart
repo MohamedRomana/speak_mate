@@ -19,4 +19,21 @@ class DashboardData {
     required this.upcoming,
     required this.completed,
   });
+
+  factory DashboardData.fromJson(Map<String, dynamic> json) {
+    List<SessionModel> sessions(dynamic v) => (v as List? ?? [])
+        .map((e) => SessionModel.fromJson((e as Map).cast<String, dynamic>()))
+        .toList();
+    return DashboardData(
+      motivationKey: (json['motivation_key'] ?? 'motivation2').toString(),
+      streakDays: int.tryParse('${json['streak_days']}') ?? 0,
+      sessionsCompleted: int.tryParse('${json['sessions_completed']}') ?? 0,
+      accuracy: int.tryParse('${json['accuracy']}') ?? 0,
+      accuracySeries: (json['accuracy_series'] as List? ?? [])
+          .map((e) => double.tryParse('$e') ?? 0)
+          .toList(),
+      upcoming: sessions(json['upcoming']),
+      completed: sessions(json['completed']),
+    );
+  }
 }

@@ -13,6 +13,7 @@ import '../../features/users/patient/notifications/data/repos/notifications_repo
 import '../../features/adult/data/repos/adult_repo.dart';
 import '../../features/clinic/data/repos/clinic_repo.dart';
 import '../../features/shared/gamification/data/repos/gamification_repo.dart';
+import '../../features/shared/plans/data/repos/plans_repo.dart';
 import '../../features/therapist/data/repos/therapist_repo.dart';
 import '../../features/users/patient/profile/data/repos/profile_repo.dart';
 import '../../features/users/patient/reports/data/repos/reports_repo.dart';
@@ -37,11 +38,13 @@ Future<void> setUpGetIt() async {
   getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepo());
 
   // ---- المتدرّب: اللوحة والإشعارات ----
-  getIt.registerLazySingleton<DashboardRepo>(() => DashboardRepo());
+  getIt.registerLazySingleton<DashboardRepo>(
+      () => DashboardRepo(api: getIt<ApiService>()));
   getIt.registerLazySingleton<NotificationsRepo>(() => NotificationsRepo());
 
   // ---- المتدرّب: التمارين ----
-  getIt.registerLazySingleton<ExercisesRepo>(() => ExercisesRepo());
+  getIt.registerLazySingleton<ExercisesRepo>(
+      () => ExercisesRepo(api: getIt<ApiService>()));
 
   // ---- المتدرّب: لوح التواصل (AAC) ----
   getIt.registerLazySingleton<AacRepo>(() => AacRepo());
@@ -53,10 +56,14 @@ Future<void> setUpGetIt() async {
   getIt.registerLazySingleton<TherapistChatRepo>(() => TherapistChatRepo());
 
   // ---- المتدرّب: التقارير ----
-  getIt.registerLazySingleton<ReportsRepo>(() => ReportsRepo());
+  getIt.registerLazySingleton<ReportsRepo>(
+      () => ReportsRepo(api: getIt<ApiService>()));
 
   // ---- التلعيب (Gamification) ----
   getIt.registerLazySingleton<GamificationRepo>(() => GamificationRepo());
+
+  // ---- الخطط العلاجية (مشتركة: أخصائي + متدرّب) ----
+  getIt.registerLazySingleton<PlansRepo>(() => PlansRepo(api: getIt<ApiService>()));
 
   // ---- وحدة الكبار (إعادة التأهيل) ----
   getIt.registerLazySingleton<AdultRepo>(() => AdultRepo());

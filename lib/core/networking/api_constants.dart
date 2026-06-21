@@ -17,6 +17,8 @@ class ApiConstants {
   static const String me = "me";
   static const String updateMe = "me"; // PUT
   static const String avatar = "me/avatar";
+  static const String dashboard = "me/dashboard"; // ملخّص لوحة المتدرّب
+  static const String notifications = "me/notifications";
 
   // ---- الخطط والتمارين ----
   static const String plans = "plans";

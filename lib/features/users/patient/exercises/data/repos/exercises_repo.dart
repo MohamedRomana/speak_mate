@@ -1,11 +1,16 @@
 import '../../../../../../core/constants/app_constants.dart';
+import '../../../../../../core/networking/api_constants.dart';
 import '../../../../../../core/networking/api_error_model.dart';
 import '../../../../../../core/networking/api_result.dart';
+import '../../../../../../core/networking/api_service.dart';
 import '../models/exercise_models.dart';
 
-/// مستودع التمارين — mock. التمارين والفئات تتكيّف مع **نوع صعوبة** المتدرّب:
-/// النطق / السمع / المخارج، فلكل نوع مجموعة مناسبة ومختلفة.
+/// مستودع التمارين — mock + ربط API حقيقي خلف الفلاج. التمارين والفئات تتكيّف مع
+/// **نوع صعوبة** المتدرّب: النطق / السمع / المخارج، فلكل نوع مجموعة مناسبة.
 class ExercisesRepo {
+  final ApiService _api;
+  ExercisesRepo({ApiService? api}) : _api = api ?? ApiService();
+
   Future<ApiResult<List<ExerciseCategoryInfo>>> getCategories(
     String difficulty,
   ) async {
@@ -14,7 +19,12 @@ class ExercisesRepo {
         await Future.delayed(AppConstants.mockDelay);
         return ApiResult.success(_categoriesFor(difficulty));
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<List<ExerciseCategoryInfo>>(
+        () => _api.get(ApiConstants.exercises, query: {'difficulty': difficulty}),
+        parser: (data) => (data as List)
+            .map((e) => ExerciseCategoryInfo.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }
@@ -29,7 +39,13 @@ class ExercisesRepo {
         await Future.delayed(const Duration(milliseconds: 600));
         return ApiResult.success(_itemsFor(category, difficulty));
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<List<ExerciseItem>>(
+        () => _api.get(ApiConstants.exercises,
+            query: {'category': category.key, 'difficulty': difficulty}),
+        parser: (data) => (data as List)
+            .map((e) => ExerciseItem.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }

@@ -19,6 +19,7 @@ import '../../chat_therapist/logic/therapist_chat_cubit.dart';
 import '../../chat_therapist/ui/therapist_chat_screen.dart';
 import '../../notifications/logic/notifications_cubit.dart';
 import '../../notifications/ui/notifications_screen.dart';
+import '../../../../shared/plans/ui/my_plan_cta.dart';
 import '../../session/logic/session_cubit.dart';
 import '../../session/ui/session_screen.dart';
 import '../logic/dashboard_cubit.dart';
@@ -67,6 +68,11 @@ class DashboardScreen extends StatelessWidget {
                     const FadeSlideIn(
                       delay: Duration(milliseconds: 90),
                       child: GamesCta(),
+                    ),
+                    SizedBox(height: 14.h),
+                    const FadeSlideIn(
+                      delay: Duration(milliseconds: 110),
+                      child: MyPlanCta(),
                     ),
                     SizedBox(height: 14.h),
                     const FadeSlideIn(

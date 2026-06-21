@@ -1,10 +1,15 @@
 import '../../../../../../core/constants/app_constants.dart';
+import '../../../../../../core/networking/api_constants.dart';
 import '../../../../../../core/networking/api_error_model.dart';
 import '../../../../../../core/networking/api_result.dart';
+import '../../../../../../core/networking/api_service.dart';
 import '../models/report_data.dart';
 
-/// مستودع تقارير التقدّم — mock.
+/// مستودع تقارير التقدّم — mock + ربط API حقيقي خلف الفلاج.
 class ReportsRepo {
+  final ApiService _api;
+  ReportsRepo({ApiService? api}) : _api = api ?? ApiService();
+
   Future<ApiResult<ReportData>> getReport(
     ReportPeriod period,
     String lang,
@@ -18,7 +23,11 @@ class ReportsRepo {
               : _month(lang),
         );
       }
-      throw UnimplementedError('Real API not wired yet');
+      return ApiService.executeApi<ReportData>(
+        () => _api.get(ApiConstants.progress, query: {'range': period.name}),
+        parser: (data) =>
+            ReportData.fromJson((data as Map).cast<String, dynamic>(), period),
+      );
     } catch (e) {
       return ApiResult.error(ApiErrorModel(message: e.toString()));
     }

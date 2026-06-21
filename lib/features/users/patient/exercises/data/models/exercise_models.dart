@@ -1,6 +1,14 @@
 /// فئة التمرين.
 enum ExerciseCategory { articulation, vocabulary, soundMatch, tongueTwisters }
 
+extension ExerciseCategoryX on ExerciseCategory {
+  String get key => name; // اسم القيمة كما يرسله الخادم
+  static ExerciseCategory fromKey(String? k) => ExerciseCategory.values.firstWhere(
+        (e) => e.name == k,
+        orElse: () => ExerciseCategory.articulation,
+      );
+}
+
 /// مستوى الصعوبة (يتكيّف مع تقدّم المتدرّب).
 enum ExerciseDifficulty { easy, medium, hard }
 
@@ -49,6 +57,24 @@ class ExerciseItem {
   /// تمارين التسجيل بالصوت (تكرار/تسمية صورة).
   bool get isRepeatLike =>
       kind == ExerciseKind.repeat || kind == ExerciseKind.pictureName;
+
+  factory ExerciseItem.fromJson(Map<String, dynamic> json) {
+    return ExerciseItem(
+      id: (json['id'] ?? '').toString(),
+      kind: ExerciseKind.values.firstWhere(
+        (e) => e.name == '${json['kind']}',
+        orElse: () => ExerciseKind.repeat,
+      ),
+      prompt: (json['prompt'] ?? '').toString(),
+      emoji: (json['emoji'] ?? '🔊').toString(),
+      difficulty: ExerciseDifficulty.values.firstWhere(
+        (e) => e.name == '${json['difficulty']}',
+        orElse: () => ExerciseDifficulty.easy,
+      ),
+      options: (json['options'] as List? ?? []).map((e) => '$e').toList(),
+      correctIndex: int.tryParse('${json['correct_index']}') ?? 0,
+    );
+  }
 }
 
 /// أنواع ألعاب الطفل.
@@ -67,4 +93,12 @@ class ExerciseCategoryInfo {
   });
 
   double get progress => total == 0 ? 0 : completed / total;
+
+  factory ExerciseCategoryInfo.fromJson(Map<String, dynamic> json) {
+    return ExerciseCategoryInfo(
+      category: ExerciseCategoryX.fromKey(json['category']?.toString()),
+      total: int.tryParse('${json['total']}') ?? 0,
+      completed: int.tryParse('${json['completed']}') ?? 0,
+    );
+  }
 }
