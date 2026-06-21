@@ -7,8 +7,8 @@ extension AppointmentTypeX on AppointmentType {
       k == 'clinic' ? AppointmentType.clinic : AppointmentType.video;
 }
 
-/// حالة الموعد.
-enum AppointmentStatus { scheduled, completed, cancelled }
+/// حالة الموعد. `pending` = طلب حجز بانتظار تأكيد الأخصائي.
+enum AppointmentStatus { pending, scheduled, completed, cancelled }
 
 extension AppointmentStatusX on AppointmentStatus {
   String get key => name;
@@ -37,10 +37,12 @@ class TherapistOption {
       );
 }
 
-/// موعد جلسة علاجية (جانب المتدرّب).
+/// موعد جلسة علاجية. يُستخدم من جانب المتدرّب (يهمّه `therapistName`) ومن جانب
+/// الأخصائي (يهمّه `patientName`).
 class Appointment {
   final String id;
   final String therapistName;
+  final String patientName;
   final String specialty;
   final DateTime dateTime;
   final int durationMinutes;
@@ -54,15 +56,19 @@ class Appointment {
     required this.dateTime,
     required this.type,
     required this.status,
+    this.patientName = '',
     this.durationMinutes = 30,
   });
 
   bool get isUpcoming =>
       status == AppointmentStatus.scheduled && dateTime.isAfter(DateTime.now());
 
+  bool get isPending => status == AppointmentStatus.pending;
+
   Appointment copyWith({AppointmentStatus? status}) => Appointment(
         id: id,
         therapistName: therapistName,
+        patientName: patientName,
         specialty: specialty,
         dateTime: dateTime,
         durationMinutes: durationMinutes,
@@ -73,6 +79,7 @@ class Appointment {
   factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
         id: (json['id'] ?? '').toString(),
         therapistName: (json['therapist_name'] ?? json['therapist'] ?? '').toString(),
+        patientName: (json['patient_name'] ?? json['patient'] ?? '').toString(),
         specialty: (json['specialty'] ?? '').toString(),
         dateTime: DateTime.tryParse('${json['date_time'] ?? json['datetime'] ?? ''}') ??
             DateTime.now(),

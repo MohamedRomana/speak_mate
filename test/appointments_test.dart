@@ -5,6 +5,7 @@ import 'package:speak_mate/core/cache/cache_helper.dart';
 import 'package:speak_mate/features/shared/appointments/data/models/appointment.dart';
 import 'package:speak_mate/features/shared/appointments/data/repos/appointments_repo.dart';
 import 'package:speak_mate/features/shared/appointments/logic/appointments_cubit.dart';
+import 'package:speak_mate/features/shared/appointments/logic/therapist_schedule_cubit.dart';
 
 void main() {
   setUpAll(() async {
@@ -47,5 +48,38 @@ void main() {
     expect(cubit.items.firstWhere((a) => a.id == id).status,
         AppointmentStatus.cancelled);
     await cubit.close();
+  });
+
+  group('TherapistScheduleCubit', () {
+    test('تحميل يفصل الطلبات المعلّقة عن المؤكَّدة والسابقة', () async {
+      final cubit = TherapistScheduleCubit(AppointmentsRepo());
+      await cubit.load();
+      expect(cubit.phase, SchedulePhase.ready);
+      expect(cubit.pending, isNotEmpty);
+      expect(cubit.pending.every((a) => a.isPending), isTrue);
+      await cubit.close();
+    });
+
+    test('قبول طلب يحوّله إلى scheduled', () async {
+      final cubit = TherapistScheduleCubit(AppointmentsRepo());
+      await cubit.load();
+      final id = cubit.pending.first.id;
+      final ok = await cubit.confirm(id);
+      expect(ok, isTrue);
+      expect(cubit.items.firstWhere((a) => a.id == id).status,
+          AppointmentStatus.scheduled);
+      await cubit.close();
+    });
+
+    test('رفض طلب يحوّله إلى cancelled', () async {
+      final cubit = TherapistScheduleCubit(AppointmentsRepo());
+      await cubit.load();
+      final id = cubit.pending.first.id;
+      final ok = await cubit.decline(id);
+      expect(ok, isTrue);
+      expect(cubit.items.firstWhere((a) => a.id == id).status,
+          AppointmentStatus.cancelled);
+      await cubit.close();
+    });
   });
 }

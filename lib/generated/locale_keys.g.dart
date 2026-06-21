@@ -459,6 +459,14 @@ abstract class LocaleKeys {
   static const planCreated = 'planCreated';
   static const weeksUnit = 'weeksUnit';
   static const sessionsUnit = 'sessionsUnit';
+  static const schedule = 'schedule';
+  static const pendingRequests = 'pendingRequests';
+  static const confirmedAppointments = 'confirmedAppointments';
+  static const acceptAction = 'acceptAction';
+  static const declineAction = 'declineAction';
+  static const requestAccepted = 'requestAccepted';
+  static const requestDeclined = 'requestDeclined';
+  static const patientLabel = 'patientLabel';
 
   static const gamesHub = 'gamesHub';
   static const gamesHubDesc = 'gamesHubDesc';

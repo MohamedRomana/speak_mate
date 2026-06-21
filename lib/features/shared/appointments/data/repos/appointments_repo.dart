@@ -80,6 +80,40 @@ class AppointmentsRepo {
     }
   }
 
+  /// مواعيد الأخصائي (تتضمّن أسماء المرضى وطلبات قيد الانتظار).
+  Future<ApiResult<List<Appointment>>> getTherapistAppointments() async {
+    try {
+      if (AppConstants.useMockData) {
+        await Future.delayed(AppConstants.mockDelay);
+        return ApiResult.success(_therapistMockList());
+      }
+      return ApiService.executeApi<List<Appointment>>(
+        () => _api.get(ApiConstants.appointments, query: {'role': 'therapist'}),
+        parser: (data) => (data as List)
+            .map((e) => Appointment.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
+    } catch (e) {
+      return ApiResult.error(ApiErrorModel(message: e.toString()));
+    }
+  }
+
+  /// يحدّث حالة موعد (تأكيد/رفض من جانب الأخصائي).
+  Future<ApiResult<bool>> updateStatus(String id, AppointmentStatus status) async {
+    try {
+      if (AppConstants.useMockData) {
+        await Future.delayed(const Duration(milliseconds: 600));
+        return const ApiResult.success(true);
+      }
+      return ApiService.executeApi<bool>(
+        () => _api.put(ApiConstants.appointment(id), data: {'status': status.key}),
+        parser: (_) => true,
+      );
+    } catch (e) {
+      return ApiResult.error(ApiErrorModel(message: e.toString()));
+    }
+  }
+
   /// إلغاء موعد.
   Future<ApiResult<bool>> cancel(String id) async {
     try {
@@ -103,6 +137,48 @@ class AppointmentsRepo {
     TherapistOption(id: 't2', name: 'د. خالد العتيبي', specialty: 'التأتأة والطلاقة'),
     TherapistOption(id: 't3', name: 'د. ليلى الحربي', specialty: 'تأخر اللغة عند الأطفال'),
   ];
+
+  List<Appointment> _therapistMockList() {
+    final now = DateTime.now();
+    return [
+      Appointment(
+        id: 'ta1',
+        therapistName: 'د. سارة المهدي',
+        patientName: 'أحمد محمد',
+        specialty: 'طلب جلسة فيديو',
+        dateTime: now.add(const Duration(days: 1, hours: 2)),
+        type: AppointmentType.video,
+        status: AppointmentStatus.pending,
+      ),
+      Appointment(
+        id: 'ta2',
+        therapistName: 'د. سارة المهدي',
+        patientName: 'لمى خالد',
+        specialty: 'طلب جلسة حضورية',
+        dateTime: now.add(const Duration(days: 2, hours: 1)),
+        type: AppointmentType.clinic,
+        status: AppointmentStatus.pending,
+      ),
+      Appointment(
+        id: 'ta3',
+        therapistName: 'د. سارة المهدي',
+        patientName: 'يوسف العلي',
+        specialty: 'متابعة',
+        dateTime: now.add(const Duration(hours: 6)),
+        type: AppointmentType.video,
+        status: AppointmentStatus.scheduled,
+      ),
+      Appointment(
+        id: 'ta4',
+        therapistName: 'د. سارة المهدي',
+        patientName: 'سلمى أحمد',
+        specialty: 'تقييم أولي',
+        dateTime: now.subtract(const Duration(days: 2)),
+        type: AppointmentType.clinic,
+        status: AppointmentStatus.completed,
+      ),
+    ];
+  }
 
   List<Appointment> _mockList() {
     final now = DateTime.now();

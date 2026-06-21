@@ -8,16 +8,29 @@ import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../../data/models/appointment.dart';
 
-/// كرت موعد — أخصائي + تاريخ/وقت + نوع الجلسة + حالة، مع إلغاء للمواعيد القادمة.
+/// كرت موعد — يعرض الأخصائي (جانب المتدرّب) أو المريض (جانب الأخصائي عبر
+/// [showPatient]) + تاريخ/وقت + نوع الجلسة + حالة. أزرار: إلغاء للمتدرّب،
+/// قبول/رفض لطلبات الأخصائي المعلّقة.
 class AppointmentCard extends StatelessWidget {
   final Appointment appt;
   final VoidCallback? onCancel;
-  const AppointmentCard({super.key, required this.appt, this.onCancel});
+  final bool showPatient;
+  final VoidCallback? onAccept;
+  final VoidCallback? onDecline;
+  const AppointmentCard({
+    super.key,
+    required this.appt,
+    this.onCancel,
+    this.showPatient = false,
+    this.onAccept,
+    this.onDecline,
+  });
 
   @override
   Widget build(BuildContext context) {
     final isVideo = appt.type == AppointmentType.video;
     final (statusColor, statusKey) = switch (appt.status) {
+      AppointmentStatus.pending => (AppColors.warning, LocaleKeys.pendingLabel),
       AppointmentStatus.scheduled => (AppColors.primary, LocaleKeys.statusScheduled),
       AppointmentStatus.completed => (AppColors.success, LocaleKeys.statusCompleted),
       AppointmentStatus.cancelled => (AppColors.error, LocaleKeys.statusCancelled),
@@ -56,7 +69,7 @@ class AppointmentCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText(
-                      text: appt.therapistName,
+                      text: showPatient ? appt.patientName : appt.therapistName,
                       size: 14.sp,
                       family: FontFamily.tajawalBold,
                       color: AppColors.mainText,
@@ -121,6 +134,50 @@ class AppointmentCard extends StatelessWidget {
                   color: AppColors.error,
                 ),
               ),
+            ),
+          ],
+          if (appt.isPending && (onAccept != null || onDecline != null)) ...[
+            SizedBox(height: 12.h),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: onDecline,
+                    style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      side: const BorderSide(color: AppColors.error),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                    child: AppText(
+                      text: LocaleKeys.declineAction.tr(),
+                      size: 12.sp,
+                      family: FontFamily.tajawalBold,
+                      color: AppColors.error,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: onAccept,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.success,
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                    child: AppText(
+                      text: LocaleKeys.acceptAction.tr(),
+                      size: 12.sp,
+                      family: FontFamily.tajawalBold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ],
