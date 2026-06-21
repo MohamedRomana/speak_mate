@@ -10,6 +10,7 @@ class CacheHelper {
   static const _language = 'lang';
   static const _showImage = 'showImage';
   static const _deviceToken = 'deviceToken';
+  static const _authToken = 'authToken';
   static const _type = 'type';
   static const _intro = 'intro';
   static const _address = 'address';
@@ -86,6 +87,19 @@ class CacheHelper {
 
   static String getDeviceToken() {
     return _preferences.getString(_deviceToken) ?? '';
+  }
+
+  /// رمز المصادقة (Bearer) للـ API الحقيقي.
+  static Future<void> setAuthToken(String? token) async {
+    await _preferences.setString(_authToken, token ?? '');
+  }
+
+  static String getAuthToken() {
+    return _preferences.getString(_authToken) ?? '';
+  }
+
+  static Future<void> clearAuthToken() async {
+    await _preferences.remove(_authToken);
   }
 
   static setUserType(String? type) async {

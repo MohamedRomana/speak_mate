@@ -33,6 +33,39 @@ class AppUser {
     this.yearsOfExperience,
   });
 
+  /// تفكيك مستخدم من رد الـ API الحقيقي (داخل `data`).
+  factory AppUser.fromJson(Map<String, dynamic> json) {
+    return AppUser(
+      id: (json['id'] ?? '').toString(),
+      name: (json['name'] ?? '').toString(),
+      role: UserRoleX.fromKey(json['role']?.toString()),
+      email: json['email']?.toString(),
+      phone: json['phone']?.toString(),
+      age: json['age'] is int ? json['age'] as int : int.tryParse('${json['age']}'),
+      difficultyType: json['difficulty_type']?.toString(),
+      avatarUrl: json['avatar']?.toString() ?? json['avatar_url']?.toString(),
+      specialty: json['specialty']?.toString(),
+      licenseNumber: json['license_number']?.toString(),
+      yearsOfExperience: json['years_of_experience'] is int
+          ? json['years_of_experience'] as int
+          : int.tryParse('${json['years_of_experience']}'),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'role': role.key,
+        'email': email,
+        'phone': phone,
+        'age': age,
+        'difficulty_type': difficultyType,
+        'avatar': avatarUrl,
+        'specialty': specialty,
+        'license_number': licenseNumber,
+        'years_of_experience': yearsOfExperience,
+      };
+
   AppUser copyWith({
     String? id,
     String? name,

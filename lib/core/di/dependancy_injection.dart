@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 
+import '../networking/api_service.dart';
 import '../realtime/websocket_client.dart';
 import '../services/weak_sounds_tracker.dart';
 import '../../features/auth/data/repos/auth_repo.dart';
@@ -26,8 +27,11 @@ Future<void> setUpGetIt() async {
   // ---- محرّك الكلام: متتبّع الأصوات الضعيفة (heatmap) ----
   getIt.registerLazySingleton<WeakSoundsTracker>(() => WeakSoundsTracker());
 
+  // ---- عميل الـ API الحقيقي (يُستخدم عند useMockData == false) ----
+  getIt.registerLazySingleton<ApiService>(() => ApiService());
+
   // ---- المصادقة (Auth) ----
-  getIt.registerLazySingleton<AuthRepo>(() => AuthRepo());
+  getIt.registerLazySingleton<AuthRepo>(() => AuthRepo(api: getIt<ApiService>()));
 
   // ---- المتدرّب: الملف الشخصي ----
   getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepo());
