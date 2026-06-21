@@ -9,6 +9,7 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/helper/extentions.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/fade_slide_in.dart';
+import '../../../../../core/widgets/phoneme_breakdown.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
@@ -393,6 +394,12 @@ class _ResultView extends StatelessWidget {
               color: AppColors.secondaryText,
               textAlign: TextAlign.center,
               lines: 2,
+            ),
+          ],
+          if (cubit.lastAnalysis != null) ...[
+            SizedBox(height: 14.h),
+            Center(
+              child: PhonemeBreakdown(analysis: cubit.lastAnalysis!),
             ),
           ],
           SizedBox(height: 22.h),

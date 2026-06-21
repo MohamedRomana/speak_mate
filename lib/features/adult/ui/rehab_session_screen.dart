@@ -9,7 +9,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/helper/extentions.dart';
 import '../../../core/widgets/app_text.dart';
+import '../../../core/services/phoneme_analyzer.dart';
 import '../../../core/widgets/fade_slide_in.dart';
+import '../../../core/widgets/phoneme_breakdown.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../gen/fonts.gen.dart';
 import '../../../generated/locale_keys.g.dart';
@@ -351,13 +353,31 @@ class _Result extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14.r),
                 border: Border.all(color: AppColors.border),
               ),
-              child: AppText(
-                text:
-                    '🎙️ ${LocaleKeys.youSaid.tr()}: ${cubit.recognized}\n✅ ${LocaleKeys.correctLabel.tr()}: ${cubit.current.text}',
-                size: 13.sp,
-                lines: 4,
-                overflow: TextOverflow.visible,
-                color: AppColors.secondaryText,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText(
+                    text:
+                        '🎙️ ${LocaleKeys.youSaid.tr()}: ${cubit.recognized}\n✅ ${LocaleKeys.correctLabel.tr()}: ${cubit.current.text}',
+                    size: 13.sp,
+                    lines: 4,
+                    overflow: TextOverflow.visible,
+                    color: AppColors.secondaryText,
+                  ),
+                  if (cubit.analysis != null) ...[
+                    SizedBox(height: 12.h),
+                    PhonemeBreakdown(analysis: cubit.analysis!),
+                    SizedBox(height: 10.h),
+                    // ملاحظة إكلينيكية موجّهة للبالغ.
+                    AppText(
+                      text: cubit.analysis!.feedback(SpeechAudience.adult),
+                      size: 12.sp,
+                      lines: 4,
+                      overflow: TextOverflow.visible,
+                      color: AppColors.mainText,
+                    ),
+                  ],
+                ],
               ),
             ),
           ],
