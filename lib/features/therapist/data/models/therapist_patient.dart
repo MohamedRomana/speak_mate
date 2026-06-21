@@ -1,5 +1,12 @@
 enum PatientCondition { child, adult }
 
+/// إحصاء صوت ضعيف لمريض (للخريطة الحرارية في لوحة الأخصائي).
+class WeakSoundStat {
+  final String sound; // الحرف العربي
+  final double errorRate; // 0..1 نسبة الخطأ على هذا الصوت
+  const WeakSoundStat(this.sound, this.errorRate);
+}
+
 /// تسجيل مريض (لمراجعة الأخصائي).
 class PatientRecording {
   final String id;
@@ -33,7 +40,7 @@ class TherapistPatient {
   final int accuracy; // %
   final String lastActive;
   final List<double> accuracySeries;
-  final List<String> weakSounds;
+  final List<WeakSoundStat> weakSounds;
   final List<PatientRecording> recordings;
 
   const TherapistPatient({

@@ -64,22 +64,7 @@ class PatientDetailScreen extends StatelessWidget {
                 child: Wrap(
                   spacing: 10.w,
                   runSpacing: 10.h,
-                  children: patient.weakSounds
-                      .map((s) => Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 18.w, vertical: 10.h),
-                            decoration: BoxDecoration(
-                              color: AppColors.error.withValues(alpha: 0.12),
-                              borderRadius: BorderRadius.circular(14.r),
-                            ),
-                            child: AppText(
-                              text: s,
-                              size: 18.sp,
-                              family: FontFamily.tajawalBold,
-                              color: AppColors.error,
-                            ),
-                          ))
-                      .toList(),
+                  children: patient.weakSounds.map(_WeakSoundTile.new).toList(),
                 ),
               ),
               SizedBox(height: 16.h),
@@ -330,6 +315,44 @@ class _Card extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           child,
+        ],
+      ),
+    );
+  }
+}
+
+/// رقاقة صوت ضعيف بلون حراري حسب نسبة الخطأ (كهرماني → أحمر).
+class _WeakSoundTile extends StatelessWidget {
+  final WeakSoundStat stat;
+  const _WeakSoundTile(this.stat);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = stat.errorRate.clamp(0.0, 1.0);
+    final color = Color.lerp(AppColors.warning, AppColors.error, t)!;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 9.h),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12 + t * 0.12),
+        borderRadius: BorderRadius.circular(14.r),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AppText(
+            text: stat.sound,
+            size: 18.sp,
+            family: FontFamily.tajawalBold,
+            color: color,
+          ),
+          SizedBox(width: 7.w),
+          AppText(
+            text: '${(t * 100).round()}%',
+            size: 12.sp,
+            family: FontFamily.tajawalMedium,
+            color: color,
+          ),
         ],
       ),
     );
