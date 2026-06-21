@@ -9,6 +9,7 @@ import 'core/constants/colors.dart';
 import 'core/di/dependancy_injection.dart';
 import 'core/logic/settings_cubit.dart';
 import 'core/networking/bloc_observer.dart';
+import 'core/realtime/websocket_client.dart';
 import 'core/routing/app_router.dart';
 import 'core/routing/routes.dart';
 import 'core/theme/app_theme.dart';
@@ -23,6 +24,8 @@ void main() async {
   await CacheHelper.init();
   Bloc.observer = MyBlocObserver();
   await setUpGetIt();
+  // فتح اتصال الزمن الحقيقي (في وضع mock يحاكي الأحداث دون backend).
+  getIt<WebSocketClient>().connect();
   await EasyLocalization.ensureInitialized();
 
   final savedLang = CacheHelper.getLang();

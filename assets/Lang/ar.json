@@ -417,6 +417,10 @@
   "nameThisPicture": "ما اسم هذه الصورة؟",
   "listenAndGuess": "استمع ثم خمّن",
 
+  "liveUpdateTitle": "تحديث مباشر 📈",
+  "liveUpdateBody": "تحسّنت دقة نطقك إلى {}%! استمر.",
+  "liveNow": "مباشر الآن",
+
   "order_sent_successfully": "تم الإرسال بنجاح",
   "continue_shopping": "متابعة",
   "continue_browsing": "تصفّح",

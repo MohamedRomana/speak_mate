@@ -417,6 +417,10 @@
   "nameThisPicture": "What is this picture?",
   "listenAndGuess": "Listen then guess",
 
+  "liveUpdateTitle": "Live update 📈",
+  "liveUpdateBody": "Your pronunciation accuracy improved to {}%! Keep going.",
+  "liveNow": "Live now",
+
   "order_sent_successfully": "Sent successfully",
   "continue_shopping": "Continue",
   "continue_browsing": "Browse",

@@ -421,6 +421,10 @@ abstract class LocaleKeys {
   static const nameThisPicture = 'nameThisPicture';
   static const listenAndGuess = 'listenAndGuess';
 
+  static const liveUpdateTitle = 'liveUpdateTitle';
+  static const liveUpdateBody = 'liveUpdateBody';
+  static const liveNow = 'liveNow';
+
   static const order_sent_successfully = 'order_sent_successfully';
   static const continue_shopping = 'continue_shopping';
   static const continue_browsing = 'continue_browsing';

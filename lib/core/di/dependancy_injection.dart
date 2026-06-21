@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 
+import '../realtime/websocket_client.dart';
 import '../../features/auth/data/repos/auth_repo.dart';
 import '../../features/users/patient/aac/data/repos/aac_repo.dart';
 import '../../features/users/patient/chat/data/repos/chatbot_repo.dart';
@@ -18,6 +19,9 @@ final getIt = GetIt.instance;
 
 /// تسجيل كل الـ Repos/Services. أي feature جديدة تضيف تسجيلها هنا.
 Future<void> setUpGetIt() async {
+  // ---- الزمن الحقيقي (WebSocket) ----
+  getIt.registerLazySingleton<WebSocketClient>(() => WebSocketClient());
+
   // ---- المصادقة (Auth) ----
   getIt.registerLazySingleton<AuthRepo>(() => AuthRepo());
 

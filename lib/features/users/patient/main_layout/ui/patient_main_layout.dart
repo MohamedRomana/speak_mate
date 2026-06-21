@@ -29,7 +29,9 @@ class PatientMainLayout extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => PatientNavCubit()),
         BlocProvider(create: (_) => DashboardCubit(getIt())..load()),
-        BlocProvider(create: (_) => NotificationsCubit(getIt())..load()),
+        BlocProvider(
+          create: (_) => NotificationsCubit(getIt(), ws: getIt())..load(),
+        ),
         BlocProvider(create: (_) => ExercisesCubit(getIt())..load()),
         BlocProvider(create: (_) => GamificationCubit(getIt())..load()),
         BlocProvider(create: (_) => AacCubit(getIt())..load()),
