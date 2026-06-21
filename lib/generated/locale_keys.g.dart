@@ -340,6 +340,7 @@ abstract class LocaleKeys {
   static const youSaid = 'youSaid';
   static const correctLabel = 'correctLabel';
   static const focusOnSound = 'focusOnSound';
+  static const soundBreakdown = 'soundBreakdown';
   static const newWord = 'newWord';
   static const xpEarnedMsg = 'xpEarnedMsg';
   static const goalExercises = 'goalExercises';

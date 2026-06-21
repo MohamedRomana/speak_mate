@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/helper/extentions.dart';
+import '../../../../core/services/phoneme_analyzer.dart';
 import '../../../../core/widgets/app_text.dart';
 import '../../../../core/widgets/fade_slide_in.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -284,6 +285,9 @@ class _Result extends StatelessWidget {
             color: AppColors.warning,
           ),
         ],
+        SizedBox(height: 16.h),
+        if (cubit.analysis != null && cubit.analysis!.phonemes.isNotEmpty)
+          _PhonemeStrip(analysis: cubit.analysis!),
         SizedBox(height: 14.h),
         _FeedbackCard(cubit: cubit),
         SizedBox(height: 22.h),
@@ -350,9 +354,14 @@ class _FeedbackCard extends StatelessWidget {
                 AppColors.success),
             if (cubit.focus.isNotEmpty) ...[
               SizedBox(height: 6.h),
-              _row('👉', '${LocaleKeys.focusOnSound.tr()} "${cubit.focus}"',
+              _row('👉', '${LocaleKeys.focusOnSound.tr()} «${cubit.focus}»',
                   AppColors.warning),
             ],
+          ],
+          if (cubit.analysis != null) ...[
+            SizedBox(height: 8.h),
+            _row(cubit.correct ? '🌟' : '💬',
+                cubit.analysis!.feedback(SpeechAudience.child), AppColors.mainText),
           ],
         ],
       ),
@@ -369,12 +378,75 @@ class _FeedbackCard extends StatelessWidget {
           child: AppText(
             text: text,
             size: 13.sp,
-            lines: 2,
+            lines: 3,
             overflow: TextOverflow.visible,
             color: color,
           ),
         ),
       ],
+    );
+  }
+}
+
+/// شريط الفونيمات: كل صوت كرقاقة ملوّنة (أخضر صحيح / كهرماني تشويه / أحمر خطأ)
+/// يجسّد كشف الأخطاء على مستوى الصوت — لب محرّك الكلام.
+class _PhonemeStrip extends StatelessWidget {
+  final SpeechAnalysis analysis;
+  const _PhonemeStrip({required this.analysis});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppText(
+          text: LocaleKeys.soundBreakdown.tr(),
+          size: 12.sp,
+          family: FontFamily.tajawalBold,
+          color: AppColors.secondaryText,
+        ),
+        SizedBox(height: 8.h),
+        Wrap(
+          spacing: 6.w,
+          runSpacing: 6.h,
+          children: analysis.phonemes
+              .where((p) => p.expected.isNotEmpty || p.error == PhonemeError.extra)
+              .map(_chip)
+              .toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _chip(PhonemeResult p) {
+    final (color, icon) = switch (p.error) {
+      PhonemeError.correct => (AppColors.success, Icons.check_rounded),
+      PhonemeError.distorted => (AppColors.warning, Icons.change_history_rounded),
+      PhonemeError.missing => (AppColors.error, Icons.remove_rounded),
+      PhonemeError.substituted => (AppColors.error, Icons.swap_horiz_rounded),
+      PhonemeError.extra => (AppColors.secondaryText, Icons.add_rounded),
+    };
+    final glyph = p.expected.isNotEmpty ? p.expected : (p.actual ?? '');
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 5.h),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 13.w, color: color),
+          SizedBox(width: 4.w),
+          AppText(
+            text: glyph,
+            size: 14.sp,
+            family: FontFamily.tajawalBold,
+            color: color,
+          ),
+        ],
+      ),
     );
   }
 }

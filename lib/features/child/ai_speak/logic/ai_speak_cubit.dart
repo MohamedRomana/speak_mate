@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/services/phoneme_analyzer.dart';
 import '../../../../core/services/speech_service.dart';
 
 enum AiSpeakPhase { prompt, recording, checking, result }
@@ -32,6 +33,7 @@ class AiSpeakCubit extends Cubit<int> {
   bool correct = false;
   String recognized = '';
   String focus = '';
+  SpeechAnalysis? analysis;
   bool _sttOn = false;
 
   int _rev = 0;
@@ -53,25 +55,43 @@ class AiSpeakCubit extends Cubit<int> {
     if (_sttOn) {
       recognized = await _speech.stop();
       if (isClosed) return;
-      final r = SpeechMatch.ratio(recognized, current.text);
-      score = (r * 100).round();
-      correct = r >= 0.7;
     } else {
+      // محاكاة عند غياب الميكروفون: نطق شبه-صحيح يُغذّي نفس محرّك التحليل.
       await Future.delayed(const Duration(milliseconds: 1100));
       if (isClosed) return;
-      recognized = '';
-      score = 80 + (index % 3) * 6;
-      correct = true;
+      recognized = _mockRecognized();
     }
-    final norm = SpeechMatch.normalize(current.text);
-    focus = correct || norm.isEmpty ? '' : norm.substring(0, 1);
+    // تحليل فونيمي كامل (محاذاة + كشف أخطاء + درجة موزونة + فونيم التركيز).
+    final a = PhonemeAnalyzer.analyze(recognized, current.text);
+    analysis = a;
+    score = a.score;
+    correct = a.isCorrect;
+    focus = a.focusLabel;
     phase = AiSpeakPhase.result;
     _emit();
+  }
+
+  /// نطق محاكى: غالبًا صحيح، وأحيانًا يُبدِل أول صوت صعب ليُظهر التحليل الفونيمي.
+  String _mockRecognized() {
+    final t = current.text;
+    if (index % 3 == 1) {
+      final norm = SpeechMatch.normalize(t).replaceAll(' ', '');
+      // أبدِل أول حرف "ر/ل/س" بحرف قريب لإظهار كشف الخطأ.
+      const swaps = {'ر': 'غ', 'ل': 'ر', 'س': 'ث', 'ث': 'س', 'ش': 'س'};
+      for (final entry in swaps.entries) {
+        final i = norm.indexOf(entry.key);
+        if (i >= 0) {
+          return norm.replaceRange(i, i + 1, entry.value);
+        }
+      }
+    }
+    return t;
   }
 
   void retry() {
     phase = AiSpeakPhase.prompt;
     recognized = '';
+    analysis = null;
     _emit();
   }
 
@@ -81,6 +101,7 @@ class AiSpeakCubit extends Cubit<int> {
     recognized = '';
     score = 0;
     correct = false;
+    analysis = null;
     _emit();
   }
 
