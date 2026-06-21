@@ -422,6 +422,21 @@ abstract class LocaleKeys {
   static const noAppointmentsToday = 'noAppointmentsToday';
   static const currencySar = 'currencySar';
   static const withTherapistLabel = 'withTherapistLabel';
+  static const myAppointments = 'myAppointments';
+  static const bookAppointment = 'bookAppointment';
+  static const noAppointments = 'noAppointments';
+  static const chooseTherapist = 'chooseTherapist';
+  static const chooseDateTime = 'chooseDateTime';
+  static const sessionType = 'sessionType';
+  static const confirmBooking = 'confirmBooking';
+  static const appointmentBooked = 'appointmentBooked';
+  static const appointmentCancelled = 'appointmentCancelled';
+  static const cancelAppointment = 'cancelAppointment';
+  static const upcomingTab = 'upcomingTab';
+  static const pastTab = 'pastTab';
+  static const pickDate = 'pickDate';
+  static const pickTime = 'pickTime';
+  static const confirm = 'confirm';
 
   static const gamesHub = 'gamesHub';
   static const gamesHubDesc = 'gamesHubDesc';

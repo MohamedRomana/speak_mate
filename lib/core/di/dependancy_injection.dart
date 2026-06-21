@@ -12,6 +12,7 @@ import '../../features/users/patient/exercises/data/repos/exercises_repo.dart';
 import '../../features/users/patient/notifications/data/repos/notifications_repo.dart';
 import '../../features/adult/data/repos/adult_repo.dart';
 import '../../features/clinic/data/repos/clinic_repo.dart';
+import '../../features/shared/appointments/data/repos/appointments_repo.dart';
 import '../../features/shared/gamification/data/repos/gamification_repo.dart';
 import '../../features/shared/plans/data/repos/plans_repo.dart';
 import '../../features/therapist/data/repos/therapist_repo.dart';
@@ -64,6 +65,10 @@ Future<void> setUpGetIt() async {
 
   // ---- الخطط العلاجية (مشتركة: أخصائي + متدرّب) ----
   getIt.registerLazySingleton<PlansRepo>(() => PlansRepo(api: getIt<ApiService>()));
+
+  // ---- المواعيد (حجز/عرض/إلغاء) ----
+  getIt.registerLazySingleton<AppointmentsRepo>(
+      () => AppointmentsRepo(api: getIt<ApiService>()));
 
   // ---- وحدة الكبار (إعادة التأهيل) ----
   getIt.registerLazySingleton<AdultRepo>(() => AdultRepo());
