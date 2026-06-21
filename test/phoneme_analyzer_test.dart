@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:speak_mate/core/services/phoneme_analyzer.dart';
+import 'package:speak_mate/core/services/weak_sounds_tracker.dart';
 
 void main() {
   group('PhonemeAnalyzer', () {
@@ -60,6 +61,26 @@ void main() {
       expect(child, contains('حاول'));
       expect(adult, contains('٪'));
       expect(adult, contains('فونيمية'));
+    });
+  });
+
+  group('WeakSoundsTracker', () {
+    test('يجمّع الأخطاء ويرتّب الأصوات حسب نسبة الخطأ', () {
+      final t = WeakSoundsTracker();
+      t.record(PhonemeAnalyzer.analyze('بمر', 'قمر')); // خطأ على ق
+      t.record(PhonemeAnalyzer.analyze('قمر', 'قمر')); // كله صحيح
+      final top = t.top();
+      expect(t.isEmpty, isFalse);
+      expect(top, isNotEmpty);
+      // الصوت الأعلى يجب أن يكون له نسبة خطأ موجبة.
+      expect(top.first.errorRate, greaterThan(0));
+    });
+
+    test('نطق مثالي لا يُسجَّل كأصوات ضعيفة', () {
+      final t = WeakSoundsTracker();
+      t.record(PhonemeAnalyzer.analyze('قمر', 'قمر'));
+      expect(t.isEmpty, isTrue);
+      expect(t.top(), isEmpty);
     });
   });
 }

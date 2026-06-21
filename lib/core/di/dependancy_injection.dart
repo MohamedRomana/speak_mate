@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 
 import '../realtime/websocket_client.dart';
+import '../services/weak_sounds_tracker.dart';
 import '../../features/auth/data/repos/auth_repo.dart';
 import '../../features/users/patient/aac/data/repos/aac_repo.dart';
 import '../../features/users/patient/chat/data/repos/chatbot_repo.dart';
@@ -21,6 +22,9 @@ final getIt = GetIt.instance;
 Future<void> setUpGetIt() async {
   // ---- الزمن الحقيقي (WebSocket) ----
   getIt.registerLazySingleton<WebSocketClient>(() => WebSocketClient());
+
+  // ---- محرّك الكلام: متتبّع الأصوات الضعيفة (heatmap) ----
+  getIt.registerLazySingleton<WeakSoundsTracker>(() => WeakSoundsTracker());
 
   // ---- المصادقة (Auth) ----
   getIt.registerLazySingleton<AuthRepo>(() => AuthRepo());

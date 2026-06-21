@@ -385,6 +385,7 @@ abstract class LocaleKeys {
   static const lastActiveLabel = 'lastActiveLabel';
   static const patientProfile = 'patientProfile';
   static const weakSounds = 'weakSounds';
+  static const weakSoundsHint = 'weakSoundsHint';
   static const recordingsReview = 'recordingsReview';
   static const aiReport = 'aiReport';
   static const assignPlan = 'assignPlan';

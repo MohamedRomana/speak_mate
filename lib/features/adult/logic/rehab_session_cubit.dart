@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/di/dependancy_injection.dart';
+import '../../../core/services/phoneme_analyzer.dart';
 import '../../../core/services/speech_service.dart';
+import '../../../core/services/weak_sounds_tracker.dart';
 import '../data/models/rehab_models.dart';
 import '../data/repos/adult_repo.dart';
 
@@ -27,8 +30,11 @@ class RehabSessionCubit extends Cubit<int> {
   String recognized = '';
   int totalScore = 0;
   bool revealed = true; // تُخفى الكلمة في تمارين الذاكرة
+  SpeechAnalysis? analysis;
   bool _sttOn = false;
   Timer? _hideTimer;
+
+  final WeakSoundsTracker _weak = getIt<WeakSoundsTracker>();
 
   int _rev = 0;
   void _emit() {
@@ -83,13 +89,16 @@ class RehabSessionCubit extends Cubit<int> {
     if (_sttOn) {
       recognized = await _speech.stop();
       if (isClosed) return;
-      score = (SpeechMatch.ratio(recognized, current.text) * 100).round();
     } else {
       await Future.delayed(const Duration(milliseconds: 1100));
       if (isClosed) return;
-      recognized = '';
-      score = 70 + (index % 4) * 7;
+      recognized = current.text; // محاكاة: نطق صحيح يغذّي المحرّك
     }
+    // تحليل فونيمي موحّد + تغذية خريطة الأصوات الضعيفة.
+    final a = PhonemeAnalyzer.analyze(recognized, current.text);
+    analysis = a;
+    _weak.record(a);
+    score = a.score;
     correct = score >= 65;
     if (correct) totalScore += score;
     phase = RehabPhase.result;
@@ -100,6 +109,7 @@ class RehabSessionCubit extends Cubit<int> {
     recognized = '';
     score = 0;
     correct = false;
+    analysis = null;
     phase = RehabPhase.prompt;
     _emit();
   }
@@ -114,6 +124,7 @@ class RehabSessionCubit extends Cubit<int> {
     recognized = '';
     score = 0;
     correct = false;
+    analysis = null;
     _prepareCurrent();
   }
 
@@ -123,6 +134,7 @@ class RehabSessionCubit extends Cubit<int> {
     recognized = '';
     score = 0;
     correct = false;
+    analysis = null;
     _prepareCurrent();
   }
 

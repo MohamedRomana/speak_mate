@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/di/dependancy_injection.dart';
 import '../../../../core/services/phoneme_analyzer.dart';
 import '../../../../core/services/speech_service.dart';
+import '../../../../core/services/weak_sounds_tracker.dart';
 
 enum AiSpeakPhase { prompt, recording, checking, result }
 
@@ -64,6 +66,7 @@ class AiSpeakCubit extends Cubit<int> {
     // تحليل فونيمي كامل (محاذاة + كشف أخطاء + درجة موزونة + فونيم التركيز).
     final a = PhonemeAnalyzer.analyze(recognized, current.text);
     analysis = a;
+    getIt<WeakSoundsTracker>().record(a);
     score = a.score;
     correct = a.isCorrect;
     focus = a.focusLabel;

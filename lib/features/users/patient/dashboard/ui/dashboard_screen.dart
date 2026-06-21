@@ -119,6 +119,11 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SizedBox(height: 14.h),
+                    const FadeSlideIn(
+                      delay: Duration(milliseconds: 130),
+                      child: WeakSoundsHeatmap(),
+                    ),
                     SizedBox(height: 22.h),
                     _SectionHeader(title: LocaleKeys.upcomingSessions.tr()),
                     SizedBox(height: 12.h),

@@ -7,6 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:speak_mate/core/cache/cache_helper.dart';
+import 'package:speak_mate/core/di/dependancy_injection.dart';
+import 'package:speak_mate/core/services/weak_sounds_tracker.dart';
 import 'package:speak_mate/features/users/patient/aac/data/repos/aac_repo.dart';
 import 'package:speak_mate/features/users/patient/aac/logic/aac_cubit.dart';
 import 'package:speak_mate/features/users/patient/chat/data/models/chat_message.dart';
@@ -21,6 +23,9 @@ void main() {
     TestWidgetsFlutterBinding.ensureInitialized();
     SharedPreferences.setMockInitialValues({});
     await CacheHelper.init();
+    if (!getIt.isRegistered<WeakSoundsTracker>()) {
+      getIt.registerLazySingleton<WeakSoundsTracker>(() => WeakSoundsTracker());
+    }
   });
 
   test('#5 Sound matching: wrong then correct selection works', () async {

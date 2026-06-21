@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../../../core/constants/colors.dart';
+import '../../../../../core/di/dependancy_injection.dart';
 import '../../../../../core/helper/extentions.dart';
+import '../../../../../core/services/weak_sounds_tracker.dart';
 import '../../../../../core/widgets/app_text.dart';
 import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
@@ -270,6 +272,90 @@ class DailyGoalsSection extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+/// خريطة الأصوات الضعيفة — أكثر الفونيمات احتياجًا للتدريب عبر كل التمارين،
+/// تقرأ من `WeakSoundsTracker` الذي تغذّيه كيوبتس التمارين/تحدّث مع AI/الكبار.
+class WeakSoundsHeatmap extends StatelessWidget {
+  const WeakSoundsHeatmap({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final tracker = getIt<WeakSoundsTracker>();
+    final top = tracker.top(8);
+    if (top.isEmpty) return const SizedBox.shrink();
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.graphic_eq_rounded, size: 20.w, color: AppColors.secondary),
+              SizedBox(width: 8.w),
+              AppText(
+                text: LocaleKeys.weakSounds.tr(),
+                size: 15.sp,
+                family: FontFamily.tajawalBold,
+                color: AppColors.mainText,
+              ),
+            ],
+          ),
+          SizedBox(height: 4.h),
+          AppText(
+            text: LocaleKeys.weakSoundsHint.tr(),
+            size: 11.sp,
+            lines: 2,
+            color: AppColors.secondaryText,
+          ),
+          SizedBox(height: 12.h),
+          Wrap(
+            spacing: 8.w,
+            runSpacing: 8.h,
+            children: top.map(_chip).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _chip(WeakSound s) {
+    // كلما زادت نسبة الخطأ زاد احمرار الرقاقة (تأثير حراري).
+    final t = s.errorRate.clamp(0.0, 1.0);
+    final color = Color.lerp(AppColors.warning, AppColors.error, t)!;
+    final glyph = s.label.split(' ').first; // الحرف العربي فقط
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 7.h),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12 + t * 0.12),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: color.withValues(alpha: 0.45)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AppText(
+            text: glyph,
+            size: 16.sp,
+            family: FontFamily.tajawalBold,
+            color: color,
+          ),
+          SizedBox(width: 6.w),
+          AppText(
+            text: '${(s.errorRate * 100).round()}%',
+            size: 11.sp,
+            family: FontFamily.tajawalMedium,
+            color: color,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -381,6 +381,7 @@
   "lastActiveLabel": "Last active",
   "patientProfile": "Patient profile",
   "weakSounds": "Weak sounds",
+  "weakSoundsHint": "The sounds that need the most practice, based on your exercises",
   "recordingsReview": "Recordings review",
   "aiReport": "AI report",
   "assignPlan": "Assign therapy plan",

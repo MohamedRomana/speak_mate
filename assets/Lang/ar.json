@@ -381,6 +381,7 @@
   "lastActiveLabel": "آخر نشاط",
   "patientProfile": "ملف المريض",
   "weakSounds": "الأصوات الضعيفة",
+  "weakSoundsHint": "أكثر الأصوات التي تحتاج تدريبًا حسب تمارينك",
   "recordingsReview": "مراجعة التسجيلات",
   "aiReport": "تقرير الذكاء الاصطناعي",
   "assignPlan": "تعيين خطة علاجية",

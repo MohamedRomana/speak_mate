@@ -1,10 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/cache/cache_helper.dart';
+import '../../../../../core/di/dependancy_injection.dart';
 import '../../../../../core/networking/api_result.dart';
+import '../../../../../core/services/phoneme_analyzer.dart';
 import '../../../../../core/services/speech_service.dart';
+import '../../../../../core/services/weak_sounds_tracker.dart';
 import '../data/models/exercise_models.dart';
 import '../data/repos/exercises_repo.dart';
 
@@ -30,7 +31,6 @@ class ExercisePlayerCubit extends Cubit<int> {
   final ExercisesRepo _repo;
   final ExerciseCategory category;
   final SpeechService _speech;
-  final Random _rnd = Random();
 
   /// [presetItems] إن مُرِّرت تُستخدم مباشرةً (للألعاب) بدل التحميل بحسب الفئة.
   final List<ExerciseItem>? presetItems;
@@ -54,7 +54,10 @@ class ExercisePlayerCubit extends Cubit<int> {
   // نتيجة تحليل النطق الحقيقي لتمرين التكرار.
   bool lastCorrect = true;
   String lastRecognized = '';
+  SpeechAnalysis? lastAnalysis;
   bool _sttOn = false;
+
+  final WeakSoundsTracker _weak = getIt<WeakSoundsTracker>();
 
   int _rev = 0;
   void _set(PlayerPhase p) {
@@ -107,24 +110,25 @@ class ExercisePlayerCubit extends Cubit<int> {
     if (_sttOn) {
       lastRecognized = await _speech.stop();
       if (isClosed) return;
-      final r = SpeechMatch.ratio(lastRecognized, current.prompt);
-      if (r >= 0.85) {
-        lastStars = 3;
-        lastCorrect = true;
-      } else if (r >= 0.55) {
-        lastStars = 2;
-        lastCorrect = true;
-      } else {
-        lastStars = 0;
-        lastCorrect = false;
-      }
     } else {
-      // محاكاة عند عدم توفّر الميكروفون/الخدمة.
+      // محاكاة عند عدم توفّر الميكروفون/الخدمة: نطق شبه-صحيح يغذّي المحرّك.
       await Future.delayed(const Duration(milliseconds: 1100));
       if (isClosed) return;
-      lastRecognized = '';
-      lastStars = 2 + _rnd.nextInt(2);
+      lastRecognized = current.prompt;
+    }
+    // تحليل فونيمي موحّد (نفس محرّك "تحدّث مع AI").
+    final a = PhonemeAnalyzer.analyze(lastRecognized, current.prompt);
+    lastAnalysis = a;
+    _weak.record(a);
+    if (a.score >= 85) {
+      lastStars = 3;
       lastCorrect = true;
+    } else if (a.score >= 55) {
+      lastStars = 2;
+      lastCorrect = true;
+    } else {
+      lastStars = 0;
+      lastCorrect = false;
     }
     if (lastCorrect) totalStars += lastStars;
     _set(PlayerPhase.result);
@@ -134,6 +138,7 @@ class ExercisePlayerCubit extends Cubit<int> {
   void retryCurrent() {
     lastCorrect = true;
     lastRecognized = '';
+    lastAnalysis = null;
     lastStars = 0;
     _set(PlayerPhase.prompt);
   }
@@ -169,6 +174,8 @@ class ExercisePlayerCubit extends Cubit<int> {
     selectedOption = null;
     matchCorrect = false;
     lastStars = 0;
+    lastAnalysis = null;
+    lastRecognized = '';
     _set(PlayerPhase.prompt);
   }
 
