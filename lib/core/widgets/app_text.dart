@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../constants/app_fonts.dart';
+
 class AppText extends StatelessWidget {
   final String text;
   final String? family;
@@ -51,9 +53,8 @@ class AppText extends StatelessWidget {
       child: Text(
         text,
         textAlign: textAlign,
-        style: TextStyle(
-          fontWeight: fontWeight,
-          fontFamily: family,
+        style: AppFonts.cairo(
+          fontWeight: AppFonts.weightFor(family, fontWeight),
           fontSize: size ?? 16.sp,
           color: color ?? Colors.black,
           fontStyle: fontStyle ?? FontStyle.normal,

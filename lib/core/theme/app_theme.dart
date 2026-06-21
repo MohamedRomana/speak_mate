@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/colors.dart';
 import '../../gen/fonts.gen.dart';
 
 /// ثيمات VoiceBridge AI — Dark (افتراضي) و Light بهوية Indigo/Cyan،
-/// مع حفاظ على التباين والقراءة في الوضعين.
+/// وخط **Cairo** (مع Tajawal المضمّن كـ fallback)، مع حفاظ على التباين.
 abstract class AppTheme {
-  static const _fontFamily = FontFamily.tajawalRegular;
 
   static ThemeData get light {
     final scheme = ColorScheme.fromSeed(
@@ -39,11 +39,14 @@ abstract class AppTheme {
   }
 
   static ThemeData _base(ColorScheme scheme) {
+    final base = ThemeData(useMaterial3: true, brightness: scheme.brightness);
     return ThemeData(
       useMaterial3: true,
       brightness: scheme.brightness,
       colorScheme: scheme,
-      fontFamily: _fontFamily,
+      fontFamily: GoogleFonts.cairo().fontFamily,
+      fontFamilyFallback: const [FontFamily.tajawalRegular],
+      textTheme: GoogleFonts.cairoTextTheme(base.textTheme),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: AppColors.primary,
         selectionColor: AppColors.primary.withValues(alpha: 0.3),

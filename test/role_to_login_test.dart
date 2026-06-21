@@ -5,6 +5,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:speak_mate/core/cache/cache_helper.dart';
@@ -16,6 +17,7 @@ import 'package:speak_mate/main.dart';
 void main() {
   testWidgets('Role selection → Login: no layout (hasSize) exception',
       (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
     tester.view.physicalSize = const Size(1080, 2340);
     tester.view.devicePixelRatio = 3.0;
     addTearDown(tester.view.resetPhysicalSize);
