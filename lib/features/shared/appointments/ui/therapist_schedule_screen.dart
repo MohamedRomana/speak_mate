@@ -10,6 +10,8 @@ import '../../../../core/widgets/app_text.dart';
 import '../../../../core/widgets/flash_message.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../../../generated/locale_keys.g.dart';
+import '../../../users/patient/chat_therapist/ui/session_call.dart';
+import '../data/models/appointment.dart';
 import '../data/repos/appointments_repo.dart';
 import '../logic/therapist_schedule_cubit.dart';
 import 'widgets/appointment_card.dart';
@@ -103,7 +105,15 @@ class _ScheduleView extends StatelessWidget {
                 if (upcoming.isNotEmpty) ...[
                   _header(LocaleKeys.confirmedAppointments.tr(), AppColors.primary),
                   SizedBox(height: 10.h),
-                  ...upcoming.map((a) => AppointmentCard(appt: a, showPatient: true)),
+                  ...upcoming.map((a) => AppointmentCard(
+                        appt: a,
+                        showPatient: true,
+                        onCall: () => openSessionCall(
+                          context,
+                          therapistName: a.patientName,
+                          isVideo: a.type == AppointmentType.video,
+                        ),
+                      )),
                   SizedBox(height: 8.h),
                 ],
                 if (past.isNotEmpty) ...[

@@ -17,6 +17,7 @@ class AppointmentCard extends StatelessWidget {
   final bool showPatient;
   final VoidCallback? onAccept;
   final VoidCallback? onDecline;
+  final VoidCallback? onCall; // بدء/الانضمام لمكالمة الجلسة
   const AppointmentCard({
     super.key,
     required this.appt,
@@ -24,6 +25,7 @@ class AppointmentCard extends StatelessWidget {
     this.showPatient = false,
     this.onAccept,
     this.onDecline,
+    this.onCall,
   });
 
   @override
@@ -146,6 +148,30 @@ class AppointmentCard extends StatelessWidget {
                   size: 12.sp,
                   family: FontFamily.tajawalBold,
                   color: AppColors.error,
+                ),
+              ),
+            ),
+          ],
+          if (onCall != null && appt.status == AppointmentStatus.scheduled) ...[
+            SizedBox(height: 12.h),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: onCall,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isVideo ? AppColors.primary : AppColors.secondary,
+                  padding: EdgeInsets.symmetric(vertical: 11.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+                icon: Icon(isVideo ? Icons.videocam_rounded : Icons.call_rounded,
+                    size: 18.w, color: Colors.white),
+                label: AppText(
+                  text: LocaleKeys.startSession.tr(),
+                  size: 13.sp,
+                  family: FontFamily.tajawalBold,
+                  color: Colors.white,
                 ),
               ),
             ),

@@ -15,7 +15,6 @@ class SessionCard extends StatelessWidget {
 
   const SessionCard({super.key, required this.session, this.onStart});
 
-  bool get _isGroup => session.type == SessionType.group;
   bool get _isUpcoming => session.status == SessionStatus.upcoming;
 
   String _whenLabel() {
@@ -34,9 +33,11 @@ class SessionCard extends StatelessWidget {
     return '${dt.day}/${dt.month} • $time';
   }
 
+  bool get _isVideo => session.mode == SessionMode.videoCall;
+
   @override
   Widget build(BuildContext context) {
-    final color = _isGroup ? AppColors.secondary : AppColors.primary;
+    final color = _isVideo ? AppColors.primary : AppColors.secondary;
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(14.w),
@@ -57,7 +58,7 @@ class SessionCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Icon(
-                  _isGroup ? Icons.groups_rounded : Icons.record_voice_over_rounded,
+                  _isVideo ? Icons.videocam_rounded : Icons.call_rounded,
                   color: color,
                   size: 24.w,
                 ),
@@ -90,9 +91,11 @@ class SessionCard extends StatelessWidget {
           SizedBox(height: 12.h),
           Row(
             children: [
-              _Chip(
-                icon: Icons.access_time_rounded,
-                label: _whenLabel(),
+              Flexible(
+                child: _Chip(
+                  icon: Icons.access_time_rounded,
+                  label: _whenLabel(),
+                ),
               ),
               SizedBox(width: 8.w),
               _Chip(
@@ -100,24 +103,37 @@ class SessionCard extends StatelessWidget {
                 label: '${session.durationMinutes} ${LocaleKeys.minShort.tr()}',
               ),
               const Spacer(),
-              if (_isUpcoming && onStart != null)
+              if (_isUpcoming && onStart != null) ...[
+                SizedBox(width: 8.w),
                 GestureDetector(
                   onTap: onStart,
                   child: Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
                     decoration: BoxDecoration(
-                      color: AppColors.primary,
+                      color: _isVideo ? AppColors.primary : AppColors.secondary,
                       borderRadius: BorderRadius.circular(12.r),
                     ),
-                    child: AppText(
-                      text: LocaleKeys.startSession.tr(),
-                      size: 12.sp,
-                      family: FontFamily.tajawalBold,
-                      color: Colors.white,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          _isVideo ? Icons.videocam_rounded : Icons.call_rounded,
+                          size: 15.w,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 5.w),
+                        AppText(
+                          text: LocaleKeys.startSession.tr(),
+                          size: 12.sp,
+                          family: FontFamily.tajawalBold,
+                          color: Colors.white,
+                        ),
+                      ],
                     ),
                   ),
                 ),
+              ],
             ],
           ),
         ],
@@ -144,10 +160,13 @@ class _Chip extends StatelessWidget {
         children: [
           Icon(icon, size: 13.w, color: AppColors.secondaryText),
           SizedBox(width: 4.w),
-          AppText(
-            text: label,
-            size: 10.sp,
-            color: AppColors.secondaryText,
+          Flexible(
+            child: AppText(
+              text: label,
+              size: 10.sp,
+              lines: 1,
+              color: AppColors.secondaryText,
+            ),
           ),
         ],
       ),

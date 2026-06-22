@@ -20,8 +20,7 @@ import '../../chat_therapist/ui/therapist_chat_screen.dart';
 import '../../notifications/logic/notifications_cubit.dart';
 import '../../notifications/ui/notifications_screen.dart';
 import '../../../../shared/plans/ui/my_plan_cta.dart' show MyPlanCta, AppointmentsCta;
-import '../../session/logic/session_cubit.dart';
-import '../../session/ui/session_screen.dart';
+import '../../chat_therapist/ui/session_call.dart';
 import '../logic/dashboard_cubit.dart';
 import 'games_cta.dart';
 import 'home_extras.dart';
@@ -144,14 +143,7 @@ class DashboardScreen extends StatelessWidget {
                       ...data.upcoming.map(
                         (s) => SessionCard(
                           session: s,
-                          onStart: () {
-                            context.pushScreen(
-                              BlocProvider(
-                                create: (_) => SessionCubit()..start(),
-                                child: SessionScreen(session: s),
-                              ),
-                            );
-                          },
+                          onStart: () => openCallForSession(context, s),
                         ),
                       ),
                     SizedBox(height: 14.h),
@@ -176,34 +168,36 @@ class _GreetingHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final name = CacheHelper.getUserName();
     final cubit = context.read<DashboardCubit>();
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppText(
+        // صف العنوان: اسم الترحيب (سطر واحد لا يُقتطع) + أيقونات الإجراءات.
+        Row(
+          children: [
+            Expanded(
+              child: AppText(
                 text: '${LocaleKeys.hello.tr()}، $name 👋',
-                size: 20.sp,
+                size: 18.sp,
+                lines: 1,
                 family: FontFamily.tajawalBold,
                 color: AppColors.mainText,
               ),
-              SizedBox(height: 4.h),
-              AppText(
-                text: (cubit.data?.motivationKey ?? LocaleKeys.motivation1).tr(),
-                size: 12.sp,
-                lines: 2,
-                color: AppColors.secondaryText,
-              ),
-            ],
-          ),
+            ),
+            SizedBox(width: 6.w),
+            const _TherapistChatButton(),
+            SizedBox(width: 6.w),
+            const _ChatButton(),
+            SizedBox(width: 6.w),
+            const _NotificationBell(),
+          ],
         ),
-        SizedBox(width: 8.w),
-        const _TherapistChatButton(),
-        SizedBox(width: 8.w),
-        const _ChatButton(),
-        SizedBox(width: 8.w),
-        const _NotificationBell(),
+        SizedBox(height: 6.h),
+        AppText(
+          text: (cubit.data?.motivationKey ?? LocaleKeys.motivation1).tr(),
+          size: 12.sp,
+          lines: 2,
+          color: AppColors.secondaryText,
+        ),
       ],
     );
   }

@@ -3,12 +3,64 @@ import '../../../../core/networking/api_constants.dart';
 import '../../../../core/networking/api_error_model.dart';
 import '../../../../core/networking/api_result.dart';
 import '../../../../core/networking/api_service.dart';
+import '../../../users/patient/dashboard/data/models/session_model.dart';
 import '../models/rehab_models.dart';
 
 /// مستودع وحدة الكبار (إعادة التأهيل) — mock + ربط API حقيقي خلف الفلاج.
 class AdultRepo {
   final ApiService _api;
   AdultRepo({ApiService? api}) : _api = api ?? ApiService();
+
+  /// جلسات البالغ مع الأخصائي (مكالمات فيديو/صوت) — قادمة وسابقة.
+  Future<ApiResult<List<SessionModel>>> getSessions() async {
+    try {
+      if (AppConstants.useMockData) {
+        await Future.delayed(const Duration(milliseconds: 600));
+        final now = DateTime.now();
+        return ApiResult.success([
+          SessionModel(
+            id: 'as1',
+            title: 'جلسة علاج النطق',
+            therapistName: 'د. سارة المهدي',
+            dateTime: now.add(const Duration(hours: 4)),
+            type: SessionType.individual,
+            status: SessionStatus.upcoming,
+            mode: SessionMode.videoCall,
+            durationMinutes: 45,
+          ),
+          SessionModel(
+            id: 'as2',
+            title: 'تقييم الطلاقة',
+            therapistName: 'د. خالد العتيبي',
+            dateTime: now.add(const Duration(days: 2, hours: 1)),
+            type: SessionType.individual,
+            status: SessionStatus.upcoming,
+            mode: SessionMode.voiceCall,
+            durationMinutes: 30,
+          ),
+          SessionModel(
+            id: 'as3',
+            title: 'جلسة الكلام البطيء',
+            therapistName: 'د. سارة المهدي',
+            dateTime: now.subtract(const Duration(days: 3)),
+            type: SessionType.individual,
+            status: SessionStatus.completed,
+            mode: SessionMode.videoCall,
+            durationMinutes: 45,
+            score: 82,
+          ),
+        ]);
+      }
+      return ApiService.executeApi<List<SessionModel>>(
+        () => _api.get(ApiConstants.sessions, query: {'role': 'adult'}),
+        parser: (data) => (data as List)
+            .map((e) => SessionModel.fromJson((e as Map).cast<String, dynamic>()))
+            .toList(),
+      );
+    } catch (e) {
+      return ApiResult.error(ApiErrorModel(message: e.toString()));
+    }
+  }
 
   /// نسبة تقدّم التعافي الكلية ومتوسط الدقة وعدد جلسات الأسبوع.
   int get recoveryProgress => 68;

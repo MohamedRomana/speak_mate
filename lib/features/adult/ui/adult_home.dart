@@ -18,6 +18,12 @@ import '../../../gen/fonts.gen.dart';
 import '../../../generated/locale_keys.g.dart';
 import '../../shared/account/ui/account_screen.dart';
 import '../../shared/plans/ui/my_plan_cta.dart';
+import '../../users/patient/chat/logic/chat_cubit.dart';
+import '../../users/patient/chat/ui/chat_screen.dart';
+import '../../users/patient/chat_therapist/logic/therapist_chat_cubit.dart';
+import '../../users/patient/chat_therapist/ui/session_call.dart';
+import '../../users/patient/chat_therapist/ui/therapist_chat_screen.dart';
+import '../../users/patient/dashboard/ui/widgets/session_card.dart';
 import '../data/models/rehab_models.dart';
 import '../logic/adult_home_cubit.dart';
 import '../logic/rehab_session_cubit.dart';
@@ -63,6 +69,7 @@ class _AdultHomeView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // صف العنوان: الترحيب كامل (لا يُقتطع) + مبدّلات اللغة/الثيم فقط.
                   Row(
                     children: [
                       Expanded(
@@ -78,21 +85,51 @@ class _AdultHomeView extends StatelessWidget {
                       const LangToggle(),
                       SizedBox(width: 8.w),
                       const ThemeToggle(),
-                      SizedBox(width: 6.w),
-                      IconButton(
-                        onPressed: () =>
-                            context.pushScreen(const AccountScreen()),
-                        icon: Icon(Icons.person_outline_rounded,
-                            color: AppColors.primary, size: 22.w),
-                      ),
-                      IconButton(
-                        onPressed: () => _logout(context),
-                        icon: Icon(Icons.logout_rounded,
-                            color: AppColors.error, size: 22.w),
-                      ),
                     ],
                   ),
                   SizedBox(height: 12.h),
+                  // صف الإجراءات: المساعد الذكي + محادثة الأخصائي + الحساب + الخروج.
+                  Row(
+                    children: [
+                      _ActionTile(
+                        icon: Icons.smart_toy_rounded,
+                        gradient: true,
+                        onTap: () => context.pushScreen(
+                          BlocProvider(
+                            create: (_) => ChatCubit(getIt(),
+                                lang: context.locale.languageCode)
+                              ..init(),
+                            child: const ChatScreen(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      _ActionTile(
+                        icon: Icons.chat_bubble_outline_rounded,
+                        color: AppColors.secondary,
+                        onTap: () => context.pushScreen(
+                          BlocProvider(
+                            create: (_) => TherapistChatCubit(getIt(),
+                                lang: context.locale.languageCode)
+                              ..init(),
+                            child: const TherapistChatScreen(),
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      _ActionTile(
+                        icon: Icons.person_outline_rounded,
+                        onTap: () => context.pushScreen(const AccountScreen()),
+                      ),
+                      SizedBox(width: 10.w),
+                      _ActionTile(
+                        icon: Icons.logout_rounded,
+                        color: AppColors.error,
+                        onTap: () => _logout(context),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 14.h),
                   FadeSlideIn(child: _RecoveryCard(cubit: cubit)),
                   SizedBox(height: 16.h),
                   const FadeSlideIn(
@@ -124,10 +161,78 @@ class _AdultHomeView extends StatelessWidget {
                           child: _ModuleCard(module: e.value),
                         ),
                       ),
+                  if (cubit.upcoming.isNotEmpty) ...[
+                    SizedBox(height: 20.h),
+                    AppText(
+                      text: LocaleKeys.upcomingSessions.tr(),
+                      size: 16.sp,
+                      family: FontFamily.tajawalBold,
+                      color: AppColors.mainText,
+                    ),
+                    SizedBox(height: 12.h),
+                    ...cubit.upcoming.map(
+                      (s) => SessionCard(
+                        session: s,
+                        onStart: () => openCallForSession(context, s),
+                      ),
+                    ),
+                  ],
+                  if (cubit.completed.isNotEmpty) ...[
+                    SizedBox(height: 8.h),
+                    AppText(
+                      text: LocaleKeys.pastSessions.tr(),
+                      size: 16.sp,
+                      family: FontFamily.tajawalBold,
+                      color: AppColors.mainText,
+                    ),
+                    SizedBox(height: 12.h),
+                    ...cubit.completed.map((s) => SessionCard(session: s)),
+                  ],
                 ],
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+/// زرّ إجراء مربّع في رأس لوحة البالغ (مساعد ذكي/محادثة/حساب/خروج).
+class _ActionTile extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final Color? color;
+  final bool gradient;
+  const _ActionTile({
+    required this.icon,
+    required this.onTap,
+    this.color,
+    this.gradient = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(14.r),
+      child: Container(
+        width: 44.w,
+        height: 44.w,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: gradient ? null : AppColors.card,
+          gradient: gradient
+              ? const LinearGradient(
+                  colors: [AppColors.primary, AppColors.secondary])
+              : null,
+          borderRadius: BorderRadius.circular(14.r),
+          border: gradient ? null : Border.all(color: AppColors.border),
+        ),
+        child: Icon(
+          icon,
+          size: 22.w,
+          color: gradient ? Colors.white : (color ?? AppColors.primary),
         ),
       ),
     );

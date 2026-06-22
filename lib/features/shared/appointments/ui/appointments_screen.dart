@@ -10,6 +10,8 @@ import '../../../../core/widgets/app_text.dart';
 import '../../../../core/widgets/flash_message.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../../../generated/locale_keys.g.dart';
+import '../../../users/patient/chat_therapist/ui/session_call.dart';
+import '../data/models/appointment.dart';
 import '../data/repos/appointments_repo.dart';
 import '../logic/appointments_cubit.dart';
 import 'book_appointment_sheet.dart';
@@ -111,6 +113,11 @@ class _AppointmentsView extends StatelessWidget {
                   ...up.map((a) => AppointmentCard(
                         appt: a,
                         onCancel: () => _confirmCancel(context, cubit, a.id),
+                        onCall: () => openSessionCall(
+                          context,
+                          therapistName: a.therapistName,
+                          isVideo: a.type == AppointmentType.video,
+                        ),
                       )),
                 ],
                 if (past.isNotEmpty) ...[
