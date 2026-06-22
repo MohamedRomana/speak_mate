@@ -15,6 +15,7 @@ import '../../features/clinic/data/repos/clinic_repo.dart';
 import '../../features/shared/account/data/repos/account_repo.dart';
 import '../../features/shared/appointments/data/repos/appointments_repo.dart';
 import '../../features/shared/billing/data/repos/billing_repo.dart';
+import '../../features/shared/family/data/repos/family_repo.dart';
 import '../../features/shared/support/data/repos/support_repo.dart';
 import '../../features/shared/gamification/data/repos/gamification_repo.dart';
 import '../../features/shared/plans/data/repos/plans_repo.dart';
@@ -86,6 +87,10 @@ Future<void> setUpGetIt() async {
   // ---- الدعم والمساعدة ----
   getIt.registerLazySingleton<SupportRepo>(
       () => SupportRepo(api: getIt<ApiService>()));
+
+  // ---- الأطفال (الباقة العائلية) ----
+  getIt.registerLazySingleton<FamilyRepo>(
+      () => FamilyRepo(api: getIt<ApiService>()));
 
   // ---- وحدة الكبار (إعادة التأهيل) ----
   getIt.registerLazySingleton<AdultRepo>(() => AdultRepo(api: getIt<ApiService>()));

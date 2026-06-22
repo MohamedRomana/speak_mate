@@ -484,6 +484,15 @@ abstract class LocaleKeys {
   static const reportHint = 'reportHint';
   static const sendReport = 'sendReport';
   static const problemSubmitted = 'problemSubmitted';
+  static const manageChildren = 'manageChildren';
+  static const familyTitle = 'familyTitle';
+  static const activeChildLabel = 'activeChildLabel';
+  static const addChild = 'addChild';
+  static const childAdded = 'childAdded';
+  static const childName = 'childName';
+  static const maxChildrenReached = 'maxChildrenReached';
+  static const switchedToChild = 'switchedToChild';
+  static const chooseAvatar = 'chooseAvatar';
 
   static const gamesHub = 'gamesHub';
   static const gamesHubDesc = 'gamesHubDesc';

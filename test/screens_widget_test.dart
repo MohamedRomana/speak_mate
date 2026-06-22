@@ -24,6 +24,7 @@ import 'package:speak_mate/features/shared/plans/ui/my_plan_screen.dart';
 import 'package:speak_mate/features/adult/ui/adult_home.dart';
 import 'package:speak_mate/features/clinic/ui/clinic_home.dart';
 import 'package:speak_mate/features/shared/account/ui/account_screen.dart';
+import 'package:speak_mate/features/shared/family/ui/family_screen.dart';
 import 'package:speak_mate/features/shared/support/ui/support_screen.dart';
 import 'package:speak_mate/features/therapist/data/models/therapist_patient.dart';
 import 'package:speak_mate/features/therapist/ui/patient_detail_screen.dart';
@@ -163,6 +164,11 @@ void main() {
     await show(const SupportScreen());
     expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
     expect(find.textContaining('كيف'), findsWidgets);
+
+    // 11) أطفالي (الباقة العائلية) → بطاقات الأطفال + إضافة.
+    await show(const FamilyScreen());
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.textContaining('أحمد'), findsWidgets);
   });
 }
 

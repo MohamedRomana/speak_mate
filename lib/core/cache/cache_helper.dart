@@ -11,6 +11,7 @@ class CacheHelper {
   static const _showImage = 'showImage';
   static const _deviceToken = 'deviceToken';
   static const _authToken = 'authToken';
+  static const _activeChild = 'activeChildId';
   static const _type = 'type';
   static const _intro = 'intro';
   static const _address = 'address';
@@ -100,6 +101,15 @@ class CacheHelper {
 
   static Future<void> clearAuthToken() async {
     await _preferences.remove(_authToken);
+  }
+
+  /// معرّف الطفل النشط حاليًا (للباقة العائلية).
+  static Future<void> setActiveChildId(String? id) async {
+    await _preferences.setString(_activeChild, id ?? '');
+  }
+
+  static String getActiveChildId() {
+    return _preferences.getString(_activeChild) ?? '';
   }
 
   static setUserType(String? type) async {
