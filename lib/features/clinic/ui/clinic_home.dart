@@ -15,6 +15,7 @@ import '../../../core/widgets/lang_toggle.dart';
 import '../../../core/widgets/theme_toggle.dart';
 import '../../../gen/fonts.gen.dart';
 import '../../../generated/locale_keys.g.dart';
+import '../../shared/account/ui/account_screen.dart';
 import '../data/models/clinic_models.dart';
 import '../logic/clinic_home_cubit.dart';
 
@@ -73,6 +74,12 @@ class _ClinicHomeView extends StatelessWidget {
                       SizedBox(width: 6.w),
                       const ThemeToggle(),
                       SizedBox(width: 4.w),
+                      IconButton(
+                        onPressed: () =>
+                            context.pushScreen(const AccountScreen()),
+                        icon: Icon(Icons.person_outline_rounded,
+                            color: AppColors.primary, size: 22.w),
+                      ),
                       IconButton(
                         onPressed: () => _logout(context),
                         icon: Icon(Icons.logout_rounded,

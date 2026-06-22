@@ -14,6 +14,7 @@ import '../../../core/widgets/lang_toggle.dart';
 import '../../../core/widgets/theme_toggle.dart';
 import '../../../gen/fonts.gen.dart';
 import '../../../generated/locale_keys.g.dart';
+import '../../shared/account/ui/account_screen.dart';
 import '../../shared/appointments/ui/therapist_schedule_screen.dart';
 import '../data/models/therapist_patient.dart';
 import '../logic/therapist_home_cubit.dart';
@@ -73,6 +74,12 @@ class _TherapistHomeView extends StatelessWidget {
                           onPressed: () =>
                               context.pushScreen(const TherapistScheduleScreen()),
                           icon: Icon(Icons.calendar_month_rounded,
+                              color: AppColors.primary, size: 22.w),
+                        ),
+                        IconButton(
+                          onPressed: () =>
+                              context.pushScreen(const AccountScreen()),
+                          icon: Icon(Icons.person_outline_rounded,
                               color: AppColors.primary, size: 22.w),
                         ),
                         IconButton(

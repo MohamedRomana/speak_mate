@@ -18,6 +18,7 @@ import '../../../../../gen/fonts.gen.dart';
 import '../../../../../generated/locale_keys.g.dart';
 import '../../reports/logic/reports_cubit.dart';
 import '../../../../shared/billing/ui/subscription_screen.dart';
+import '../../../../shared/support/ui/support_screen.dart';
 import '../../reports/ui/reports_screen.dart';
 import '../../settings/ui/settings_screen.dart';
 import '../data/models/patient_profile.dart';
@@ -276,6 +277,11 @@ class _SettingsSection extends StatelessWidget {
             icon: Icons.settings_outlined,
             label: LocaleKeys.settings.tr(),
             onTap: () => context.pushScreen(const SettingsScreen()),
+          ),
+          _SettingsTile(
+            icon: Icons.help_outline_rounded,
+            label: LocaleKeys.support.tr(),
+            onTap: () => context.pushScreen(const SupportScreen()),
           ),
           _SettingsTile(
             icon: Icons.logout_rounded,

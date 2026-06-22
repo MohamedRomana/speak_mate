@@ -473,6 +473,17 @@ abstract class LocaleKeys {
   static const notifApptConfirmedBody = 'notifApptConfirmedBody';
   static const notifPlanAssignedTitle = 'notifPlanAssignedTitle';
   static const notifPlanAssignedBody = 'notifPlanAssignedBody';
+  static const myAccount = 'myAccount';
+  static const yearsExperience = 'yearsExperience';
+  static const support = 'support';
+  static const faqTitle = 'faqTitle';
+  static const contactUs = 'contactUs';
+  static const callUs = 'callUs';
+  static const emailUs = 'emailUs';
+  static const reportProblem = 'reportProblem';
+  static const reportHint = 'reportHint';
+  static const sendReport = 'sendReport';
+  static const problemSubmitted = 'problemSubmitted';
 
   static const gamesHub = 'gamesHub';
   static const gamesHubDesc = 'gamesHubDesc';

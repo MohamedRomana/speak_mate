@@ -8,6 +8,7 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,8 +18,18 @@ import 'package:speak_mate/core/cache/cache_helper.dart';
 import 'package:speak_mate/core/di/dependancy_injection.dart';
 import 'package:speak_mate/core/theme/app_theme.dart';
 import 'package:speak_mate/features/shared/appointments/ui/appointments_screen.dart';
+import 'package:speak_mate/features/shared/appointments/ui/therapist_schedule_screen.dart';
 import 'package:speak_mate/features/shared/billing/ui/subscription_screen.dart';
 import 'package:speak_mate/features/shared/plans/ui/my_plan_screen.dart';
+import 'package:speak_mate/features/adult/ui/adult_home.dart';
+import 'package:speak_mate/features/clinic/ui/clinic_home.dart';
+import 'package:speak_mate/features/shared/account/ui/account_screen.dart';
+import 'package:speak_mate/features/shared/support/ui/support_screen.dart';
+import 'package:speak_mate/features/therapist/data/models/therapist_patient.dart';
+import 'package:speak_mate/features/therapist/ui/patient_detail_screen.dart';
+import 'package:speak_mate/features/users/patient/aac/data/repos/aac_repo.dart';
+import 'package:speak_mate/features/users/patient/aac/logic/aac_cubit.dart';
+import 'package:speak_mate/features/users/patient/aac/ui/aac_screen.dart';
 
 void main() {
   final layoutErrors = <String>[];
@@ -112,5 +123,70 @@ void main() {
     await show(const AppointmentsScreen());
     expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
     expect(find.textContaining('سارة المهدي'), findsWidgets);
+
+    // 4) جدول مواعيد الأخصائي → اسم مريض من طلبات الـ mock يظهر.
+    await show(const TherapistScheduleScreen());
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.textContaining('أحمد محمد'), findsWidgets);
+
+    // 5) ملف المريض (أخصائي) → خريطة الأصوات الضعيفة + التسجيلات + رسم التقدّم.
+    await show(const PatientDetailScreen(patient: _mockPatient));
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.textContaining('أحمد محمد'), findsWidgets);
+
+    // 6) لوحة العيادة → إحصاءات + مواعيد اليوم + فواتير.
+    await show(const ClinicHomeScreen());
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.byType(Scaffold), findsWidgets);
+
+    // 7) لوحة الكبار (إعادة التأهيل) → وحدات + إحصاءات تعافٍ.
+    await show(const AdultHomeScreen());
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.byType(Scaffold), findsWidgets);
+
+    // 8) لوح التواصل (AAC) → شبكة رموز + شريط الجملة.
+    await show(
+      BlocProvider(
+        create: (_) => AacCubit(getIt<AacRepo>())..load(),
+        child: const AacScreen(),
+      ),
+    );
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.byType(Text), findsWidgets);
+
+    // 9) حساب المستخدم (أدوار غير الطفل) → معلومات + تبويبات.
+    await show(const AccountScreen());
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.byType(Scaffold), findsWidgets);
+
+    // 10) الدعم والمساعدة → تواصل + أسئلة شائعة.
+    await show(const SupportScreen());
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.textContaining('كيف'), findsWidgets);
   });
 }
+
+/// مريض تجريبي لشاشة تفاصيل الأخصائي (أصوات ضعيفة + تسجيلات + سلسلة دقة).
+const _mockPatient = TherapistPatient(
+  id: 'pt_test',
+  name: 'أحمد محمد',
+  age: 8,
+  condition: PatientCondition.child,
+  progress: 78,
+  accuracy: 82,
+  lastActive: 'اليوم',
+  accuracySeries: [55, 60, 68, 72, 78, 80, 82],
+  weakSounds: [
+    WeakSoundStat('ر', 0.62),
+    WeakSoundStat('س', 0.4),
+    WeakSoundStat('ش', 0.28),
+  ],
+  recordings: [
+    PatientRecording(
+        id: 'r1',
+        title: 'تمرين حرف الراء',
+        durationSeconds: 47,
+        accuracy: 80,
+        dateLabel: '2026/06/15'),
+  ],
+);

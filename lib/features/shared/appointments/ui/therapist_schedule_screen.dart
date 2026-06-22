@@ -123,11 +123,13 @@ class _ScheduleView extends StatelessWidget {
         children: [
           Container(width: 4.w, height: 16.h, color: color),
           SizedBox(width: 8.w),
-          AppText(
-            text: text,
-            size: 15.sp,
-            family: FontFamily.tajawalBold,
-            color: AppColors.mainText,
+          Expanded(
+            child: AppText(
+              text: text,
+              size: 15.sp,
+              family: FontFamily.tajawalBold,
+              color: AppColors.mainText,
+            ),
           ),
         ],
       );

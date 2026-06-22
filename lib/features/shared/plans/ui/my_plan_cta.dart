@@ -8,6 +8,7 @@ import '../../../../core/widgets/app_text.dart';
 import '../../../../gen/fonts.gen.dart';
 import '../../../../generated/locale_keys.g.dart';
 import '../../appointments/ui/appointments_screen.dart';
+import '../../billing/ui/subscription_screen.dart';
 import 'my_plan_screen.dart';
 
 /// كرت مدخل "خطّتي العلاجية" في لوحة المتدرّب.
@@ -105,6 +106,21 @@ class AppointmentsCta extends StatelessWidget {
       title: LocaleKeys.myAppointments.tr(),
       subtitle: LocaleKeys.bookAppointment.tr(),
       onTap: () => context.pushScreen(const AppointmentsScreen()),
+    );
+  }
+}
+
+/// كرت مدخل "الاشتراك".
+class SubscriptionCta extends StatelessWidget {
+  const SubscriptionCta({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return _Cta(
+      icon: Icons.workspace_premium_rounded,
+      title: LocaleKeys.subscriptionTitle.tr(),
+      subtitle: LocaleKeys.choosePlan.tr(),
+      onTap: () => context.pushScreen(const SubscriptionScreen()),
     );
   }
 }

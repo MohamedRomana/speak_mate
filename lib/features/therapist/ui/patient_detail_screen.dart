@@ -257,11 +257,13 @@ class _AiReportCard extends StatelessWidget {
               Icon(Icons.auto_awesome_rounded,
                   size: 20.w, color: AppColors.primary),
               SizedBox(width: 8.w),
-              AppText(
-                text: LocaleKeys.aiReport.tr(),
-                size: 15.sp,
-                family: FontFamily.tajawalBold,
-                color: AppColors.mainText,
+              Expanded(
+                child: AppText(
+                  text: LocaleKeys.aiReport.tr(),
+                  size: 15.sp,
+                  family: FontFamily.tajawalBold,
+                  color: AppColors.mainText,
+                ),
               ),
             ],
           ),
@@ -301,11 +303,13 @@ class _Card extends StatelessWidget {
             children: [
               Icon(icon, size: 20.w, color: AppColors.primary),
               SizedBox(width: 8.w),
-              AppText(
-                text: title,
-                size: 15.sp,
-                family: FontFamily.tajawalBold,
-                color: AppColors.mainText,
+              Expanded(
+                child: AppText(
+                  text: title,
+                  size: 15.sp,
+                  family: FontFamily.tajawalBold,
+                  color: AppColors.mainText,
+                ),
               ),
             ],
           ),
