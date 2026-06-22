@@ -18,6 +18,8 @@ import '../../../generated/locale_keys.g.dart';
 import '../../shared/account/ui/account_screen.dart';
 import '../data/models/clinic_models.dart';
 import '../logic/clinic_home_cubit.dart';
+import 'clinic_doctors_screen.dart';
+import 'clinic_financials_screen.dart';
 
 /// لوحة تحكّم العيادة (Admin) — إحصائيات + مواعيد اليوم + الفوترة.
 class ClinicHomeScreen extends StatelessWidget {
@@ -89,6 +91,31 @@ class _ClinicHomeView extends StatelessWidget {
                   ),
                   SizedBox(height: 14.h),
                   FadeSlideIn(child: _StatsGrid(stats: cubit.stats)),
+                  SizedBox(height: 14.h),
+                  FadeSlideIn(
+                    delay: const Duration(milliseconds: 60),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: _ManageCard(
+                            icon: Icons.medical_services_rounded,
+                            label: LocaleKeys.manageDoctors.tr(),
+                            onTap: () =>
+                                context.pushScreen(const ClinicDoctorsScreen()),
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        Expanded(
+                          child: _ManageCard(
+                            icon: Icons.bar_chart_rounded,
+                            label: LocaleKeys.financialReport.tr(),
+                            onTap: () =>
+                                context.pushScreen(const ClinicFinancialsScreen()),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   SizedBox(height: 20.h),
                   _SectionTitle(LocaleKeys.appointmentsToday.tr()),
                   SizedBox(height: 12.h),
@@ -113,6 +140,44 @@ class _ClinicHomeView extends StatelessWidget {
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+/// كرت تنقّل صغير في لوحة العيادة (إدارة الأطباء / التقرير المالي).
+class _ManageCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  const _ManageCard({required this.icon, required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(18.r),
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 12.w),
+        decoration: BoxDecoration(
+          color: AppColors.card,
+          borderRadius: BorderRadius.circular(18.r),
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, size: 26.w, color: AppColors.primary),
+            SizedBox(height: 8.h),
+            AppText(
+              text: label,
+              size: 12.sp,
+              family: FontFamily.tajawalBold,
+              color: AppColors.mainText,
+              textAlign: TextAlign.center,
+              lines: 2,
+            ),
+          ],
         ),
       ),
     );

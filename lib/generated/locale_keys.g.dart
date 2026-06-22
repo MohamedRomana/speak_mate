@@ -493,6 +493,20 @@ abstract class LocaleKeys {
   static const maxChildrenReached = 'maxChildrenReached';
   static const switchedToChild = 'switchedToChild';
   static const chooseAvatar = 'chooseAvatar';
+  static const manageDoctors = 'manageDoctors';
+  static const financialReport = 'financialReport';
+  static const addDoctor = 'addDoctor';
+  static const doctorName = 'doctorName';
+  static const doctorAdded = 'doctorAdded';
+  static const removeDoctor = 'removeDoctor';
+  static const doctorRemoved = 'doctorRemoved';
+  static const patientsCountLabel = 'patientsCountLabel';
+  static const totalRevenue = 'totalRevenue';
+  static const paidAmount = 'paidAmount';
+  static const pendingAmount = 'pendingAmount';
+  static const revenueByMonth = 'revenueByMonth';
+  static const revenueByTherapist = 'revenueByTherapist';
+  static const inactiveLabel = 'inactiveLabel';
 
   static const gamesHub = 'gamesHub';
   static const gamesHubDesc = 'gamesHubDesc';

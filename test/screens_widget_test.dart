@@ -22,6 +22,8 @@ import 'package:speak_mate/features/shared/appointments/ui/therapist_schedule_sc
 import 'package:speak_mate/features/shared/billing/ui/subscription_screen.dart';
 import 'package:speak_mate/features/shared/plans/ui/my_plan_screen.dart';
 import 'package:speak_mate/features/adult/ui/adult_home.dart';
+import 'package:speak_mate/features/clinic/ui/clinic_doctors_screen.dart';
+import 'package:speak_mate/features/clinic/ui/clinic_financials_screen.dart';
 import 'package:speak_mate/features/clinic/ui/clinic_home.dart';
 import 'package:speak_mate/features/shared/account/ui/account_screen.dart';
 import 'package:speak_mate/features/shared/family/ui/family_screen.dart';
@@ -169,6 +171,16 @@ void main() {
     await show(const FamilyScreen());
     expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
     expect(find.textContaining('أحمد'), findsWidgets);
+
+    // 12) إدارة أطباء العيادة → بطاقات الأطباء.
+    await show(const ClinicDoctorsScreen());
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.textContaining('سارة المهدي'), findsWidgets);
+
+    // 13) التقرير المالي للعيادة → إجماليات + إيرادات.
+    await show(const ClinicFinancialsScreen());
+    expect(layoutErrors, isEmpty, reason: layoutErrors.join('\n---\n'));
+    expect(find.byType(Scaffold), findsWidgets);
   });
 }
 

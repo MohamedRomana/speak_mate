@@ -25,7 +25,7 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 24.h, top: 8.h),
+      padding: EdgeInsets.only(bottom: 24.h, top: 58.h),
       decoration: const BoxDecoration(
         gradient: AppGradients.primary,
         borderRadius: BorderRadiusDirectional.only(
